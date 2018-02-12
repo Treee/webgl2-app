@@ -2,16 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { ShaderProgramServiceService } from './services/shader-program/shader-program-service.service';
+import { ShaderProgramService } from './services/shader-program/shader-program.service';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule
   ],
-  providers: [ShaderProgramServiceService],
+  providers: [ShaderProgramService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

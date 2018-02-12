@@ -1,20 +1,14 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class ShaderProgramServiceService {
+export class ShaderProgramService {
 
   constructor() { }
 
-
   /**
    * Creates a program from 2 shaders.
-   *
-   * @param {!WebGLRenderingContext) gl The WebGL context.
-   * @param {!WebGLShader} vertexShader A vertex shader.
-   * @param {!WebGLShader} fragmentShader A fragment shader.
-   * @return {!WebGLProgram} A program.
    */
-  createProgram(gl, vertexShader, fragmentShader) {
+  createProgram(gl: WebGLRenderingContext, vertexShader: WebGLShader, fragmentShader: WebGLShader): WebGLProgram {
     // create a program.
     const program = gl.createProgram();
 
@@ -31,7 +25,6 @@ export class ShaderProgramServiceService {
       // something went wrong with the link
       throw new Error('program filed to link:' + gl.getProgramInfoLog(program));
     }
-
     return program;
   }
 
@@ -43,7 +36,7 @@ export class ShaderProgramServiceService {
    * @param {number} shaderType The type of shader, VERTEX_SHADER or FRAGMENT_SHADER.
    * @return {!WebGLShader} The shader.
   */
-  compileShader(gl, shaderSource, shaderType) {
+  compileShader(gl: WebGLRenderingContext, shaderSource: string, shaderType: number): WebGLShader {
     // Create the shader object
     const shader = gl.createShader(shaderType);
     // Set the shader source code.
