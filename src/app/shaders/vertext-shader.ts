@@ -8,16 +8,17 @@ export class VertextShader implements IShader {
     }
 
     getBasicShader(gl: WebGLRenderingContext): WebGLShader {
+        // console.log('vertex shader', this.getBasicShaderCode());
         return this.shaderService.compileShader(gl, this.getBasicShaderCode(), gl.VERTEX_SHADER);
     }
 
     getBasicShaderCode(): string {
         return `#version 300 es
- 
+
         in vec4 a_position;
-         
+        
         void main() {
-           gl_Positon = a_position;
+          gl_Position = a_position;
         }
         `;
     }

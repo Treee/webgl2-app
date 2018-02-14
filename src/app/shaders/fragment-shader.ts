@@ -7,6 +7,7 @@ export class FragmentShader implements IShader {
     }
 
     getBasicShader(gl: WebGLRenderingContext): WebGLShader {
+        // console.log('fragmet shader', this.getBasicShaderCode());
         return this.shaderService.compileShader(gl, this.getBasicShaderCode(), gl.FRAGMENT_SHADER);
     }
 
