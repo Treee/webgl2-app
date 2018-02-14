@@ -7,6 +7,12 @@ export class ShaderProgram {
 
     }
 
+    getBasic2dProgram(gl: WebGLRenderingContext): WebGLProgram {
+        var basicVertexShader = new VertextShader(this.shaderService);
+        var basicFragmentShader = new FragmentShader(this.shaderService);
+        return this.shaderService.createProgram(gl, basicVertexShader.getBasic2dShader(gl), basicFragmentShader.getBasicShader(gl));
+    }
+
     getBasicProgram(gl: WebGLRenderingContext): WebGLProgram {
         var basicVertexShader = new VertextShader(this.shaderService);
         var basicFragmentShader = new FragmentShader(this.shaderService);

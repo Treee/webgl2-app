@@ -38,21 +38,25 @@ export class TestComponent implements OnInit {
     canvasEl.height = this.height;
 
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
-    const basicShader = this.basicShaderProgram.getBasicProgram(this.gl);
+    const basicShader = this.basicShaderProgram.getBasic2dProgram(this.gl);
 
     var positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
+    var resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
     var positionBuffer = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
 
     // three 2d points
     var positions = [
-      0, 0,
-      0, 0.5,
-      0.7, 0,
+      10, 20,
+      80, 20,
+      10, 30,
+      10, 30,
+      80, 20,
+      80, 30,
     ];
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
+    this.gl.enableVertexAttribArray(positionAttributeLocation);
 
-    var vertexArrtribBuffer = this.gl.createBuffer();
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
 
     var vao = this.gl.createVertexArray();
     this.gl.bindVertexArray(vao);
@@ -79,12 +83,13 @@ export class TestComponent implements OnInit {
     // Bind the attribute/buffer set we want.
     this.gl.bindVertexArray(vao);
 
+    // Pass in the canvas resolution so we can convert from
+    // pixels to clipspace in the shader
+    this.gl.uniform2f(resolutionUniformLocation, this.gl.canvas.width, this.gl.canvas.height);
+
     var primitiveType = this.gl.TRIANGLES;
     var offset = 0;
-    var count = 3;
+    var count = 6;
     this.gl.drawArrays(primitiveType, offset, count);
-
   }
-
-
 }
