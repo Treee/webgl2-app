@@ -10,7 +10,7 @@ import { ShaderProgramService } from '../services/shader-program/shader-program.
 })
 export class TestComponent implements OnInit {
 
-  @ViewChild('myCanvas') public canvasRef: ElementRef;
+  @ViewChild('myCanvas') canvasRef: ElementRef;
 
   @Input() public width = 400;
   @Input() public height = 400;
@@ -18,9 +18,14 @@ export class TestComponent implements OnInit {
   gl: any;
   basicShaderProgram: ShaderProgram;
 
-  constructor(private shaderService: ShaderProgramService) { }
+  constructor(private shaderService: ShaderProgramService) {
+  }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    this.initCanvas();
   }
 
   initCanvas() {
@@ -35,7 +40,7 @@ export class TestComponent implements OnInit {
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
     const basicShader = this.basicShaderProgram.getBasicProgram(this.gl);
 
-    var positionAttributeLocation = this.gl.getAttribLocation(basicShader, "a_position");
+    var positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
     var positionBuffer = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
 
