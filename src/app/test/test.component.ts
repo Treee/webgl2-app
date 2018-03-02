@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
 
@@ -8,7 +8,7 @@ import { ShaderProgramService } from '../services/shader-program/shader-program.
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.css']
 })
-export class TestComponent implements OnInit {
+export class TestComponent implements OnInit, AfterViewInit {
 
   @ViewChild('myCanvas') canvasRef: ElementRef;
 
@@ -40,13 +40,13 @@ export class TestComponent implements OnInit {
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
     const basicShader = this.basicShaderProgram.getBasic2dProgram(this.gl);
 
-    var positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
-    var resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
-    var positionBuffer = this.gl.createBuffer();
+    const positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
+    const resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
+    const positionBuffer = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
 
     // three 2d points
-    var positions = [
+    const positions = [
       10, 20,
       80, 20,
       10, 30,
@@ -58,15 +58,15 @@ export class TestComponent implements OnInit {
 
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
 
-    var vao = this.gl.createVertexArray();
+    const vao = this.gl.createVertexArray();
     this.gl.bindVertexArray(vao);
     this.gl.enableVertexAttribArray(positionAttributeLocation);
 
-    var size = 2;          // 2 components per iteration
-    var type = this.gl.FLOAT;   // the data is 32bit floats
-    var normalize = false; // don't normalize the data
-    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-    var offset = 0;        // start at the beginning of the buffer
+    const size = 2;          // 2 components per iteration
+    const type = this.gl.FLOAT;   // the data is 32bit floats
+    const normalize = false; // don't normalize the data
+    const stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+    let offset = 0;        // start at the beginning of the buffer
     this.gl.vertexAttribPointer(
       positionAttributeLocation, size, type, normalize, stride, offset);
 
@@ -87,9 +87,9 @@ export class TestComponent implements OnInit {
     // pixels to clipspace in the shader
     this.gl.uniform2f(resolutionUniformLocation, this.gl.canvas.width, this.gl.canvas.height);
 
-    var primitiveType = this.gl.TRIANGLES;
-    var offset = 0;
-    var count = 6;
+    const primitiveType = this.gl.TRIANGLES;
+    offset = 0;
+    const count = 6;
     this.gl.drawArrays(primitiveType, offset, count);
   }
 }
