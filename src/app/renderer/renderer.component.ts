@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
+import { Geometry } from '../models/geometry';
 
 @Component({
   selector: 'app-renderer',
@@ -57,25 +58,15 @@ export class RendererComponent implements OnInit, AfterViewInit {
     const resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
 
 
-
+    const shape = new Geometry();
 
     // make a buffer for position data
     const positionBuffer = this.gl.createBuffer();
     // bind the buffer to the gl context as an array type
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
 
-    // three 2d points
-    const positions = [
-      10, 20,
-      80, 20,
-      10, 30,
-      10, 30,
-      80, 20,
-      80, 30,
-    ];
-
     // send data the the buffer as type of array. static draw means it doesnt change
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(shape.positions), this.gl.STATIC_DRAW);
 
     // make a vertex array (this is so we layer data in a single array)
     const vao = this.gl.createVertexArray();
