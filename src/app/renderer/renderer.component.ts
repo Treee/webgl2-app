@@ -41,13 +41,23 @@ export class RendererComponent implements OnInit, AfterViewInit {
     canvasEl.width = this.width;
     canvasEl.height = this.height;
 
+    // set the viewport for the renderer
+    this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+
     // create the default shader program for a 2d program
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
     const basicShader = this.basicShaderProgram.getBasic2dProgram(this.gl);
 
+    // Tell it to use our program (pair of shaders)
+    this.gl.useProgram(basicShader);
+
+
     // set up attribute and uniforms
     const positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
     const resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
+
+
+
 
     // make a buffer for position data
     const positionBuffer = this.gl.createBuffer();
@@ -85,15 +95,12 @@ export class RendererComponent implements OnInit, AfterViewInit {
     this.gl.vertexAttribPointer(
       positionAttributeLocation, size, type, normalize, stride, offset);
 
-    // set the viewport for the renderer
-    this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+
+
 
     // Clear the canvas
     this.gl.clearColor(0, 0, 0, 0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-
-    // Tell it to use our program (pair of shaders)
-    this.gl.useProgram(basicShader);
 
     // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
     this.gl.uniform2f(resolutionUniformLocation, this.gl.canvas.width, this.gl.canvas.height);
