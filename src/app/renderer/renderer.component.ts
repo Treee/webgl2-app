@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
-import { Geometry } from '../models/geometry';
+import { Geometry2D } from '../models/geometry';
 
 @Component({
   selector: 'app-renderer',
@@ -52,21 +52,13 @@ export class RendererComponent implements OnInit, AfterViewInit {
     // Tell it to use our program (pair of shaders)
     this.gl.useProgram(basicShader);
 
+    const shape = new Geometry2D(this.gl);
 
-    // set up attribute and uniforms
+    // set up attribute and uniforms (vertex shader)
     const positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
     const resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
-
-
-    const shape = new Geometry();
-
-    // make a buffer for position data
-    const positionBuffer = this.gl.createBuffer();
-    // bind the buffer to the gl context as an array type
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
-
-    // send data the the buffer as type of array. static draw means it doesnt change
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(shape.positions), this.gl.STATIC_DRAW);
+    // set up attribute and uniforms (fragment shader)
+    const colorUniformLocation = this.gl.getUniformLocation(basicShader, 'u_color');
 
     // make a vertex array (this is so we layer data in a single array)
     const vao = this.gl.createVertexArray();
@@ -95,6 +87,9 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
     // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
     this.gl.uniform2f(resolutionUniformLocation, this.gl.canvas.width, this.gl.canvas.height);
+
+    // Set a random color.
+    this.gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
     offset = 0;
     const count = 6;
