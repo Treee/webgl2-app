@@ -52,34 +52,15 @@ export class RendererComponent implements OnInit, AfterViewInit {
     // Tell it to use our program (pair of shaders)
     this.gl.useProgram(basicShader);
 
-    const shape = new Geometry2D(this.gl);
+    const shape = new Geometry2D(this.gl, basicShader);
 
-    // set up attribute and uniforms (vertex shader)
-    const positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
+    // // set up attribute and uniforms (vertex shader)
+    // const positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
     const resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
-    // set up attribute and uniforms (fragment shader)
+    // // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = this.gl.getUniformLocation(basicShader, 'u_color');
 
-    // make a vertex array (this is so we layer data in a single array)
-    const vao = this.gl.createVertexArray();
-
-    // bind to the vertex array we will buffer data to
-    this.gl.bindVertexArray(vao);
-
-    // enable an attribute that was created above (in this case, possition attrib)
-    this.gl.enableVertexAttribArray(positionAttributeLocation);
-
-    const size = 2;             // 2 components per iteration
-    const type = this.gl.FLOAT; // the data is 32bit floats
-    const normalize = false;    // don't normalize the data
-    const stride = 0;           // 0 = move forward size * sizeof(type) each iteration to get the next position
-    let offset = 0;             // start at the beginning of the buffer
-    // define how the gpu will interpret the array
-    this.gl.vertexAttribPointer(
-      positionAttributeLocation, size, type, normalize, stride, offset);
-
-
-
+    this.gl.bindVertexArray(shape.vao);
 
     // Clear the canvas
     this.gl.clearColor(0, 0, 0, 0);
@@ -87,11 +68,10 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
     // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
     this.gl.uniform2f(resolutionUniformLocation, this.gl.canvas.width, this.gl.canvas.height);
-
     // Set a random color.
     this.gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
-    offset = 0;
+    let offset = 0;
     const count = 6;
     this.gl.drawArrays(this.gl.TRIANGLES, offset, count);
   }

@@ -11,7 +11,7 @@ fdescribe('Geometry', () => {
   describe('initialization behavior', () => {
     let geometry;
     beforeEach(() => {
-      geometry = new Geometry2D(mockGl);
+      geometry = new Geometry2D(mockGl, {});
     });
 
     it('should create an instance', () => {
