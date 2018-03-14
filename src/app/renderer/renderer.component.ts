@@ -55,15 +55,21 @@ export class RendererComponent implements OnInit, AfterViewInit {
   }
 
   drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
-    renderableObjects.forEach(renderable => {
-      // Tell it to use our program (pair of shaders)
-      gl.useProgram(shaderProgram);
 
-      // set up attribute and uniforms (vertex shader)
-      const positionAttributeLocation = this.gl.getAttribLocation(shaderProgram, 'a_position');
-      const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
-      // set up attribute and uniforms (fragment shader)
-      const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
+    // Tell it to use our program (pair of shaders)
+    gl.useProgram(shaderProgram);
+
+    // set up attribute and uniforms (vertex shader)
+    const positionAttributeLocation = gl.getAttribLocation(shaderProgram, 'a_position');
+    const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
+    // set up attribute and uniforms (fragment shader)
+    const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
+
+    // Clear the canvas
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    renderableObjects.forEach(renderable => {
 
       gl.bindVertexArray(renderable.vao);
 
@@ -74,9 +80,6 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
       let offset = 0;
       const count = 6;
-      // Clear the canvas
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
       gl.drawArrays(gl.TRIANGLES, offset, count);
     });
   }
