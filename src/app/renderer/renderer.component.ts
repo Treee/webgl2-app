@@ -70,7 +70,6 @@ export class RendererComponent implements OnInit, AfterViewInit {
     gl.useProgram(shaderProgram);
 
     // set up attribute and uniforms (vertex shader)
-    const positionAttributeLocation = gl.getAttribLocation(shaderProgram, 'a_position');
     const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
     // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
