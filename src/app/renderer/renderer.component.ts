@@ -17,6 +17,8 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
   gl: any;
   basicShaderProgram: ShaderProgram;
+  shaderProgramInfo: any = {};
+  renderableObjects: Geometry2D[];
 
   constructor(private shaderService: ShaderProgramService) {
   }
@@ -26,6 +28,9 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initCanvas();
+    this.initializeShaderPrograms(this.gl);
+    this.initializeRenderableObjects(this.gl, this.shaderProgramInfo.basicShader);
+    this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
   initCanvas() {
@@ -44,14 +49,17 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
     // set the viewport for the renderer
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+  }
 
+  initializeShaderPrograms(gl: any) {
     // create the default shader program for a 2d program
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
-    const basicShader = this.basicShaderProgram.getBasic2dProgram(this.gl);
+    this.shaderProgramInfo.basicShader = this.basicShaderProgram.getBasic2dProgram(gl);
+  }
 
-    const shape = new Geometry2D(this.gl, basicShader);
-
-    this.drawFrame(0, this.gl, basicShader, [shape]);
+  initializeRenderableObjects(gl: any, shaderProgram: WebGLProgram) {
+    this.renderableObjects = [];
+    this.renderableObjects.push(new Geometry2D(gl, shaderProgram));
   }
 
   drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
