@@ -22,10 +22,15 @@ export class VertextShader implements IShader {
         in vec2 a_position;
 
         uniform vec2 u_resolution;
+        uniform vec2 u_translate;
 
         void main() {
+
+          // add in the translation
+          vec2 position = a_position + u_translate;
+
           // convert the position from pixels to 0.0 to 1.0
-          vec2 zeroToOne = a_position / u_resolution;
+          vec2 zeroToOne = position / u_resolution;
 
           // convert from 0->1 to 0->2
           vec2 zeroToTwo = zeroToOne * 2.0;

@@ -60,8 +60,15 @@ export class RendererComponent implements OnInit, AfterViewInit {
   initializeDefaultRenderableObjects(gl: any, shaderProgram: WebGLProgram, numObjects: Number) {
     this.renderableObjects = [];
     for (let i = 0; i < numObjects; i++) {
-      this.renderableObjects.push(new Geometry2D(gl, shaderProgram));
+      const geometry = new Geometry2D(10, 10);
+      geometry.createVertexArrayObject(gl, shaderProgram);
+      geometry.position.set(this.randomInt(200), this.randomInt(200));
+      this.renderableObjects.push(geometry);
     }
+  }
+
+  randomInt(range) {
+    return Math.floor(Math.random() * range);
   }
 
   drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
@@ -71,6 +78,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
     // set up attribute and uniforms (vertex shader)
     const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
+    const translationUniformLocation = gl.getUniformLocation(shaderProgram, 'u_translate');
     // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
 
@@ -84,6 +92,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
       // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
       gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+      gl.uniform2f(translationUniformLocation, renderable.position.x, renderable.position.y);
       // Set a random color.
       gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 

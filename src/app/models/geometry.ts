@@ -1,31 +1,44 @@
-import * as THREE from 'three'
+import { Vector2 } from 'three';
 
 export class Geometry2D {
 
-    public position: THREE.Vector2;
+    public position: Vector2 = new Vector2(0, 0);
 
     public vertices: any[];
 
     public vao: any;
 
-    constructor(gl: any, shaderProgram: WebGLProgram) {
-        this.position = new THREE.Vector2(0, 0);
-
-        this.vertices = this.createRandomRectangle(300, 300, 300, 300);
-        // [0, 10, 70, 10, 0, 20, 0, 20, 70, 10, 70, 20]
-        this.createVertexArrayObject(gl, shaderProgram);
+    constructor(width, height) {
+        this.createRectangle(this.position, width, height);
     }
 
     randomInt(range) {
         return Math.floor(Math.random() * range);
     }
 
-    createRandomRectangle(maxX: Number, maxY: Number, maxWidth: Number, maxHeight: Number): Number[] {
+    createRectangle(position: THREE.Vector2, width: number, height: number) {
+        this.position = position;
+        const x1 = position.x;
+        const x2 = x1 + width;
+        const y1 = position.y;
+        const y2 = y1 + height;
+        this.vertices = [
+            x1, y1,
+            x2, y1,
+            x1, y2,
+            x1, y2,
+            x2, y1,
+            x2, y2
+        ];
+    }
+
+    createRandomRectangle(maxX: number, maxY: number, maxWidth: number, maxHeight: number) {
         const x1 = this.randomInt(maxX);
-        const x2 = x1 + this.randomInt(maxWidth);;
+        const x2 = x1 + this.randomInt(maxWidth);
         const y1 = this.randomInt(maxY);
-        const y2 = y1 + this.randomInt(maxHeight);;
-        return [
+        const y2 = y1 + this.randomInt(maxHeight);
+        this.position.set(x1, y1);
+        this.vertices = [
             x1, y1,
             x2, y1,
             x1, y2,
