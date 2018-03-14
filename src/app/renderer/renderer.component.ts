@@ -49,30 +49,35 @@ export class RendererComponent implements OnInit, AfterViewInit {
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
     const basicShader = this.basicShaderProgram.getBasic2dProgram(this.gl);
 
-    // Tell it to use our program (pair of shaders)
-    this.gl.useProgram(basicShader);
-
     const shape = new Geometry2D(this.gl, basicShader);
 
-    // // set up attribute and uniforms (vertex shader)
-    // const positionAttributeLocation = this.gl.getAttribLocation(basicShader, 'a_position');
-    const resolutionUniformLocation = this.gl.getUniformLocation(basicShader, 'u_resolution');
-    // // set up attribute and uniforms (fragment shader)
-    const colorUniformLocation = this.gl.getUniformLocation(basicShader, 'u_color');
+    this.drawFrame(0, this.gl, basicShader, [shape]);
+  }
 
-    this.gl.bindVertexArray(shape.vao);
+  drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
+    renderableObjects.forEach(renderable => {
+      // Tell it to use our program (pair of shaders)
+      gl.useProgram(shaderProgram);
 
-    // Clear the canvas
-    this.gl.clearColor(0, 0, 0, 0);
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+      // set up attribute and uniforms (vertex shader)
+      const positionAttributeLocation = this.gl.getAttribLocation(shaderProgram, 'a_position');
+      const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
+      // set up attribute and uniforms (fragment shader)
+      const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
 
-    // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
-    this.gl.uniform2f(resolutionUniformLocation, this.gl.canvas.width, this.gl.canvas.height);
-    // Set a random color.
-    this.gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
+      gl.bindVertexArray(renderable.vao);
 
-    let offset = 0;
-    const count = 6;
-    this.gl.drawArrays(this.gl.TRIANGLES, offset, count);
+      // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
+      gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+      // Set a random color.
+      gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
+
+      let offset = 0;
+      const count = 6;
+      // Clear the canvas
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.drawArrays(gl.TRIANGLES, offset, count);
+    });
   }
 }
