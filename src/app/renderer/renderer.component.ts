@@ -29,7 +29,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initCanvas();
     this.initializeShaderPrograms(this.gl);
-    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 20);
+    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 50);
     this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
@@ -62,7 +62,9 @@ export class RendererComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < numObjects; i++) {
       const geometry = new Geometry2D(10, 10);
       geometry.createVertexArrayObject(gl, shaderProgram);
-      geometry.position.set(this.randomInt(200), this.randomInt(200));
+      geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
+      geometry.rotate(this.randomInt(360));
+      geometry.setScale(this.randomInt(5), this.randomInt(5));
       this.renderableObjects.push(geometry);
     }
   }
@@ -79,6 +81,8 @@ export class RendererComponent implements OnInit, AfterViewInit {
     // set up attribute and uniforms (vertex shader)
     const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
     const translationUniformLocation = gl.getUniformLocation(shaderProgram, 'u_translate');
+    const rotationUniformLocation = gl.getUniformLocation(shaderProgram, 'u_rotate');
+    const scaleUniformLocation = gl.getUniformLocation(shaderProgram, 'u_scale');
     // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
 
@@ -90,10 +94,12 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
       gl.bindVertexArray(renderable.vao);
 
-      // Pass in the canvas resolution so we can convert from pixels to clipspace in the shader
+      // vertex uniforms
       gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-      gl.uniform2f(translationUniformLocation, renderable.position.x, renderable.position.y);
-      // Set a random color.
+      gl.uniform2f(translationUniformLocation, renderable.getPosition().x, renderable.getPosition().y);
+      gl.uniform2f(rotationUniformLocation, renderable.getRotation().x, renderable.getRotation().y);
+      gl.uniform2f(scaleUniformLocation, renderable.getScale().x, renderable.getScale().y);
+      // fragment uniforms
       gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
       let offset = 0;

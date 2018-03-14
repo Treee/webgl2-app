@@ -23,11 +23,19 @@ export class VertextShader implements IShader {
 
         uniform vec2 u_resolution;
         uniform vec2 u_translate;
+        uniform vec2 u_rotate;
+        uniform vec2 u_scale;
 
         void main() {
+          // scale the position
+          vec2 scaledPosition = a_position * u_scale;
+          // rotate the position
+          vec2 rotatedPosition = vec2(
+            scaledPosition.x * u_rotate.y + scaledPosition.y * u_rotate.x,
+            scaledPosition.y * u_rotate.y - scaledPosition.x * u_rotate.x);
 
           // add in the translation
-          vec2 position = a_position + u_translate;
+          vec2 position = rotatedPosition + u_translate;
 
           // convert the position from pixels to 0.0 to 1.0
           vec2 zeroToOne = position / u_resolution;

@@ -2,7 +2,9 @@ import { Vector2 } from 'three';
 
 export class Geometry2D {
 
-    public position: Vector2 = new Vector2(0, 0);
+    private position: Vector2 = new Vector2(0, 0);
+    private rotation: Vector2 = new Vector2(0, 1);
+    private scale: Vector2 = new Vector2(1, 1);
 
     public vertices: any[];
 
@@ -12,11 +14,36 @@ export class Geometry2D {
         this.createRectangle(this.position, width, height);
     }
 
+    getPosition(): Vector2 {
+        return this.position;
+    }
+
+    translate(x: number, y: number) {
+        this.position.set(x, y);
+    }
+
+    getRotation(): Vector2 {
+        return this.rotation;
+    }
+
+    rotate(angleInDegrees: number) {
+        const angleInRadians = angleInDegrees * (Math.PI / 180);
+        this.rotation.set(Math.sin(angleInRadians), Math.cos(angleInRadians));
+    }
+
+    getScale(): Vector2 {
+        return this.scale;
+    }
+
+    setScale(x: number, y: number) {
+        this.scale.set(x, y);
+    }
+
     randomInt(range) {
         return Math.floor(Math.random() * range);
     }
 
-    createRectangle(position: THREE.Vector2, width: number, height: number) {
+    private createRectangle(position: THREE.Vector2, width: number, height: number) {
         this.position = position;
         const x1 = position.x;
         const x2 = x1 + width;
@@ -32,7 +59,7 @@ export class Geometry2D {
         ];
     }
 
-    createRandomRectangle(maxX: number, maxY: number, maxWidth: number, maxHeight: number) {
+    private createRandomRectangle(maxX: number, maxY: number, maxWidth: number, maxHeight: number) {
         const x1 = this.randomInt(maxX);
         const x2 = x1 + this.randomInt(maxWidth);
         const y1 = this.randomInt(maxY);
@@ -74,7 +101,7 @@ export class Geometry2D {
     }
 
     // create a buffer, bing opengl to that buffer, send data to the buffer in one fell swoop
-    createBindAndBufferData(gl: any, bufferType: GLenum, bufferData, bufferUsage: GLenum) {
+    private createBindAndBufferData(gl: any, bufferType: GLenum, bufferData, bufferUsage: GLenum) {
         const buffer = gl.createBuffer();
         gl.bindBuffer(bufferType, buffer);
         gl.bufferData(bufferType, new Float32Array(bufferData), bufferUsage);
