@@ -29,7 +29,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initCanvas();
     this.initializeShaderPrograms(this.gl);
-    this.initializeRenderableObjects(this.gl, this.shaderProgramInfo.basicShader);
+    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 20);
     this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
@@ -57,9 +57,11 @@ export class RendererComponent implements OnInit, AfterViewInit {
     this.shaderProgramInfo.basicShader = this.basicShaderProgram.getBasic2dProgram(gl);
   }
 
-  initializeRenderableObjects(gl: any, shaderProgram: WebGLProgram) {
+  initializeDefaultRenderableObjects(gl: any, shaderProgram: WebGLProgram, numObjects: Number) {
     this.renderableObjects = [];
-    this.renderableObjects.push(new Geometry2D(gl, shaderProgram));
+    for (let i = 0; i < numObjects; i++) {
+      this.renderableObjects.push(new Geometry2D(gl, shaderProgram));
+    }
   }
 
   drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {

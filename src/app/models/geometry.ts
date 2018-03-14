@@ -10,17 +10,29 @@ export class Geometry2D {
 
     constructor(gl: any, shaderProgram: WebGLProgram) {
         this.position = new THREE.Vector2(0, 0);
-        this.vertices = [
-            10, 20,
-            80, 20,
-            10, 30,
-            10, 30,
-            80, 20,
-            80, 30,
-        ];
 
+        this.vertices = this.createRandomRectangle(300, 300, 300, 300);
         // [0, 10, 70, 10, 0, 20, 0, 20, 70, 10, 70, 20]
         this.createVertexArrayObject(gl, shaderProgram);
+    }
+
+    randomInt(range) {
+        return Math.floor(Math.random() * range);
+    }
+
+    createRandomRectangle(maxX: Number, maxY: Number, maxWidth: Number, maxHeight: Number): Number[] {
+        const x1 = this.randomInt(maxX);
+        const x2 = x1 + this.randomInt(maxWidth);;
+        const y1 = this.randomInt(maxY);
+        const y2 = y1 + this.randomInt(maxHeight);;
+        return [
+            x1, y1,
+            x2, y1,
+            x1, y2,
+            x1, y2,
+            x2, y1,
+            x2, y2
+        ];
     }
 
     createVertexArrayObject(gl: any, shaderProgram: WebGLProgram) {
