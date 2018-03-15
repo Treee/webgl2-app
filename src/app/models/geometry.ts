@@ -1,50 +1,127 @@
-import { Vector2 } from 'three';
+import { Vector2, Matrix3 } from 'three';
 
 export class Geometry2D {
 
+
+    private transform: Matrix3 = new Matrix3();
+
     private position: Vector2 = new Vector2(0, 0);
+    private translationMatrix: Matrix3 = new Matrix3();
+
     private rotation: Vector2 = new Vector2(0, 1);
+    private rotationMaxtrix: Matrix3 = new Matrix3();
+
     private scale: Vector2 = new Vector2(1, 1);
+    private scaleMatrix: Matrix3 = new Matrix3();
 
     public vertices: any[];
 
     public vao: any;
 
     constructor(width, height) {
-        this.createRectangle(this.position, width, height);
+        this.createF(this.getPosition());
+        // this.createRectangle(this.position, width, height);
+    }
+
+    getTransform(): Matrix3 {
+        return this.transform;
+    }
+
+    transformGeometry() {
+        this.transform.identity();
+        this.transform = this.transform.multiply(this.translationMatrix);
+        this.transform = this.transform.multiply(this.scaleMatrix);
+        this.transform = this.transform.multiply(this.rotationMaxtrix);
     }
 
     getPosition(): Vector2 {
         return this.position;
     }
 
+    getTranslationMatrix(): Matrix3 {
+        return this.translationMatrix;
+    }
+
     translate(x: number, y: number) {
         this.position.set(x, y);
+        this.translationMatrix.set(
+            1, 0, 0,
+            0, 1, 0,
+            x, y, 1);
     }
 
     getRotation(): Vector2 {
         return this.rotation;
     }
 
+    getRotationMatrix(): Matrix3 {
+        return this.rotationMaxtrix;
+    }
+
     rotate(angleInDegrees: number) {
         const angleInRadians = angleInDegrees * (Math.PI / 180);
-        this.rotation.set(Math.sin(angleInRadians), Math.cos(angleInRadians));
+        const x = Math.sin(angleInRadians);
+        const y = Math.cos(angleInRadians);
+        this.rotation.set(x, y);
+        this.rotationMaxtrix.set(
+            y, -x, 0,
+            x, y, 0,
+            0, 0, 1
+        );
     }
 
     getScale(): Vector2 {
         return this.scale;
     }
 
+    getScaleMatrix(): Matrix3 {
+        return this.scaleMatrix;
+    }
+
     setScale(x: number, y: number) {
         this.scale.set(x, y);
+        this.scaleMatrix.set(
+            x, 0, 0,
+            0, y, 0,
+            0, 0, 1
+        );
     }
 
     randomInt(range) {
         return Math.floor(Math.random() * range);
     }
 
+    private createF(position: Vector2) {
+        this.translate(position.x, position.y);
+        this.vertices = [
+            // left column
+            0, 0,
+            30, 0,
+            0, 150,
+            0, 150,
+            30, 0,
+            30, 150,
+
+            // top rung
+            30, 0,
+            100, 0,
+            30, 30,
+            30, 30,
+            100, 0,
+            100, 30,
+
+            // middle rung
+            30, 60,
+            67, 60,
+            30, 90,
+            30, 90,
+            67, 60,
+            67, 90,
+        ];
+    }
+
     private createRectangle(position: THREE.Vector2, width: number, height: number) {
-        this.position = position;
+        this.translate(position.x, position.y);
         const x1 = position.x;
         const x2 = x1 + width;
         const y1 = position.y;
@@ -64,7 +141,7 @@ export class Geometry2D {
         const x2 = x1 + this.randomInt(maxWidth);
         const y1 = this.randomInt(maxY);
         const y2 = y1 + this.randomInt(maxHeight);
-        this.position.set(x1, y1);
+        this.translate(x1, y1);
         this.vertices = [
             x1, y1,
             x2, y1,

@@ -29,7 +29,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initCanvas();
     this.initializeShaderPrograms(this.gl);
-    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 50);
+    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 2);
     this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
@@ -62,9 +62,10 @@ export class RendererComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < numObjects; i++) {
       const geometry = new Geometry2D(10, 10);
       geometry.createVertexArrayObject(gl, shaderProgram);
-      geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
-      geometry.rotate(this.randomInt(360));
-      geometry.setScale(this.randomInt(5), this.randomInt(5));
+      geometry.translate(i * 100, geometry.getPosition().y);
+      // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
+      // geometry.rotate(this.randomInt(360));
+      // geometry.setScale(this.randomInt(5), this.randomInt(5));
       this.renderableObjects.push(geometry);
     }
   }
@@ -103,7 +104,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
       gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
       let offset = 0;
-      const count = 6;
+      const count = 18;
       gl.drawArrays(gl.TRIANGLES, offset, count);
     });
   }
