@@ -122,7 +122,8 @@ export class RendererComponent implements OnInit, AfterViewInit {
       gl.bindVertexArray(renderable.vao);
       // vertex uniforms
       gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-      gl.uniformMatrix3fv(transformUniformLocation, false, renderable.getTransform().toArray());
+      const matrix = renderable.getTransform();
+      gl.uniformMatrix3fv(transformUniformLocation, false, matrix.transpose().toArray());
       // fragment uniforms
       gl.uniform4fv(colorUniformLocation, renderable.getColor().toArray());
 
