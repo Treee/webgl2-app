@@ -75,6 +75,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < numObjects; i++) {
       const geometry = new Geometry2D(10, 10);
       geometry.createVertexArrayObject(gl, shaderProgram);
+      geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
       geometry.translate(i * 100, geometry.getPosition().y);
       // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
       // geometry.rotate(this.randomInt(360));
@@ -123,7 +124,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
       gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
       gl.uniformMatrix3fv(transformUniformLocation, false, renderable.getTransform().toArray());
       // fragment uniforms
-      gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
+      gl.uniform4fv(colorUniformLocation, renderable.getColor().toArray());
 
       let offset = 0;
       const count = 18;
