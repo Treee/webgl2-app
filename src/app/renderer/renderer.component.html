@@ -4,6 +4,7 @@
     <label>{{userInput.x}}</label>
     <input [(ngModel)]="userInput.x" type="range" min="0" max="{{this.width}}" value="0" step="1" (ngModelChange)="saveInput('translateX')"
     />
+    <br/>
     <label>Y:</label>
     <label>{{userInput.y}}</label>
     <input [(ngModel)]="userInput.y" type="range" min="0" max="{{this.height}}" value="0" step="1" (ngModelChange)="saveInput('translateY')"

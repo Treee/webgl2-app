@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
-import { Geometry2D } from '../models/geometry';
+import { Geometry2D } from '../models/geometry2d';
 import { Matrix3 } from 'three';
 
 @Component({

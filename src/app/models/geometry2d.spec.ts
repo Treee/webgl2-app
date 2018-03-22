@@ -1,6 +1,6 @@
 import { Vector2, Matrix3 } from 'three';
 
-import { Geometry2D } from './geometry';
+import { Geometry2D } from './geometry2d';
 
 fdescribe('Geometry', () => {
 

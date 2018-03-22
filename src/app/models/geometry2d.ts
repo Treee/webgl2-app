@@ -2,7 +2,6 @@ import { Vector2, Vector3, Vector4, Matrix3 } from 'three';
 
 export class Geometry2D {
 
-
     private transform: Matrix3 = new Matrix3();
 
     private position: Vector2 = new Vector2(0, 0);
@@ -35,7 +34,7 @@ export class Geometry2D {
         this.transform = this.transform.multiply(this.translationMatrix);
         this.transform = this.transform.multiply(this.scaleMatrix);
         this.transform = this.transform.multiply(this.rotationMaxtrix);
-        console.log(`Transform Geometry ${this.transform.toArray()}`)
+        // console.log(`Transform Geometry ${this.transform.toArray()}`)
     }
 
     setColor(red: number, green: number, blue: number, alpha: number) {
@@ -55,7 +54,7 @@ export class Geometry2D {
     }
 
     translate(x: number, y: number) {
-        console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
+        // console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
         this.position.set(x, y);
         this.translationMatrix.set(
             1, 0, 0,
@@ -72,7 +71,7 @@ export class Geometry2D {
     }
 
     rotate(angleInDegrees: number) {
-        console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
+        // console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
         const angleInRadians = angleInDegrees * (Math.PI / 180);
         const x = Math.sin(angleInRadians);
         const y = Math.cos(angleInRadians);
@@ -93,7 +92,7 @@ export class Geometry2D {
     }
 
     setScale(x: number, y: number) {
-        console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
+        // console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
         this.scale.set(x, y);
         this.scaleMatrix.set(
             x, 0, 0,
