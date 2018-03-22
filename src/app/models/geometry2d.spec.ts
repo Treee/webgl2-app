@@ -2,7 +2,7 @@ import { Vector2, Matrix3 } from 'three';
 
 import { Geometry2D } from './geometry2d';
 
-fdescribe('Geometry', () => {
+describe('Geometry', () => {
 
   let geometry, width, height;
   beforeEach(() => {

@@ -9,8 +9,7 @@ describe('RendererComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [RendererComponent]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
