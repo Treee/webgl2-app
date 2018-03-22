@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
 import { Geometry2D } from '../models/geometry';
+import { Matrix3 } from 'three';
 
 @Component({
   selector: 'app-renderer',
@@ -66,6 +67,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
       // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
       // geometry.rotate(this.randomInt(360));
       // geometry.setScale(this.randomInt(5), this.randomInt(5));
+      geometry.transformGeometry();
       this.renderableObjects.push(geometry);
     }
   }
@@ -75,15 +77,13 @@ export class RendererComponent implements OnInit, AfterViewInit {
   }
 
   drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
-
+    let projectionMatrix = new Matrix3();
     // Tell it to use our program (pair of shaders)
     gl.useProgram(shaderProgram);
 
     // set up attribute and uniforms (vertex shader)
     const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
-    const translationUniformLocation = gl.getUniformLocation(shaderProgram, 'u_translate');
-    const rotationUniformLocation = gl.getUniformLocation(shaderProgram, 'u_rotate');
-    const scaleUniformLocation = gl.getUniformLocation(shaderProgram, 'u_scale');
+    const transformUniformLocation = gl.getUniformLocation(shaderProgram, 'u_transform');
     // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
 
@@ -94,12 +94,9 @@ export class RendererComponent implements OnInit, AfterViewInit {
     renderableObjects.forEach(renderable => {
 
       gl.bindVertexArray(renderable.vao);
-
       // vertex uniforms
       gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
-      gl.uniform2f(translationUniformLocation, renderable.getPosition().x, renderable.getPosition().y);
-      gl.uniform2f(rotationUniformLocation, renderable.getRotation().x, renderable.getRotation().y);
-      gl.uniform2f(scaleUniformLocation, renderable.getScale().x, renderable.getScale().y);
+      gl.uniformMatrix3fv(transformUniformLocation, false, renderable.getTransform().toArray());
       // fragment uniforms
       gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
 
