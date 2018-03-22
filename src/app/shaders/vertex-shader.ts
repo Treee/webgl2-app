@@ -1,7 +1,7 @@
 import { IShader } from './i-shader';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
 
-export class VertextShader implements IShader {
+export class VertexShader implements IShader {
 
     constructor(private shaderService: ShaderProgramService) {
 

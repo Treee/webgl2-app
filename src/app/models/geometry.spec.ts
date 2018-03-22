@@ -107,6 +107,10 @@ fdescribe('Geometry', () => {
       const newYTranslate = 9;
       const degreesToRotate = 45;
       const expectedTransform = new Matrix3();
+      expectedTransform.set(
+        1.4142135623730951, -1.414213562373095, 0,
+        1.0606601717798212, 1.0606601717798214, 0,
+        15.20279579551077, 3.8890872965260126, 1);
 
       geometry.setScale(newXScale, newYScale);
       geometry.rotate(degreesToRotate);
