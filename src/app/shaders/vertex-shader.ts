@@ -21,7 +21,6 @@ export class VertexShader implements IShader {
         return `#version 300 es
         in vec2 a_position;
 
-        uniform vec2 u_resolution;
         uniform mat3 u_transform;
 
         void main() {

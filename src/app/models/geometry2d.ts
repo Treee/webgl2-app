@@ -4,13 +4,13 @@ export class Geometry2D {
 
     private transform: Matrix3 = new Matrix3();
 
-    private position: Vector2 = new Vector2(0, 0);
+    private position: Vector3 = new Vector3(0, 0, 0);
     private translationMatrix: Matrix3 = new Matrix3();
 
-    private rotation: Vector2 = new Vector2(0, 1);
+    private rotation: Vector3 = new Vector3(0, 1, 0);
     private rotationMaxtrix: Matrix3 = new Matrix3();
 
-    private scale: Vector2 = new Vector2(1, 1);
+    private scale: Vector3 = new Vector3(1, 1, 1);
     private scaleMatrix: Matrix3 = new Matrix3();
 
     private color: Vector4 = new Vector4(0, 0, 0, 1);
@@ -29,12 +29,18 @@ export class Geometry2D {
     }
 
     transformGeometry(projectionMatrix: Matrix3) {
-        this.transform.identity();
-        this.transform = this.transform.multiply(projectionMatrix);
-        this.transform = this.transform.multiply(this.translationMatrix);
-        this.transform = this.transform.multiply(this.scaleMatrix);
-        this.transform = this.transform.multiply(this.rotationMaxtrix);
-        // console.log(`Transform Geometry ${this.transform.toArray()}`)
+        // Projection * Translation * Rotation * Scale * position
+        let temp = this.transform.clone();
+        // step 1 identity matrix
+        temp = temp.identity();
+        // step 2 move into pixel space using projection
+        temp = projectionMatrix;
+        // step 3 translate
+        temp = temp.multiplyMatrices(temp, this.translationMatrix);
+        temp = temp.multiplyMatrices(temp, this.rotationMaxtrix);
+        temp = temp.multiplyMatrices(temp, this.scaleMatrix);
+        this.transform = temp;
+        console.log(`Transform Geometry ${this.transform.toArray()}`)
     }
 
     setColor(red: number, green: number, blue: number, alpha: number) {
@@ -45,7 +51,7 @@ export class Geometry2D {
         return this.color;
     }
 
-    getPosition(): Vector2 {
+    getPosition(): Vector3 {
         return this.position;
     }
 
@@ -53,16 +59,16 @@ export class Geometry2D {
         return this.translationMatrix;
     }
 
-    translate(x: number, y: number) {
-        // console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
-        this.position.set(x, y);
+    translate(x: number, y: number, z: number) {
+        console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
+        this.position.set(x, y, z);
         this.translationMatrix.set(
             1, 0, 0,
             0, 1, 0,
             x, y, 1);
     }
 
-    getRotation(): Vector2 {
+    getRotation(): Vector3 {
         return this.rotation;
     }
 
@@ -75,7 +81,7 @@ export class Geometry2D {
         const angleInRadians = angleInDegrees * (Math.PI / 180);
         const x = Math.sin(angleInRadians);
         const y = Math.cos(angleInRadians);
-        this.rotation.set(x, y);
+        this.rotation.set(x, y, 0);
         this.rotationMaxtrix.set(
             y, -x, 0,
             x, y, 0,
@@ -83,7 +89,7 @@ export class Geometry2D {
         );
     }
 
-    getScale(): Vector2 {
+    getScale(): Vector3 {
         return this.scale;
     }
 
@@ -91,9 +97,9 @@ export class Geometry2D {
         return this.scaleMatrix;
     }
 
-    setScale(x: number, y: number) {
+    setScale(x: number, y: number, z: number) {
         // console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
-        this.scale.set(x, y);
+        this.scale.set(x, y, z);
         this.scaleMatrix.set(
             x, 0, 0,
             0, y, 0,
@@ -105,8 +111,8 @@ export class Geometry2D {
         return Math.floor(Math.random() * range);
     }
 
-    private createF(position: Vector2) {
-        this.translate(position.x, position.y);
+    private createF(position: Vector3) {
+        this.translate(position.x, position.y, position.z);
         this.vertices = [
             // left column
             0, 0,
@@ -134,8 +140,8 @@ export class Geometry2D {
         ];
     }
 
-    private createRectangle(position: THREE.Vector2, width: number, height: number) {
-        this.translate(position.x, position.y);
+    private createRectangle(position: Vector3, width: number, height: number) {
+        this.translate(position.x, position.y, position.z);
         const x1 = position.x;
         const x2 = x1 + width;
         const y1 = position.y;
@@ -155,7 +161,7 @@ export class Geometry2D {
         const x2 = x1 + this.randomInt(maxWidth);
         const y1 = this.randomInt(maxY);
         const y2 = y1 + this.randomInt(maxHeight);
-        this.translate(x1, y1);
+        this.translate(x1, y1, 0);
         this.vertices = [
             x1, y1,
             x2, y1,

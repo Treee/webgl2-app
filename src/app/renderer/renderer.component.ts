@@ -76,7 +76,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
       const geometry = new Geometry2D(10, 10);
       geometry.createVertexArrayObject(gl, shaderProgram);
       geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
-      geometry.translate(i * 100, geometry.getPosition().y);
+      geometry.translate(i * 100, geometry.getPosition().y, 0);
       // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
       // geometry.rotate(this.randomInt(360));
       // geometry.setScale(this.randomInt(5), this.randomInt(5));
@@ -90,12 +90,11 @@ export class RendererComponent implements OnInit, AfterViewInit {
   }
 
   saveInput(type: string) {
-    console.log('save input', type);
     this.renderableObjects.forEach(renderable => {
       if (type === 'translateX') {
-        renderable.translate(this.userInput.x, renderable.getPosition().y);
+        renderable.translate(this.userInput.x, renderable.getPosition().y, 0);
       } else if (type === 'translateY') {
-        renderable.translate(renderable.getPosition().x, this.userInput.y);
+        renderable.translate(renderable.getPosition().x, this.userInput.y, 0);
       }
       renderable.transformGeometry(this.projectionMatrix);
     });
@@ -108,7 +107,6 @@ export class RendererComponent implements OnInit, AfterViewInit {
     gl.useProgram(shaderProgram);
 
     // set up attribute and uniforms (vertex shader)    
-    const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
     const transformUniformLocation = gl.getUniformLocation(shaderProgram, 'u_transform');
     // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
@@ -121,7 +119,6 @@ export class RendererComponent implements OnInit, AfterViewInit {
 
       gl.bindVertexArray(renderable.vao);
       // vertex uniforms
-      gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
       const matrix = renderable.getTransform();
       gl.uniformMatrix3fv(transformUniformLocation, false, matrix.transpose().toArray());
       // fragment uniforms
