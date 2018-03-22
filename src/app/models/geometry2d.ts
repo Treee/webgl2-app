@@ -30,7 +30,7 @@ export class Geometry2D {
 
     transformGeometry(projectionMatrix: Matrix3) {
         this.transform.identity();
-        //this.transform = this.transform.multiply(projectionMatrix);
+        this.transform = this.transform.multiply(projectionMatrix);
         this.transform = this.transform.multiply(this.translationMatrix);
         this.transform = this.transform.multiply(this.scaleMatrix);
         this.transform = this.transform.multiply(this.rotationMaxtrix);
