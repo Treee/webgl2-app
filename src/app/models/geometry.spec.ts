@@ -115,7 +115,7 @@ fdescribe('Geometry', () => {
       geometry.setScale(newXScale, newYScale);
       geometry.rotate(degreesToRotate);
       geometry.translate(newXTranslate, newYTranslate);
-      geometry.transformGeometry();
+      geometry.transformGeometry(new Matrix3());
 
       expect(geometry.getTransform()).toEqual(expectedTransform);
     });

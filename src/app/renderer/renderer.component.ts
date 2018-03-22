@@ -20,6 +20,11 @@ export class RendererComponent implements OnInit, AfterViewInit {
   basicShaderProgram: ShaderProgram;
   shaderProgramInfo: any = {};
   renderableObjects: Geometry2D[];
+  projectionMatrix: Matrix3 = new Matrix3();
+  userInput: any = {
+    x: 0,
+    y: 0
+  };
 
   constructor(private shaderService: ShaderProgramService) {
   }
@@ -48,6 +53,13 @@ export class RendererComponent implements OnInit, AfterViewInit {
     canvasEl.width = this.width;
     canvasEl.height = this.height;
 
+    // note the -2 for the height. this flips the axis so 0 is at the top
+    this.projectionMatrix.set(
+      2 / this.width, 0, 0,
+      0, -2 / this.height, 0,
+      -1, 1, 1
+    );
+
     // set the viewport for the renderer
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
   }
@@ -67,7 +79,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
       // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
       // geometry.rotate(this.randomInt(360));
       // geometry.setScale(this.randomInt(5), this.randomInt(5));
-      geometry.transformGeometry();
+      geometry.transformGeometry(this.projectionMatrix);
       this.renderableObjects.push(geometry);
     }
   }
@@ -76,12 +88,25 @@ export class RendererComponent implements OnInit, AfterViewInit {
     return Math.floor(Math.random() * range);
   }
 
+  saveInput(type: string) {
+    console.log('save input', type);
+    this.renderableObjects.forEach(renderable => {
+      if (type === 'translateX') {
+        renderable.translate(this.userInput.x, renderable.getPosition().y);
+      } else if (type === 'translateY') {
+        renderable.translate(renderable.getPosition().x, this.userInput.y);
+      }
+      renderable.transformGeometry(this.projectionMatrix);
+    });
+    this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
+  }
+
   drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
     let projectionMatrix = new Matrix3();
     // Tell it to use our program (pair of shaders)
     gl.useProgram(shaderProgram);
 
-    // set up attribute and uniforms (vertex shader)
+    // set up attribute and uniforms (vertex shader)    
     const resolutionUniformLocation = gl.getUniformLocation(shaderProgram, 'u_resolution');
     const transformUniformLocation = gl.getUniformLocation(shaderProgram, 'u_transform');
     // set up attribute and uniforms (fragment shader)

@@ -1,3 +1,13 @@
 <div>
-  <canvas #myCanvas class="canvas-container" width="500" height="500"></canvas>
+  <div>
+    <label>X:</label>
+    <label>{{userInput.x}}</label>
+    <input [(ngModel)]="userInput.x" type="range" min="0" max="{{this.width}}" value="0" step="1" (ngModelChange)="saveInput('translateX')"
+    />
+    <label>Y:</label>
+    <label>{{userInput.y}}</label>
+    <input [(ngModel)]="userInput.y" type="range" min="0" max="{{this.height}}" value="0" step="1" (ngModelChange)="saveInput('translateY')"
+    />
+  </div>
+  <canvas #myCanvas class="canvas-container" width="{{this.width}}" height="{{this.height}}"></canvas>
 </div>
