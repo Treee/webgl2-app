@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { TextHelperService } from './text-helper.service';
-import { Matrix3 } from 'three';
+import { Matrix3, Vector3 } from 'three';
 
 fdescribe('TextHelperService', () => {
   let service: TextHelperService;
@@ -43,6 +43,29 @@ fdescribe('TextHelperService', () => {
         a20, a21, a22
       );
       const actual = service.prettyPrintMatrix3(matrix);
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('prettyPrintVector3', () => {
+    it('prints a vector3 correctly', () => {
+      const expected = '[1, 2, 3]';
+      let vector = new Vector3(1, 2, 3);
+
+      const actual = service.prettyPrintVector3(vector);
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('prints a random vector3 correctly', () => {
+      const x = Math.random();
+      const y = Math.random();
+      const z = Math.random();
+      const expected = `[${x}, ${y}, ${z}]`;
+      let vector = new Vector3(x, y, z);
+
+      const actual = service.prettyPrintVector3(vector);
+
       expect(actual).toEqual(expected);
     });
   });

@@ -1,4 +1,5 @@
 import { Vector2, Vector3, Vector4, Matrix3 } from 'three';
+import { TextHelperService } from '../services/helpers/text-helper.service';
 
 export class Geometry2D {
 
@@ -19,7 +20,7 @@ export class Geometry2D {
 
     public vao: any;
 
-    constructor(width, height) {
+    constructor(width, height, private textHelper: TextHelperService, private canvasScale: Vector2) {
         this.createF(this.getPosition());
         // this.createRectangle(this.position, width, height);
     }
@@ -29,18 +30,10 @@ export class Geometry2D {
     }
 
     transformGeometry(projectionMatrix: Matrix3) {
-        // Projection * Translation * Rotation * Scale * position
-        let temp = this.transform.clone();
-        // step 1 identity matrix
-        temp = temp.identity();
-        // step 2 move into pixel space using projection
-        temp = projectionMatrix;
-        // step 3 translate
-        temp = temp.multiplyMatrices(temp, this.translationMatrix);
-        temp = temp.multiplyMatrices(temp, this.rotationMaxtrix);
-        temp = temp.multiplyMatrices(temp, this.scaleMatrix);
-        this.transform = temp;
-        console.log(`Transform Geometry ${this.transform.toArray()}`)
+        this.transform = projectionMatrix.clone();
+        this.transform = this.transform.multiplyMatrices(this.transform, this.translationMatrix);
+        this.transform = this.transform.multiplyMatrices(this.transform, this.rotationMaxtrix);
+        this.transform = this.transform.multiplyMatrices(this.transform, this.scaleMatrix);
     }
 
     setColor(red: number, green: number, blue: number, alpha: number) {
@@ -60,6 +53,8 @@ export class Geometry2D {
     }
 
     translate(x: number, y: number, z: number) {
+        x = x * this.canvasScale.x;
+        y = y * -this.canvasScale.y;
         console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
         this.position.set(x, y, z);
         this.translationMatrix.set(

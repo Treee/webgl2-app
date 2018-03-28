@@ -2,7 +2,8 @@ import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
 import { Geometry2D } from '../models/geometry2d';
-import { Matrix3 } from 'three';
+import { Matrix3, Vector2 } from 'three';
+import { TextHelperService } from '../services/helpers/text-helper.service';
 
 @Component({
   selector: 'app-renderer',
@@ -26,7 +27,9 @@ export class RendererComponent implements OnInit, AfterViewInit {
     y: 0
   };
 
-  constructor(private shaderService: ShaderProgramService) {
+  canvasScale: Vector2 = new Vector2();
+
+  constructor(private shaderService: ShaderProgramService, private textHelperService: TextHelperService) {
   }
 
   ngOnInit() {
@@ -35,7 +38,7 @@ export class RendererComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.initCanvas();
     this.initializeShaderPrograms(this.gl);
-    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 2);
+    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 1);
     this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
@@ -53,13 +56,14 @@ export class RendererComponent implements OnInit, AfterViewInit {
     canvasEl.width = this.width;
     canvasEl.height = this.height;
 
+    this.canvasScale.set(2 / this.gl.canvas.width, 2 / this.gl.canvas.height);
+
     // note the -2 for the height. this flips the axis so 0 is at the top
     this.projectionMatrix.set(
       2 / this.width, 0, 0,
       0, -2 / this.height, 0,
       -1, 1, 1
     );
-
     // set the viewport for the renderer
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
   }
@@ -73,10 +77,10 @@ export class RendererComponent implements OnInit, AfterViewInit {
   initializeDefaultRenderableObjects(gl: any, shaderProgram: WebGLProgram, numObjects: Number) {
     this.renderableObjects = [];
     for (let i = 0; i < numObjects; i++) {
-      const geometry = new Geometry2D(10, 10);
+      const geometry = new Geometry2D(10, 10, this.textHelperService, this.canvasScale);
       geometry.createVertexArrayObject(gl, shaderProgram);
       geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
-      geometry.translate(i * 100, geometry.getPosition().y, 0);
+      //geometry.translate(i * 100, geometry.getPosition().y, 0);
       // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
       // geometry.rotate(this.randomInt(360));
       // geometry.setScale(this.randomInt(5), this.randomInt(5));
