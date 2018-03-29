@@ -14,6 +14,8 @@ export class Geometry2D {
     private scale: Vector3 = new Vector3(1, 1, 1);
     private scaleMatrix: Matrix3 = new Matrix3();
 
+    private geometryCenter: Vector3 = new Vector3();
+
     private color: Vector4 = new Vector4(0, 0, 0, 1);
 
     public vertices: any[];
@@ -32,11 +34,33 @@ export class Geometry2D {
     transformGeometry(projectionMatrix: Matrix3) {
         let tempTransform = new Matrix3();
 
-        tempTransform = tempTransform.multiplyMatrices(tempTransform, this.translationMatrix);
         tempTransform = tempTransform.multiplyMatrices(tempTransform, this.rotationMaxtrix);
         tempTransform = tempTransform.multiplyMatrices(tempTransform, this.scaleMatrix);
-        tempTransform = tempTransform.multiplyMatrices(tempTransform, projectionMatrix);
-
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, this.translationMatrix);
+        // tempTransform = tempTransform.multiplyMatrices(tempTransform, projectionMatrix);
+        let pixelScaleMatrix = new Matrix3();
+        pixelScaleMatrix.set(
+            2 / 400, 0, 0,
+            0, 2 / 400, 0,
+            0, 0, 1
+        );
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, pixelScaleMatrix);
+        let flipYAxisMatrix = new Matrix3();
+        flipYAxisMatrix.set(
+            1, 0, 0,
+            0, -1, 0,
+            0, 0, 1
+        );
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, flipYAxisMatrix);
+        // currently 0, 0 is still in the center of the canvas
+        // move 1 unit left on x and 1 unit up on y
+        let translate00ToTopLeft = new Matrix3();
+        translate00ToTopLeft.set(
+            1, 0, 0,
+            0, 1, 0,
+            -1, 1, 1
+        );
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, translate00ToTopLeft);
         this.transform = tempTransform;
     }
 
@@ -84,6 +108,16 @@ export class Geometry2D {
             x, y, 0,
             0, 0, 1
         );
+
+        if (!rotationOrigin) {
+            rotationOrigin = new Matrix3();
+            rotationOrigin.set(
+                1, 0, 0,
+                0, 1, 0,
+                this.geometryCenter.x, this.geometryCenter.y, this.geometryCenter.z
+            );
+        }
+        this.rotationMaxtrix = this.rotationMaxtrix.multiplyMatrices(rotationOrigin, this.rotationMaxtrix);
     }
 
     getScale(): Vector3 {
@@ -102,6 +136,14 @@ export class Geometry2D {
             0, y, 0,
             0, 0, 1
         );
+    }
+
+    setCenter(x: number, y: number, z: number) {
+        this.geometryCenter.set(x, y, z);
+    }
+
+    getCenter(): Vector3 {
+        return this.geometryCenter;
     }
 
     randomInt(range) {
@@ -135,6 +177,7 @@ export class Geometry2D {
             67, 60,
             67, 90,
         ];
+        this.setCenter(-50, -75, 1);
     }
 
     private createRectangle(position: Vector3, width: number, height: number) {
@@ -151,6 +194,7 @@ export class Geometry2D {
             x2, y1,
             x2, y2
         ];
+        this.setCenter(width / 2, height / 2, 1);
     }
 
     private createRandomRectangle(maxX: number, maxY: number, maxWidth: number, maxHeight: number) {
@@ -167,6 +211,7 @@ export class Geometry2D {
             x2, y1,
             x2, y2
         ];
+        this.setCenter(maxWidth / 2, maxHeight / 2, 1);
     }
 
     createVertexArrayObject(gl: any, shaderProgram: WebGLProgram) {
