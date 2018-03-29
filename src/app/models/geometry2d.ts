@@ -20,7 +20,7 @@ export class Geometry2D {
 
     public vao: any;
 
-    constructor(width, height, private textHelper: TextHelperService, private canvasScale: Vector2) {
+    constructor(width, height, private textHelper: TextHelperService) {
         this.createF(this.getPosition());
         // this.createRectangle(this.position, width, height);
     }
@@ -30,10 +30,14 @@ export class Geometry2D {
     }
 
     transformGeometry(projectionMatrix: Matrix3) {
-        this.transform = projectionMatrix.clone();
-        this.transform = this.transform.multiplyMatrices(this.transform, this.translationMatrix);
-        this.transform = this.transform.multiplyMatrices(this.transform, this.rotationMaxtrix);
-        this.transform = this.transform.multiplyMatrices(this.transform, this.scaleMatrix);
+        let tempTransform = new Matrix3();
+
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, this.translationMatrix);
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, this.rotationMaxtrix);
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, this.scaleMatrix);
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, projectionMatrix);
+
+        this.transform = tempTransform;
     }
 
     setColor(red: number, green: number, blue: number, alpha: number) {
@@ -53,8 +57,6 @@ export class Geometry2D {
     }
 
     translate(x: number, y: number, z: number) {
-        x = x * this.canvasScale.x;
-        y = y * -this.canvasScale.y;
         console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
         this.position.set(x, y, z);
         this.translationMatrix.set(
@@ -71,8 +73,8 @@ export class Geometry2D {
         return this.rotationMaxtrix;
     }
 
-    rotate(angleInDegrees: number) {
-        // console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
+    rotate(angleInDegrees: number, rotationOrigin?: Matrix3) {
+        console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
         const angleInRadians = angleInDegrees * (Math.PI / 180);
         const x = Math.sin(angleInRadians);
         const y = Math.cos(angleInRadians);
@@ -93,7 +95,7 @@ export class Geometry2D {
     }
 
     setScale(x: number, y: number, z: number) {
-        // console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
+        console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
         this.scale.set(x, y, z);
         this.scaleMatrix.set(
             x, 0, 0,

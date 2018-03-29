@@ -10,7 +10,7 @@ describe('Geometry', () => {
     width = 76;
     height = 137;
     textHelperService = new TextHelperService();
-    geometry = new Geometry2D(width, height, textHelperService, new Vector2(1, 1));
+    geometry = new Geometry2D(width, height, textHelperService);
   });
 
   describe('initialization behavior', () => {

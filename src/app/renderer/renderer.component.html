@@ -9,6 +9,27 @@
     <label>{{userInput.y}}</label>
     <input [(ngModel)]="userInput.y" type="range" min="0" max="{{this.height}}" value="0" step="1" (ngModelChange)="saveInput('translateY')"
     />
+    <br/>
+    <label>Rotate CW</label>
+    <label>{{userInput.rotatecw}}</label>
+    <input [(ngModel)]="userInput.rotatecw" type="range" min="0" max="360" value="0" step="1" (ngModelChange)="saveInput('rotatecw')"
+    />
+    <br/>
+    <label>Rotate CCW</label>
+    <label>{{userInput.rotateccw}}</label>
+    <input [(ngModel)]="userInput.rotateccw" type="range" min="0" max="360" value="0" step="1" (ngModelChange)="saveInput('rotateccw')"
+    />
+    <br/>
+    <label>ScaleX</label>
+    <label>{{userInput.scaleX}}</label>
+    <input [(ngModel)]="userInput.scaleX" type="range" min="-5" max="5" value="1" step="0.01" (ngModelChange)="saveInput('scaleX')"
+    />
+    <br/>
+    <label>ScaleY</label>
+    <label>{{userInput.scaleY}}</label>
+    <input [(ngModel)]="userInput.scaleY" type="range" min="-5" max="5" value="1" step="0.01" (ngModelChange)="saveInput('scaleY')"
+    />
+    <br/>
   </div>
   <canvas #myCanvas class="canvas-container" width="{{this.width}}" height="{{this.height}}"></canvas>
 </div>
