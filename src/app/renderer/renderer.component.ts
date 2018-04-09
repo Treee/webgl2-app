@@ -84,10 +84,6 @@ export class RendererComponent implements OnInit, AfterViewInit {
       const geometry = new Geometry2D(10, 10, this.textHelperService);
       geometry.createVertexArrayObject(gl, shaderProgram);
       geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
-      //geometry.translate(i * 100, geometry.getPosition().y, 0);
-      // geometry.translate(this.randomInt(this.width), this.randomInt(this.height));
-      // geometry.rotate(this.randomInt(360));
-      // geometry.setScale(this.randomInt(5), this.randomInt(5));
       geometry.transformGeometry(this.projectionMatrix);
       this.renderableObjects.push(geometry);
     }

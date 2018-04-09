@@ -14,7 +14,8 @@ export class Geometry2D {
     private scale: Vector3 = new Vector3(1, 1, 1);
     private scaleMatrix: Matrix3 = new Matrix3();
 
-    private geometryCenter: Vector3 = new Vector3();
+    private geometryCenter: Vector3 = new Vector3(0, 0, 0);
+    private geometryCenterMatrix: Matrix3 = new Matrix3();
 
     private color: Vector4 = new Vector4(0, 0, 0, 1);
 
@@ -37,30 +38,7 @@ export class Geometry2D {
         tempTransform = tempTransform.multiplyMatrices(tempTransform, this.rotationMaxtrix);
         tempTransform = tempTransform.multiplyMatrices(tempTransform, this.scaleMatrix);
         tempTransform = tempTransform.multiplyMatrices(tempTransform, this.translationMatrix);
-        // tempTransform = tempTransform.multiplyMatrices(tempTransform, projectionMatrix);
-        let pixelScaleMatrix = new Matrix3();
-        pixelScaleMatrix.set(
-            2 / 400, 0, 0,
-            0, 2 / 400, 0,
-            0, 0, 1
-        );
-        tempTransform = tempTransform.multiplyMatrices(tempTransform, pixelScaleMatrix);
-        let flipYAxisMatrix = new Matrix3();
-        flipYAxisMatrix.set(
-            1, 0, 0,
-            0, -1, 0,
-            0, 0, 1
-        );
-        tempTransform = tempTransform.multiplyMatrices(tempTransform, flipYAxisMatrix);
-        // currently 0, 0 is still in the center of the canvas
-        // move 1 unit left on x and 1 unit up on y
-        let translate00ToTopLeft = new Matrix3();
-        translate00ToTopLeft.set(
-            1, 0, 0,
-            0, 1, 0,
-            -1, 1, 1
-        );
-        tempTransform = tempTransform.multiplyMatrices(tempTransform, translate00ToTopLeft);
+        tempTransform = tempTransform.multiplyMatrices(tempTransform, projectionMatrix);
         this.transform = tempTransform;
     }
 
@@ -69,19 +47,21 @@ export class Geometry2D {
     }
 
     getColor(): Vector4 {
-        return this.color;
+        return this.color.clone();
     }
 
     getPosition(): Vector3 {
-        return this.position;
+        return this.position.clone();
     }
 
     getTranslationMatrix(): Matrix3 {
-        return this.translationMatrix;
+        return this.translationMatrix.clone();
     }
 
     translate(x: number, y: number, z: number) {
-        console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
+        // 0, 0 is the origin which means the middle of the geometry resides at 0, 0.
+        // We need to modify the math so the top left corner is 0, 0
+        // console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
         this.position.set(x, y, z);
         this.translationMatrix.set(
             1, 0, 0,
@@ -90,46 +70,46 @@ export class Geometry2D {
     }
 
     getRotation(): Vector3 {
-        return this.rotation;
+        return this.rotation.clone();
     }
 
     getRotationMatrix(): Matrix3 {
-        return this.rotationMaxtrix;
+        return this.rotationMaxtrix.clone();
     }
 
     rotate(angleInDegrees: number, rotationOrigin?: Matrix3) {
-        console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
+        // console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
         const angleInRadians = angleInDegrees * (Math.PI / 180);
         const x = Math.sin(angleInRadians);
         const y = Math.cos(angleInRadians);
         this.rotation.set(x, y, 0);
-        this.rotationMaxtrix.set(
+        let tempRotation = new Matrix3();
+        tempRotation.set(
             y, -x, 0,
             x, y, 0,
             0, 0, 1
         );
 
         if (!rotationOrigin) {
-            rotationOrigin = new Matrix3();
-            rotationOrigin.set(
-                1, 0, 0,
-                0, 1, 0,
-                this.geometryCenter.x, this.geometryCenter.y, this.geometryCenter.z
-            );
+            rotationOrigin = this.getCenterMatrix();
         }
-        this.rotationMaxtrix = this.rotationMaxtrix.multiplyMatrices(rotationOrigin, this.rotationMaxtrix);
+        // translate the point in which to rotate to the origin, then rotate
+        tempRotation = tempRotation.multiplyMatrices(rotationOrigin, tempRotation);
+        // translate the point that was just rotated around back
+        tempRotation = tempRotation.multiplyMatrices(tempRotation, rotationOrigin.getInverse(rotationOrigin));
+        this.rotationMaxtrix = tempRotation;
     }
 
     getScale(): Vector3 {
-        return this.scale;
+        return this.scale.clone();
     }
 
     getScaleMatrix(): Matrix3 {
-        return this.scaleMatrix;
+        return this.scaleMatrix.clone();
     }
 
     setScale(x: number, y: number, z: number) {
-        console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
+        // console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
         this.scale.set(x, y, z);
         this.scaleMatrix.set(
             x, 0, 0,
@@ -140,10 +120,19 @@ export class Geometry2D {
 
     setCenter(x: number, y: number, z: number) {
         this.geometryCenter.set(x, y, z);
+        this.geometryCenterMatrix.set(
+            1, 0, 0,
+            0, 1, 0,
+            x, y, 1
+        );
     }
 
     getCenter(): Vector3 {
-        return this.geometryCenter;
+        return this.geometryCenter.clone();
+    }
+
+    getCenterMatrix(): Matrix3 {
+        return this.geometryCenterMatrix.clone();
     }
 
     randomInt(range) {
