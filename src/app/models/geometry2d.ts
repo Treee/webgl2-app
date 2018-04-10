@@ -181,9 +181,9 @@ export class Geometry2D {
 
     private createRectangle(position: Vector3, width: number, height: number) {
         this.translateByVector(position);
-        const x1 = position.x;
+        const x1 = 0;
         const x2 = x1 + width;
-        const y1 = position.y;
+        const y1 = 0;
         const y2 = y1 + height;
         this.vertices = [
             x1, y1,
@@ -193,24 +193,11 @@ export class Geometry2D {
             x2, y1,
             x2, y2
         ];
-        this.setCenter(-width / 2, -height / 2, 1);
+        this.setCenter(-(x2 - x1) / 2, -(y2 - y1) / 2, 1);
     }
 
-    private createRandomRectangle(maxX: number, maxY: number, maxWidth: number, maxHeight: number) {
-        const x1 = this.randomInt(maxX);
-        const x2 = x1 + this.randomInt(maxWidth);
-        const y1 = this.randomInt(maxY);
-        const y2 = y1 + this.randomInt(maxHeight);
-        this.translateByVector(new Vector3(x1, y1, 0));
-        this.vertices = [
-            x1, y1,
-            x2, y1,
-            x1, y2,
-            x1, y2,
-            x2, y1,
-            x2, y2
-        ];
-        this.setCenter(maxWidth / 2, maxHeight / 2, 1);
+    private createRandomRectangle(position: Vector3, maxWidth: number, maxHeight: number) {
+        this.createRectangle(position, this.randomInt(maxWidth), this.randomInt(maxHeight));
     }
 
     createVertexArrayObject(gl: any, shaderProgram: WebGLProgram) {
