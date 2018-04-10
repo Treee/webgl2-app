@@ -23,13 +23,13 @@ export class Geometry2D {
 
     public vao: any;
 
-    constructor(width, height) {
+    constructor(position, width, height) {
         // this.createF(this.getPosition());
-        this.createRectangle(this.getPosition(), width, height);
+        this.createRectangle(position, width, height);
     }
 
     getTransform(): Matrix3 {
-        return this.transform;
+        return this.transform.clone();
     }
 
     transformGeometry(projectionMatrix: Matrix3) {
@@ -150,7 +150,7 @@ export class Geometry2D {
     }
 
     private createF(position: Vector3) {
-        this.translate(position.x, position.y, position.z);
+        this.translateByVector(position);
         this.vertices = [
             // left column
             0, 0,
@@ -180,7 +180,7 @@ export class Geometry2D {
     }
 
     private createRectangle(position: Vector3, width: number, height: number) {
-        this.translate(position.x, position.y, position.z);
+        this.translateByVector(position);
         const x1 = position.x;
         const x2 = x1 + width;
         const y1 = position.y;
@@ -201,7 +201,7 @@ export class Geometry2D {
         const x2 = x1 + this.randomInt(maxWidth);
         const y1 = this.randomInt(maxY);
         const y2 = y1 + this.randomInt(maxHeight);
-        this.translate(x1, y1, 0);
+        this.translateByVector(new Vector3(x1, y1, 0));
         this.vertices = [
             x1, y1,
             x2, y1,

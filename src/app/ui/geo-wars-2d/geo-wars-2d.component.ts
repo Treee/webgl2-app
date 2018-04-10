@@ -32,7 +32,8 @@ export class GeoWars2dComponent implements OnInit {
   }
 
   initializeRenderableObjects() {
-    this.player = new Geometry2D(50, 50);
+    let playerPosition = new Vector3(0, 0, 0);
+    this.player = new Geometry2D(playerPosition, 50, 50);
     this.player.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
     this.player.setColor(Math.random(), Math.random(), Math.random(), 1);
     this.player.transformGeometry(this.renderer.projectionMatrix);
@@ -42,11 +43,13 @@ export class GeoWars2dComponent implements OnInit {
 
   initializeAsteroids(numAsteroids: number) {
     for (let i = 0; i < numAsteroids; i++) {
-      let randomX = this.randomInt(this.width);
-      let randomY = this.randomInt(this.height);
+      let randomWidth = this.randomInt(50);
+      let randomHeight = this.randomInt(50);
+      //let randomPosition = new Vector3(this.randomInt(this.width), this.randomInt(this.height), 0);
+      let randomPosition = new Vector3(0, 0, 0);
       let randomRotation = this.randomInt(360);
       let randomScale = this.randomInt(1);
-      let tempAsteroid = new Geometry2D(randomX, randomY);
+      let tempAsteroid = new Geometry2D(randomPosition, randomWidth, randomHeight);
       tempAsteroid.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
       tempAsteroid.setColor(Math.random(), Math.random(), Math.random(), 1);
       tempAsteroid.rotate(randomRotation);
