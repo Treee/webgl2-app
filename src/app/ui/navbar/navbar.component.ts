@@ -16,10 +16,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.navbarItems.push({ name: 'Home', displayOrder: 0, endpoint: '/home', isVisible: true });
-    this.navbarItems.push({ name: 'List', displayOrder: 1, endpoint: '/list', isVisible: true });
-    this.navbarItems.push({ name: 'Compare', displayOrder: 2, endpoint: '/compare', isVisible: true });
-    this.navbarItems.push({ name: 'Search', displayOrder: 5, endpoint: '/search', isVisible: false });
-    this.navbarItems.push({ name: 'My Account', displayOrder: 10, endpoint: '/myaccount', isVisible: false });
+    this.navbarItems.push({ name: '2D', displayOrder: 1, endpoint: '/2d', isVisible: true });
+    this.navbarItems.push({ name: '3D', displayOrder: 2, endpoint: '/3d', isVisible: true });
+    this.navbarItems.push({ name: 'Resources', displayOrder: 5, endpoint: '/resources', isVisible: true });
+    this.navbarItems.push({ name: 'Fun', displayOrder: 10, endpoint: '/fun', isVisible: true });
   }
 
 }
