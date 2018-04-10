@@ -47,10 +47,6 @@ export class GeoWars2dComponent implements OnInit {
   translationScale = 1;
   rotation = 0;
   @HostListener('document:keyup', ['$event'])
-  test(event: KeyboardEvent) {
-    this.activeKeysMap[event.key] = (event.type === 'keydown');
-  }
-
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     let translation = new Vector3();
