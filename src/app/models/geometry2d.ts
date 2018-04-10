@@ -58,6 +58,11 @@ export class Geometry2D {
         return this.translationMatrix.clone();
     }
 
+    translateByVector(translateVector: Vector3) {
+        translateVector.add(this.getPosition());
+        this.translate(translateVector.x, translateVector.y, translateVector.z);
+    }
+
     translate(x: number, y: number, z: number) {
         // 0, 0 is the origin which means the middle of the geometry resides at 0, 0.
         // We need to modify the math so the top left corner is 0, 0

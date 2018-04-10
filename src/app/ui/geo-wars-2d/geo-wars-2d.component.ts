@@ -42,33 +42,46 @@ export class GeoWars2dComponent implements OnInit {
     this.renderer.drawFrame(0, this.renderer.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
+  activeKeysMap = {};
   eventTriggered = false;
-  identity = new Vector3();
+  translation = new Vector3();
   translationScale = 1;
-  @HostListener('document:keypress', ['$event'])
+  @HostListener('document:keydown', ['$event'])
+  @HostListener('document:keyup', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    // console.log('event', event.key);
+    // console.log(`event key ${event.key} event type ${event.type}`);
+    this.activeKeysMap[event.key] = (event.type === 'keydown');
     this.eventTriggered = false;
-    if (event.key === 'w') {
-      // move forward      
+    if (this.activeKeysMap['w']) {
+      // move forward (top of the screen)
+      this.translation.add(new Vector3(0, -1, 0));
+      this.player.translateByVector(this.translation);
+      this.eventTriggered = true;
     }
-    else if (event.key === 'a') {
+    if (this.activeKeysMap['a']) {
       // strafe left
+      this.player.translateByVector(new Vector3(-1, 0, 0));
+      this.eventTriggered = true;
     }
-    else if (event.key === 's') {
-      // move backwards
+    if (this.activeKeysMap['s']) {
+      // move backwards (bottom of the screen)
+      this.player.translateByVector(new Vector3(0, 1, 0));
+      this.eventTriggered = true;
     }
-    else if (event.key === 'd') {
+    if (this.activeKeysMap['d']) {
       // strafe right
+      this.player.translateByVector(new Vector3(1, 0, 0));
+      this.eventTriggered = true;
     }
-    else if (event.key === 'q') {
+    if (this.activeKeysMap['q']) {
       // rotate left
     }
-    else if (event.key === 'e') {
+    if (this.activeKeysMap['e']) {
       // rotate right
     }
     if (this.eventTriggered) {
       this.player.transformGeometry(this.renderer.projectionMatrix);
+      this.redrawScreen();
     }
   }
 
