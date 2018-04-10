@@ -14,6 +14,7 @@ import {
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 import { ShaderProgramService } from './services/shader-program/shader-program.service';
 import { TestComponent } from './test/test.component';
 import { RendererComponent } from './renderer/renderer.component';
@@ -40,7 +41,8 @@ import { NavbarComponent } from './ui/navbar/navbar.component';
     MatSliderModule,
     MatButtonModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    AppRoutingModule
   ],
   providers: [
     ShaderProgramService,

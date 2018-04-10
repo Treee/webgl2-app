@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
 import { RendererComponent } from '../../renderer/renderer.component';
 import { Geometry2D } from '../../models/geometry2d';
@@ -8,7 +8,7 @@ import { Geometry2D } from '../../models/geometry2d';
   templateUrl: './playground-2d.component.html',
   styleUrls: ['./playground-2d.component.css']
 })
-export class Playground2dComponent implements OnInit {
+export class Playground2dComponent {
 
   @ViewChild('renderer') renderer: RendererComponent;
 
@@ -25,9 +25,6 @@ export class Playground2dComponent implements OnInit {
   height = 400;
 
   constructor() {
-  }
-
-  ngOnInit() {
   }
 
   ngAfterViewInit() {
@@ -52,6 +49,18 @@ export class Playground2dComponent implements OnInit {
 
   randomInt(range) {
     return Math.floor(Math.random() * range);
+  }
+
+  resetUserInput() {
+    this.userInput = {
+      x: 0,
+      y: 0,
+      rotatecw: 0,
+      rotateccw: 0,
+      scaleX: 1,
+      scaleY: 1
+    };
+    this.ngAfterViewInit();
   }
 
   saveInput(type: string) {
