@@ -3,7 +3,7 @@
     <mat-toolbar-row class="navbar-toolbar">
       <div class="navbar-items">
         <div class="navbar-item" id="{{navbarItem.name}}" *ngFor="let navbarItem of navbarItems">
-          <span>{{navbarItem.name}}</span>
+          <span routerLink="{{navbarItem.endpoint}}">{{navbarItem.name}}</span>
         </div>
       </div>
       <div class="navbar-menu">
