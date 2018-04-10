@@ -180,6 +180,8 @@ export class Geometry2D {
     }
 
     private createRectangle(position: Vector3, width: number, height: number) {
+        let tempCenter = new Vector3(-(width) / 2, -(height) / 2, 1);
+        position.add(tempCenter.clone());
         this.translateByVector(position);
         const x1 = 0;
         const x2 = x1 + width;
@@ -193,7 +195,8 @@ export class Geometry2D {
             x2, y1,
             x2, y2
         ];
-        this.setCenter(-(x2 - x1) / 2, -(y2 - y1) / 2, 1);
+        //this.setCenter(-(width) / 2, -(height) / 2, 1);
+        this.setCenter(tempCenter.x, tempCenter.y, tempCenter.z);
     }
 
     private createRandomRectangle(position: Vector3, maxWidth: number, maxHeight: number) {
