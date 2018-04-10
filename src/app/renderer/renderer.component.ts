@@ -90,7 +90,7 @@ export class RendererComponent implements AfterViewInit {
       this.gl.uniform4fv(colorUniformLocation, renderable.getColor().toArray());
 
       let offset = 0;
-      const count = 18;
+      const count = 6;
       this.gl.drawArrays(this.gl.TRIANGLES, offset, count);
     });
   }

@@ -24,8 +24,8 @@ export class Geometry2D {
     public vao: any;
 
     constructor(width, height) {
-        this.createF(this.getPosition());
-        // this.createRectangle(this.position, width, height);
+        // this.createF(this.getPosition());
+        this.createRectangle(this.getPosition(), width, height);
     }
 
     getTransform(): Matrix3 {
@@ -183,7 +183,7 @@ export class Geometry2D {
             x2, y1,
             x2, y2
         ];
-        this.setCenter(width / 2, height / 2, 1);
+        //this.setCenter(-width / 2, -height / 2, 1);
     }
 
     private createRandomRectangle(maxX: number, maxY: number, maxWidth: number, maxHeight: number) {

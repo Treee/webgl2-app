@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 
 import { RendererComponent } from '../../renderer/renderer.component';
 import { Geometry2D } from '../../models/geometry2d';
@@ -12,14 +12,35 @@ export class GeoWars2dComponent implements OnInit {
 
   @ViewChild('renderer') renderer: RendererComponent;
 
-  renderableObjects: Geometry2D[];
+  player: Geometry2D;
+  renderableObjects: Geometry2D[] = [];
   userInput: any = {};
   width = 640;
   height = 640;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
+
+  ngAfterViewInit() {
+    this.initializeRenderableObjects();
+    this.redrawScreen();
+  }
+
+  initializeRenderableObjects() {
+    this.player = new Geometry2D(50, 50);
+    this.player.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
+    this.player.setColor(Math.random(), Math.random(), Math.random(), 1);
+    this.player.transformGeometry(this.renderer.projectionMatrix);
+    this.renderableObjects.push(this.player);
+
+  }
+
+  redrawScreen() {
+    this.renderer.drawFrame(0, this.renderer.shaderProgramInfo.basicShader, this.renderableObjects);
+  }
+
 
 }
