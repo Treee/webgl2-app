@@ -45,7 +45,7 @@ export class GeoWars2dComponent implements OnInit {
     for (let i = 0; i < numAsteroids; i++) {
       let randomWidth = 50;
       let randomHeight = 50
-      let randomPosition = new Vector3(600, 600, 0);
+      let randomPosition = new Vector3(this.randomInt(this.width), this.randomInt(this.height), 0);
       let randomRotation = this.randomInt(360);
       let randomScale = this.randomInt(1);
       let tempAsteroid = new Geometry2D(randomPosition, randomWidth, randomHeight);
