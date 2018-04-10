@@ -23,7 +23,7 @@ export class Geometry2D {
 
     public vao: any;
 
-    constructor(width, height, private textHelper: TextHelperService) {
+    constructor(width, height) {
         this.createF(this.getPosition());
         // this.createRectangle(this.position, width, height);
     }

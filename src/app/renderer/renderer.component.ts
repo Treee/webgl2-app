@@ -1,16 +1,15 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { ShaderProgram } from '../shaders/shader-program';
 import { ShaderProgramService } from '../services/shader-program/shader-program.service';
 import { Geometry2D } from '../models/geometry2d';
 import { Matrix3, Vector2 } from 'three';
-import { TextHelperService } from '../services/helpers/text-helper.service';
 
 @Component({
   selector: 'app-renderer',
   templateUrl: './renderer.component.html',
   styleUrls: ['./renderer.component.css']
 })
-export class RendererComponent implements OnInit, AfterViewInit {
+export class RendererComponent implements AfterViewInit {
 
   @ViewChild('myCanvas') canvasRef: ElementRef;
 
@@ -20,33 +19,18 @@ export class RendererComponent implements OnInit, AfterViewInit {
   gl: any;
   basicShaderProgram: ShaderProgram;
   shaderProgramInfo: any = {};
-  renderableObjects: Geometry2D[];
   projectionMatrix: Matrix3 = new Matrix3();
-  userInput: any = {
-    x: 0,
-    y: 0,
-    rotatecw: 0,
-    rotateccw: 0,
-    scaleX: 1,
-    scaleY: 1
-  };
-
   canvasScale: Vector2 = new Vector2();
 
-  constructor(private shaderService: ShaderProgramService, private textHelperService: TextHelperService) {
-  }
-
-  ngOnInit() {
+  constructor(private shaderService: ShaderProgramService) {
   }
 
   ngAfterViewInit(): void {
     this.initCanvas();
     this.initializeShaderPrograms(this.gl);
-    this.initializeDefaultRenderableObjects(this.gl, this.shaderProgramInfo.basicShader, 1);
-    this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
   }
 
-  initCanvas() {
+  private initCanvas() {
     // get the canvas from the html
     const canvasEl: HTMLCanvasElement = this.canvasRef.nativeElement;
 
@@ -72,73 +56,42 @@ export class RendererComponent implements OnInit, AfterViewInit {
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
   }
 
-  initializeShaderPrograms(gl: any) {
+  private initializeShaderPrograms(gl: any) {
     // create the default shader program for a 2d program
     this.basicShaderProgram = new ShaderProgram(this.shaderService);
     this.shaderProgramInfo.basicShader = this.basicShaderProgram.getBasic2dProgram(gl);
   }
 
-  initializeDefaultRenderableObjects(gl: any, shaderProgram: WebGLProgram, numObjects: Number) {
-    this.renderableObjects = [];
-    for (let i = 0; i < numObjects; i++) {
-      const geometry = new Geometry2D(10, 10, this.textHelperService);
-      geometry.createVertexArrayObject(gl, shaderProgram);
-      geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
-      geometry.transformGeometry(this.projectionMatrix);
-      this.renderableObjects.push(geometry);
-    }
-  }
-
-  randomInt(range) {
-    return Math.floor(Math.random() * range);
-  }
-
-  saveInput(type: string) {
-    this.renderableObjects.forEach(renderable => {
-      if (type === 'translateX') {
-        renderable.translate(this.userInput.x, renderable.getPosition().y, renderable.getPosition().z);
-      } else if (type === 'translateY') {
-        renderable.translate(renderable.getPosition().x, this.userInput.y, renderable.getPosition().z);
-      } else if (type === 'rotatecw') {
-        renderable.rotate(this.userInput.rotatecw);
-      } else if (type === 'rotateccw') {
-        renderable.rotate(-this.userInput.rotateccw);
-      } else if (type === 'scaleX') {
-        renderable.setScale(this.userInput.scaleX, renderable.getScale().y, renderable.getScale().z);
-      } else if (type === 'scaleY') {
-        renderable.setScale(renderable.getScale().x, this.userInput.scaleY, renderable.getScale().z);
-      }
-      renderable.transformGeometry(this.projectionMatrix);
-    });
-    this.drawFrame(0, this.gl, this.shaderProgramInfo.basicShader, this.renderableObjects);
-  }
-
-  drawFrame(dt: Number, gl: any, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
+  drawFrame(dt: Number, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
     let projectionMatrix = new Matrix3();
     // Tell it to use our program (pair of shaders)
-    gl.useProgram(shaderProgram);
+    this.gl.useProgram(shaderProgram);
 
     // set up attribute and uniforms (vertex shader)    
-    const transformUniformLocation = gl.getUniformLocation(shaderProgram, 'u_transform');
+    const transformUniformLocation = this.gl.getUniformLocation(shaderProgram, 'u_transform');
     // set up attribute and uniforms (fragment shader)
-    const colorUniformLocation = gl.getUniformLocation(shaderProgram, 'u_color');
+    const colorUniformLocation = this.gl.getUniformLocation(shaderProgram, 'u_color');
 
     // Clear the canvas
-    gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    this.gl.clearColor(0, 0, 0, 0);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+
+    if (!renderableObjects) {
+      return;
+    }
 
     renderableObjects.forEach(renderable => {
 
-      gl.bindVertexArray(renderable.vao);
+      this.gl.bindVertexArray(renderable.vao);
       // vertex uniforms
       const matrix = renderable.getTransform();
-      gl.uniformMatrix3fv(transformUniformLocation, false, matrix.transpose().toArray());
+      this.gl.uniformMatrix3fv(transformUniformLocation, false, matrix.transpose().toArray());
       // fragment uniforms
-      gl.uniform4fv(colorUniformLocation, renderable.getColor().toArray());
+      this.gl.uniform4fv(colorUniformLocation, renderable.getColor().toArray());
 
       let offset = 0;
       const count = 18;
-      gl.drawArrays(gl.TRIANGLES, offset, count);
+      this.gl.drawArrays(this.gl.TRIANGLES, offset, count);
     });
   }
 }

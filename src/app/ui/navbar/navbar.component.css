@@ -1,0 +1,16 @@
+.navbar-toolbar{
+    justify-content: space-between;
+}
+
+.navbar-items {
+    display: inline-flex;
+    justify-content: space-evenly;
+}
+
+.navbar-item{
+    padding: 1.25rem;
+}
+
+.navbar-menu-button {
+    margin: 0.5rem;
+}

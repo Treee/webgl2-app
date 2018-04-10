@@ -1,3 +1,50 @@
-<div>
-  <app-renderer></app-renderer>
+<div class="playground-container">
+  <app-renderer #renderer></app-renderer>
+  <div class="user-input">
+    <button mat-raised-button class="user-input-reset-btn" color="primary">Reset</button>
+    <mat-list>
+      <mat-list-item>
+        <h2 class="example-h2">X:</h2>
+        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="this.width" [min]="0" [step]="1" [thumb-label]="true"
+          [tick-interval]="1" [(ngModel)]="userInput.x" [vertical]="false">
+        </mat-slider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h2 class="example-h2">Y:</h2>
+        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="this.height" [min]="0" [step]="1" [thumb-label]="true"
+          [tick-interval]="1" [(ngModel)]="userInput.y" [vertical]="false">
+        </mat-slider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h2 class="example-h2">Rotate Clockwise:</h2>
+        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="360" [min]="0" [step]="1" [thumb-label]="true"
+          [tick-interval]="1" [(ngModel)]="userInput.rotatecw" [vertical]="false">
+        </mat-slider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h2 class="example-h2">Rotate Counter Clockwise:</h2>
+        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="360" [min]="0" [step]="1" [thumb-label]="true"
+          [tick-interval]="1" [(ngModel)]="userInput.rotateccw" [vertical]="false">
+        </mat-slider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h2 class="example-h2">Scale X:</h2>
+        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="5" [min]="-5" [step]="0.01" [thumb-label]="true"
+          [tick-interval]="0.05" [(ngModel)]="userInput.scaleX" [vertical]="false">
+        </mat-slider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <h2 class="example-h2">Scale Y:</h2>
+        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="5" [min]="-5" [step]="0.01" [thumb-label]="true"
+          [tick-interval]="0.05" [(ngModel)]="userInput.scaleY" [vertical]="false">
+        </mat-slider>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </div>
 </div>
