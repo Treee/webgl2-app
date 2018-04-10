@@ -1,16 +1,14 @@
 import { Vector2, Matrix3 } from 'three';
 
 import { Geometry2D } from './geometry2d';
-import { TextHelperService } from '../services/helpers/text-helper.service';
 
 describe('Geometry', () => {
 
-  let geometry, width, height, textHelperService;
+  let geometry, width, height;
   beforeEach(() => {
     width = 76;
     height = 137;
-    textHelperService = new TextHelperService();
-    geometry = new Geometry2D(width, height, textHelperService);
+    geometry = new Geometry2D(width, height);
   });
 
   describe('initialization behavior', () => {
