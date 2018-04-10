@@ -45,12 +45,12 @@ export class GeoWars2dComponent implements OnInit {
       let randomX = this.randomInt(this.width);
       let randomY = this.randomInt(this.height);
       let randomRotation = this.randomInt(360);
-      let randomScale = this.randomInt(5);
+      let randomScale = this.randomInt(1);
       let tempAsteroid = new Geometry2D(randomX, randomY);
       tempAsteroid.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
       tempAsteroid.setColor(Math.random(), Math.random(), Math.random(), 1);
       tempAsteroid.rotate(randomRotation);
-      tempAsteroid.setScale(randomScale, randomScale, randomScale);
+      tempAsteroid.scaleByVector(new Vector3(randomScale, randomScale, randomScale));
       tempAsteroid.transformGeometry(this.renderer.projectionMatrix);
       this.renderableObjects.push(tempAsteroid);
     }

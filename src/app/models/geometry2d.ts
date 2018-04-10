@@ -63,7 +63,7 @@ export class Geometry2D {
         this.translate(translateVector.x, translateVector.y, translateVector.z);
     }
 
-    translate(x: number, y: number, z: number) {
+    private translate(x: number, y: number, z: number) {
         // 0, 0 is the origin which means the middle of the geometry resides at 0, 0.
         // We need to modify the math so the top left corner is 0, 0
         // console.log(`Translated from (${this.getPosition().x},${this.getPosition().y}) to (${x}, ${y})`);
@@ -113,7 +113,12 @@ export class Geometry2D {
         return this.scaleMatrix.clone();
     }
 
-    setScale(x: number, y: number, z: number) {
+    scaleByVector(scaleVector) {
+        scaleVector.add(this.getScale());
+        this.setScale(scaleVector.x, scaleVector.y, scaleVector.z);
+    }
+
+    private setScale(x: number, y: number, z: number) {
         // console.log(`Scaled from (${this.getScale().x},${this.getScale().y}) to (${x}, ${y})`);
         this.scale.set(x, y, z);
         this.scaleMatrix.set(
