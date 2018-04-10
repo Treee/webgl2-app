@@ -39,9 +39,11 @@ export class GeoWars2dComponent implements OnInit {
     this.player.transformGeometry(this.renderer.projectionMatrix);
     this.renderableObjects.push(this.player);
     this.initializeAsteroids(10);
+    this.renderableObjects = this.renderableObjects.concat(this.asteroids);
   }
 
   initializeAsteroids(numAsteroids: number) {
+    this.asteroids = [];
     for (let i = 0; i < numAsteroids; i++) {
       let randomWidth = 50;
       let randomHeight = 50
@@ -54,8 +56,12 @@ export class GeoWars2dComponent implements OnInit {
       tempAsteroid.rotate(randomRotation);
       tempAsteroid.scaleByVector(new Vector3(randomScale, randomScale, randomScale));
       tempAsteroid.transformGeometry(this.renderer.projectionMatrix);
-      this.renderableObjects.push(tempAsteroid);
+      this.asteroids.push(tempAsteroid);
     }
+  }
+
+  moveAsteroids() {
+    this.asteroids
   }
 
   randomInt(range) {
