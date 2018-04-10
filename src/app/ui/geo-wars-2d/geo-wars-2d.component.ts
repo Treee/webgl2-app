@@ -46,8 +46,12 @@ export class GeoWars2dComponent implements OnInit {
   eventTriggered = false;
   translationScale = 1;
   rotation = 0;
-  @HostListener('document:keydown', ['$event'])
   @HostListener('document:keyup', ['$event'])
+  test(event: KeyboardEvent) {
+    this.activeKeysMap[event.key] = (event.type === 'keydown');
+  }
+
+  @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     let translation = new Vector3();
     console.log(`event key ${event.key} event type ${event.type}`);
@@ -76,12 +80,12 @@ export class GeoWars2dComponent implements OnInit {
     }
     if (this.activeKeysMap['q']) {
       // rotate counter clockwise
-      this.rotation = ((this.rotation - 1) % 360);
+      this.rotation = ((this.rotation + 1) % 360);
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['e']) {
       // rotate clockwise
-      this.rotation = ((this.rotation + 1) % 360);
+      this.rotation = ((this.rotation - 1) % 360);
       this.eventTriggered = true;
     }
     if (this.eventTriggered) {
