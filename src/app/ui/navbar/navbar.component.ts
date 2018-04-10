@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.navbarItems.push({ name: 'Home', displayOrder: 0, endpoint: '/', isVisible: true });
     this.navbarItems.push({ name: '2D', displayOrder: 1, endpoint: '/2d', isVisible: true });
-    this.navbarItems.push({ name: '3D', displayOrder: 2, endpoint: '/3d', isVisible: true });
+    this.navbarItems.push({ name: 'Geo Wars', displayOrder: 2, endpoint: '/geo-wars-2d', isVisible: true });
     this.navbarItems.push({ name: 'Resources', displayOrder: 5, endpoint: '/resources', isVisible: true });
     this.navbarItems.push({ name: 'Fun', displayOrder: 10, endpoint: '/fun', isVisible: true });
   }

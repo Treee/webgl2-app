@@ -9,6 +9,7 @@
 
 .navbar-item{
     padding: 1.25rem;
+    cursor: pointer;
 }
 
 .navbar-menu-button {

@@ -21,6 +21,7 @@ import { RendererComponent } from './renderer/renderer.component';
 import { TextHelperService } from './services/helpers/text-helper.service';
 import { Playground2dComponent } from './ui/playground-2d/playground-2d.component';
 import { NavbarComponent } from './ui/navbar/navbar.component';
+import { GeoWars2dComponent } from './ui/geo-wars-2d/geo-wars-2d.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { NavbarComponent } from './ui/navbar/navbar.component';
     TestComponent,
     RendererComponent,
     Playground2dComponent,
-    NavbarComponent
+    NavbarComponent,
+    GeoWars2dComponent
   ],
   imports: [
     BrowserModule,
