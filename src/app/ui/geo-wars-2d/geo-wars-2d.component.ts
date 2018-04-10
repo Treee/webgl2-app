@@ -14,6 +14,7 @@ export class GeoWars2dComponent implements OnInit {
   @ViewChild('renderer') renderer: RendererComponent;
 
   player: Geometry2D;
+  asteroids: Geometry2D[];
   renderableObjects: Geometry2D[] = [];
   userInput: any = {};
   width = 640;
@@ -36,6 +37,27 @@ export class GeoWars2dComponent implements OnInit {
     this.player.setColor(Math.random(), Math.random(), Math.random(), 1);
     this.player.transformGeometry(this.renderer.projectionMatrix);
     this.renderableObjects.push(this.player);
+    this.initializeAsteroids(10);
+  }
+
+  initializeAsteroids(numAsteroids: number) {
+    for (let i = 0; i < numAsteroids; i++) {
+      let randomX = this.randomInt(this.width);
+      let randomY = this.randomInt(this.height);
+      let randomRotation = this.randomInt(360);
+      let randomScale = this.randomInt(5);
+      let tempAsteroid = new Geometry2D(randomX, randomY);
+      tempAsteroid.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
+      tempAsteroid.setColor(Math.random(), Math.random(), Math.random(), 1);
+      tempAsteroid.rotate(randomRotation);
+      tempAsteroid.setScale(randomScale, randomScale, randomScale);
+      tempAsteroid.transformGeometry(this.renderer.projectionMatrix);
+      this.renderableObjects.push(tempAsteroid);
+    }
+  }
+
+  randomInt(range) {
+    return Math.floor(Math.random() * range);
   }
 
   redrawScreen() {
