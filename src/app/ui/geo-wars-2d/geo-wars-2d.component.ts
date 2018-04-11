@@ -28,7 +28,7 @@ export class GeoWars2dComponent implements OnInit {
 
   ngAfterViewInit() {
     this.initializeRenderableObjects();
-    this.redrawScreen();
+    //sthis.startGameLoop();
   }
 
   initializeRenderableObjects() {
@@ -60,8 +60,29 @@ export class GeoWars2dComponent implements OnInit {
     }
   }
 
+  gameLoop: any;
+  startGameLoop() {
+    this.gameLoop = setInterval(() => {
+      this.oneLoop(33);
+    }, 33);
+    // ~30 fps
+  }
+
+  stopGameLoop() {
+    clearInterval(this.gameLoop);
+  }
+
+  oneLoop(dt) {
+    this.moveAsteroids();
+    this.redrawScreen();
+  }
+
   moveAsteroids() {
-    this.asteroids
+    this.asteroids.forEach((asteroid) => {
+      let randomRotationSpeed = this.randomInt(5);
+      asteroid.rotate(1 * randomRotationSpeed)
+      asteroid.transformGeometry(this.renderer.projectionMatrix);
+    });
   }
 
   randomInt(range) {
