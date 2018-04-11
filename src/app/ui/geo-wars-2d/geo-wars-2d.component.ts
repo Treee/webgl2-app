@@ -28,7 +28,7 @@ export class GeoWars2dComponent implements OnInit {
 
   ngAfterViewInit() {
     this.initializeRenderableObjects();
-    //sthis.startGameLoop();
+    this.startGameLoop();
   }
 
   initializeRenderableObjects() {
@@ -100,10 +100,10 @@ export class GeoWars2dComponent implements OnInit {
   @HostListener('document:keyup', ['$event'])
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    let translation = new Vector3();
-    console.log(`event key ${event.key} event type ${event.type}`);
     this.activeKeysMap[event.key] = (event.type === 'keydown');
-    console.log(this.activeKeysMap);
+    let translation = new Vector3();
+    // console.log(`event key ${event.key} event type ${event.type}`);
+    // console.log(this.activeKeysMap);
     this.eventTriggered = false;
     if (this.activeKeysMap['w']) {
       // move forward (top of the screen)
@@ -133,6 +133,10 @@ export class GeoWars2dComponent implements OnInit {
     if (this.activeKeysMap['e']) {
       // rotate clockwise
       this.rotation = ((this.rotation - 1) % 360);
+      this.eventTriggered = true;
+    }
+    if (this.activeKeysMap['Escape']) {
+      this.stopGameLoop();
       this.eventTriggered = true;
     }
     if (this.eventTriggered) {
