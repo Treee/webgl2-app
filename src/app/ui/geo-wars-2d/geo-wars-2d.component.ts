@@ -54,7 +54,10 @@ export class GeoWars2dComponent implements OnInit {
       tempAsteroid.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
       tempAsteroid.setColor(Math.random(), Math.random(), Math.random(), 1);
       tempAsteroid.rotate(randomRotation);
-      tempAsteroid.setAngularVelocity(this.randomInt(10) + 2);
+      if (this.randomInt(100) % 2 === 0)
+        tempAsteroid.setAngularVelocity(this.randomInt(7) + 2);
+      else
+        tempAsteroid.setAngularVelocity((this.randomInt(7) + 2) * -1);
       tempAsteroid.scaleByVector(new Vector3(randomScale, randomScale, randomScale));
       tempAsteroid.transformGeometry(this.renderer.projectionMatrix);
       this.asteroids.push(tempAsteroid);
@@ -74,6 +77,7 @@ export class GeoWars2dComponent implements OnInit {
   }
 
   oneLoop(dt) {
+    this.applyUserInputs();
     this.moveAsteroids();
     this.redrawScreen();
   }
@@ -95,14 +99,15 @@ export class GeoWars2dComponent implements OnInit {
 
   activeKeysMap = {};
   eventTriggered = false;
-  translationScale = 1;
-  rotation = 0;
   @HostListener('document:keyup', ['$event'])
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     this.activeKeysMap[event.key] = (event.type === 'keydown');
+  }
+
+  applyUserInputs() {
     let translation = new Vector3();
-    // console.log(`event key ${event.key} event type ${event.type}`);
+    let rotation = 0;
     // console.log(this.activeKeysMap);
     this.eventTriggered = false;
     if (this.activeKeysMap['w']) {
@@ -127,21 +132,20 @@ export class GeoWars2dComponent implements OnInit {
     }
     if (this.activeKeysMap['q']) {
       // rotate counter clockwise
-      this.rotation = 1;
+      rotation = 1;
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['e']) {
       // rotate clockwise
-      this.rotation = -1;
+      rotation = -1;
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['Escape']) {
       this.stopGameLoop();
-      this.eventTriggered = true;
     }
     if (this.eventTriggered) {
       this.player.translateByVector(translation);
-      this.player.rotate(this.rotation);
+      this.player.rotate(rotation);
       this.player.transformGeometry(this.renderer.projectionMatrix);
       this.redrawScreen();
     }
