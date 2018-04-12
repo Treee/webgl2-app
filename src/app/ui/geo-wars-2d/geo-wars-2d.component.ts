@@ -54,6 +54,7 @@ export class GeoWars2dComponent implements OnInit {
       tempAsteroid.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
       tempAsteroid.setColor(Math.random(), Math.random(), Math.random(), 1);
       tempAsteroid.rotate(randomRotation);
+      tempAsteroid.setAngularVelocity(this.randomInt(10) + 2);
       tempAsteroid.scaleByVector(new Vector3(randomScale, randomScale, randomScale));
       tempAsteroid.transformGeometry(this.renderer.projectionMatrix);
       this.asteroids.push(tempAsteroid);
@@ -79,8 +80,7 @@ export class GeoWars2dComponent implements OnInit {
 
   moveAsteroids() {
     this.asteroids.forEach((asteroid) => {
-      let randomRotationSpeed = this.randomInt(5);
-      asteroid.rotate(1 * randomRotationSpeed)
+      asteroid.rotate(1);
       asteroid.transformGeometry(this.renderer.projectionMatrix);
     });
   }
@@ -127,12 +127,12 @@ export class GeoWars2dComponent implements OnInit {
     }
     if (this.activeKeysMap['q']) {
       // rotate counter clockwise
-      this.rotation = ((this.rotation + 1) % 360);
+      this.rotation = 1;
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['e']) {
       // rotate clockwise
-      this.rotation = ((this.rotation - 1) % 360);
+      this.rotation = -1;
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['Escape']) {

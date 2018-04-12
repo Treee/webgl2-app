@@ -8,8 +8,10 @@ export class Geometry2D {
     private position: Vector3 = new Vector3(0, 0, 0);
     private translationMatrix: Matrix3 = new Matrix3();
 
+    private currentAngle: number = 0;
     private rotation: Vector3 = new Vector3(0, 1, 0);
     private rotationMaxtrix: Matrix3 = new Matrix3();
+    angularVelocity: number = 1;                                // default is 1 degree  per second
 
     private scale: Vector3 = new Vector3(1, 1, 1);
     private scaleMatrix: Matrix3 = new Matrix3();
@@ -82,9 +84,14 @@ export class Geometry2D {
         return this.rotationMaxtrix.clone();
     }
 
+    setAngularVelocity(newAngularVelocity) {
+        this.angularVelocity = newAngularVelocity;
+    }
+
     rotate(angleInDegrees: number, rotationOrigin?: Matrix3) {
+        this.currentAngle = (this.currentAngle + (angleInDegrees * this.angularVelocity)) % 360;
         // console.log(`Rotated from (${this.getRotation().x},${this.getRotation().y}) by ${angleInDegrees} degrees`);
-        const angleInRadians = angleInDegrees * (Math.PI / 180);
+        const angleInRadians = this.currentAngle * (Math.PI / 180);
         const x = Math.sin(angleInRadians);
         const y = Math.cos(angleInRadians);
         this.rotation.set(x, y, 0);
