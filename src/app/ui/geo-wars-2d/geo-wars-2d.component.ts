@@ -16,7 +16,11 @@ export class GeoWars2dComponent implements OnInit {
   player: Geometry2D;
   asteroids: Geometry2D[];
   renderableObjects: Geometry2D[] = [];
-  userInput: any = {};
+  userInput: any = {
+    playerMoveSpeed: 1,
+    playerRotateSpeed: 1,
+    numAsteroids: 10
+  };
   width = 640;
   height = 640;
 
@@ -27,19 +31,20 @@ export class GeoWars2dComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.initializeRenderableObjects();
-    this.startGameLoop();
+    this.resetGame();
   }
 
   initializeRenderableObjects() {
+    let objects = [];
     let playerPosition = new Vector3(320, 320, 0);
     this.player = new Geometry2D(playerPosition, 50, 50);
     this.player.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
     this.player.setColor(Math.random(), Math.random(), Math.random(), 1);
     this.player.transformGeometry(this.renderer.projectionMatrix);
-    this.renderableObjects.push(this.player);
-    this.initializeAsteroids(10);
-    this.renderableObjects = this.renderableObjects.concat(this.asteroids);
+    objects.push(this.player);
+    this.initializeAsteroids(this.userInput.numAsteroids);
+    objects = objects.concat(this.asteroids);
+    this.renderableObjects = objects;
   }
 
   initializeAsteroids(numAsteroids: number) {
@@ -66,6 +71,7 @@ export class GeoWars2dComponent implements OnInit {
 
   gameLoop: any;
   startGameLoop() {
+    this.resetUserInput();
     this.gameLoop = setInterval(() => {
       this.oneLoop(33);
     }, 33);
@@ -74,6 +80,19 @@ export class GeoWars2dComponent implements OnInit {
 
   stopGameLoop() {
     clearInterval(this.gameLoop);
+  }
+
+  resetGame() {
+    this.initializeRenderableObjects();
+    this.startGameLoop();
+  }
+
+  resetUserInput() {
+    this.userInput = {
+      playerMoveSpeed: 1,
+      playerRotateSpeed: 1,
+      numAsteroids: 10
+    };
   }
 
   oneLoop(dt) {
