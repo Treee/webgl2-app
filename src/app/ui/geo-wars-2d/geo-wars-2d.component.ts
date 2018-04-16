@@ -17,8 +17,8 @@ export class GeoWars2dComponent implements OnInit {
   asteroids: Geometry2D[];
   renderableObjects: Geometry2D[] = [];
   userInput: any = {
-    playerMoveSpeed: 1,
-    playerRotateSpeed: 1,
+    playerMoveSpeed: 5,
+    playerRotateSpeed: 5,
     numAsteroids: 10
   };
   width = 640;
@@ -84,15 +84,15 @@ export class GeoWars2dComponent implements OnInit {
 
   resetGame() {
     this.renderer.restartRenderer();
-    this.resetUserInput();
+    //this.resetUserInput();
     this.initializeRenderableObjects();
     this.startGameLoop();
   }
 
   resetUserInput() {
     this.userInput = {
-      playerMoveSpeed: 1,
-      playerRotateSpeed: 1,
+      playerMoveSpeed: 5,
+      playerRotateSpeed: 5,
       numAsteroids: 10
     };
   }
@@ -128,37 +128,42 @@ export class GeoWars2dComponent implements OnInit {
 
   applyUserInputs() {
     let translation = new Vector3();
+    let translateMagnitude = 0;
     let rotation = 0;
     // console.log(this.activeKeysMap);
     this.eventTriggered = false;
     if (this.activeKeysMap['w']) {
       // move forward (top of the screen)
-      translation.add(new Vector3(0, -1, 0));
+      translateMagnitude = this.userInput.playerMoveSpeed * -1;
+      translation.add(new Vector3(0, translateMagnitude, 0));
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['a']) {
       // strafe left
-      translation.add(new Vector3(-1, 0, 0));
+      translateMagnitude = this.userInput.playerMoveSpeed * -1;
+      translation.add(new Vector3(translateMagnitude, 0, 0));
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['s']) {
       // move backwards (bottom of the screen)
-      translation.add(new Vector3(0, 1, 0));
+      translateMagnitude = this.userInput.playerMoveSpeed * 1;
+      translation.add(new Vector3(0, translateMagnitude, 0));
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['d']) {
       // strafe right
-      translation.add(new Vector3(1, 0, 0));
+      translateMagnitude = this.userInput.playerMoveSpeed * 1;
+      translation.add(new Vector3(translateMagnitude, 0, 0));
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['q']) {
       // rotate counter clockwise
-      rotation = 1;
+      rotation = this.userInput.playerRotateSpeed;
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['e']) {
       // rotate clockwise
-      rotation = -1;
+      rotation = this.userInput.playerRotateSpeed * -1;
       this.eventTriggered = true;
     }
     if (this.activeKeysMap['Escape']) {
