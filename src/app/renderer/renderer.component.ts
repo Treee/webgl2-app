@@ -81,17 +81,7 @@ export class RendererComponent implements AfterViewInit {
     }
 
     renderableObjects.forEach(renderable => {
-
-      this.gl.bindVertexArray(renderable.vao);
-      // vertex uniforms
-      const matrix = renderable.getTransform();
-      this.gl.uniformMatrix3fv(transformUniformLocation, false, matrix.transpose().toArray());
-      // fragment uniforms
-      this.gl.uniform4fv(colorUniformLocation, renderable.getColor().toArray());
-
-      let offset = 0;
-      const count = 6;
-      this.gl.drawArrays(this.gl.TRIANGLES, offset, count);
+      renderable.drawObject(this.gl, transformUniformLocation, colorUniformLocation);
     });
   }
 }

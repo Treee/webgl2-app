@@ -3,7 +3,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { TextHelperService } from './text-helper.service';
 import { Matrix3, Vector3 } from 'three';
 
-fdescribe('TextHelperService', () => {
+describe('TextHelperService', () => {
   let service: TextHelperService;
   beforeEach(() => {
     TestBed.configureTestingModule({

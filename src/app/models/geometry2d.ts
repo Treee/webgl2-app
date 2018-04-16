@@ -25,7 +25,7 @@ export class Geometry2D {
 
     public vao: any;
 
-    constructor(position, width, height) {
+    constructor(position: Vector3, width: number, height: number) {
         // this.createF(this.getPosition());
         this.createRectangle(position, width, height);
     }
@@ -240,6 +240,19 @@ export class Geometry2D {
         const buffer = gl.createBuffer();
         gl.bindBuffer(bufferType, buffer);
         gl.bufferData(bufferType, new Float32Array(bufferData), bufferUsage);
+    }
+
+    public drawObject(gl: any, transformUniformLocation, colorUniformLocation) {
+        gl.bindVertexArray(this.vao);
+        // vertex uniforms
+        const matrix = this.getTransform();
+        gl.uniformMatrix3fv(transformUniformLocation, false, matrix.transpose().toArray());
+        // fragment uniforms
+        gl.uniform4fv(colorUniformLocation, this.getColor().toArray());
+
+        let offset = 0;
+        const count = 6;
+        gl.drawArrays(gl.TRIANGLES, offset, count);
     }
 }
 

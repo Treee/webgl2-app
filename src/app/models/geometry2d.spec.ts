@@ -1,28 +1,30 @@
-import { Vector2, Matrix3 } from 'three';
-
+import { Vector3, Matrix3 } from 'three';
 import { Geometry2D } from './geometry2d';
 
 describe('Geometry', () => {
 
-  let geometry, width, height;
+  let geometry, width, height, posX, posY, posZ;
   beforeEach(() => {
     width = 76;
     height = 137;
-    geometry = new Geometry2D(width, height);
+    posX = 0;
+    posY = 0;
+    posZ = 0;
+    geometry = new Geometry2D(new Vector3(posX, posY, posZ), width, height);
   });
 
   describe('initialization behavior', () => {
 
-    it('should create an instance', () => {
+    fit('should create an instance', () => {
       expect(geometry).toBeTruthy();
     });
 
-    it('starts with an empty array of vertices', () => {
+    fit('starts with an empty array of vertices', () => {
       expect(geometry.hasOwnProperty('vertices')).toBe(true);
     });
 
-    it('starts at position 0,0', () => {
-      expect(geometry.position).toEqual(new Vector2(0, 0));
+    fit('starts at position 0,0', () => {
+      expect(geometry.getPosition()).toEqual(new Vector3(0, 0, 0));
     });
   });
 
@@ -31,7 +33,7 @@ describe('Geometry', () => {
       const newX = 10;
       const newY = 15;
       geometry.translate(newX, newY);
-      expect(geometry.getPosition()).toEqual(new Vector2(newX, newY));
+      expect(geometry.getPosition()).toEqual(new Vector3(newX, newY));
     });
 
     it('getTranslationMatrix returns a matrix3 representing the translation', () => {
@@ -55,7 +57,7 @@ describe('Geometry', () => {
       const x = Math.sin(angleInRadians);
       const y = Math.cos(angleInRadians);
       geometry.rotate(degreesToRotate);
-      expect(geometry.getRotation()).toEqual(new Vector2(x, y));
+      expect(geometry.getRotation()).toEqual(new Vector3(x, y));
     });
 
     it('getRotationMatrix returns a matrix3 representing the rotation', () => {
@@ -80,7 +82,7 @@ describe('Geometry', () => {
       const newX = 3;
       const newY = 1.5;
       geometry.setScale(newX, newY);
-      expect(geometry.getScale()).toEqual(new Vector2(newX, newY));
+      expect(geometry.getScale()).toEqual(new Vector3(newX, newY));
     });
 
     it('getScaleMatrix returns a matrix representing the scale', () => {
