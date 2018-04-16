@@ -6,7 +6,8 @@ import { GeoWars2dComponent } from './ui/geo-wars-2d/geo-wars-2d.component';
 
 const routes: Routes = [
   { path: '2d', component: Playground2dComponent },
-  { path: 'geo-wars-2d', component: GeoWars2dComponent }
+  { path: 'geo-wars-2d', component: GeoWars2dComponent },
+  { path: '', component: GeoWars2dComponent }
 ];
 
 @NgModule({
