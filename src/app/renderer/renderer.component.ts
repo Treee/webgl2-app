@@ -26,6 +26,10 @@ export class RendererComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.restartRenderer();
+  }
+
+  restartRenderer() {
     this.initCanvas();
     this.initializeShaderPrograms(this.gl);
   }

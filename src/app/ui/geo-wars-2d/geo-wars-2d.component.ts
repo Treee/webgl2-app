@@ -71,7 +71,7 @@ export class GeoWars2dComponent implements OnInit {
 
   gameLoop: any;
   startGameLoop() {
-    this.resetUserInput();
+    this.stopGameLoop();
     this.gameLoop = setInterval(() => {
       this.oneLoop(33);
     }, 33);
@@ -83,6 +83,8 @@ export class GeoWars2dComponent implements OnInit {
   }
 
   resetGame() {
+    this.renderer.restartRenderer();
+    this.resetUserInput();
     this.initializeRenderableObjects();
     this.startGameLoop();
   }
