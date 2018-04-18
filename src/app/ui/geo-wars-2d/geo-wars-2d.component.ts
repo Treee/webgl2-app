@@ -110,6 +110,12 @@ export class GeoWars2dComponent implements OnInit {
     });
   }
 
+  // wrapRenderableObjects() {
+  //   this.renderableObjects.forEach(renderableObject => {
+  //     if (renderableObject.getPosition())
+  //   });
+  // }
+
   randomInt(range) {
     return Math.floor(Math.random() * range);
   }
@@ -170,11 +176,27 @@ export class GeoWars2dComponent implements OnInit {
       this.stopGameLoop();
     }
     if (this.eventTriggered) {
+      this.printDotProduct();
       this.player.translateByVector(translation);
       this.player.rotate(rotation);
       this.player.transformGeometry(this.renderer.projectionMatrix);
       this.redrawScreen();
     }
+  }
+
+  printDotProduct() {
+    //let northWall = new Vector3(this.width, 0, 0);
+    let northWall = new Vector3(0, this.height, 0);
+    // let southEastWall = northWall.clone().add(westWall.clone());
+    // let eastWall = southEastWall.clone().sub(westWall);
+    // let southWall = southEastWall.clone().sub(northWall);
+    let myDot = this.player.getPosition().dot(northWall.clone());
+    console.log('dot', myDot);
+    console.log('north', northWall)
+    console.log();
+    // console.log('east', eastWall)
+    // console.log('south', southWall)
+    // console.log('west', westWall)
   }
 
 
