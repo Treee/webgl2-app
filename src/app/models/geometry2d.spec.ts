@@ -15,15 +15,15 @@ describe('Geometry', () => {
 
   describe('initialization behavior', () => {
 
-    fit('should create an instance', () => {
+    it('should create an instance', () => {
       expect(geometry).toBeTruthy();
     });
 
-    fit('starts with an empty array of vertices', () => {
+    it('starts with an empty array of vertices', () => {
       expect(geometry.hasOwnProperty('vertices')).toBe(true);
     });
 
-    fit('starts at position 0,0', () => {
+    it('starts at position 0,0', () => {
       expect(geometry.getPosition()).toEqual(new Vector3(0, 0, 0));
     });
   });
@@ -120,6 +120,18 @@ describe('Geometry', () => {
       geometry.transformGeometry(new Matrix3());
 
       expect(geometry.getTransform()).toEqual(expectedTransform);
+    });
+  });
+
+  fdescribe('isWithinNorthBounds', () => {
+    fit('returns true when the geometry is below the northern boundary', () => {
+      let expected = true;
+      geometry.translateByVector(new Vector3(50, 50, 0));
+      let actual = geometry.isWithinNorthBounds();
+      expect(actual).toBe(expected);
+    });
+    it('returns false when the geometry is above the northern boundary', () => {
+
     });
   });
 });

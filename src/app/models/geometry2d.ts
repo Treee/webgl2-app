@@ -156,6 +156,14 @@ export class Geometry2D {
         return Math.floor(Math.random() * range);
     }
 
+    northernWall = new Vector3(0, 1, 0);
+    isWithinNorthBounds(): boolean {
+        console.log('northern wall', this.northernWall);
+        console.log('position', this.getPosition());
+        //return this.getPosition().dot(this.northernWall) > 0;
+        return true;
+    }
+
     private createF(position: Vector3) {
         this.translateByVector(position);
         this.vertices = [
