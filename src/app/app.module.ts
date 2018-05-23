@@ -15,23 +15,17 @@ import {
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ShaderProgramService } from './services/shader-program/shader-program.service';
 import { TestComponent } from './test/test.component';
-import { RendererComponent } from './renderer/renderer.component';
-import { TextHelperService } from './services/helpers/text-helper.service';
 import { Playground2dComponent } from './ui/playground-2d/playground-2d.component';
 import { NavbarComponent } from './ui/navbar/navbar.component';
-import { GeoWars2dComponent } from './ui/geo-wars-2d/geo-wars-2d.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     TestComponent,
-    RendererComponent,
     Playground2dComponent,
-    NavbarComponent,
-    GeoWars2dComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -46,10 +40,7 @@ import { GeoWars2dComponent } from './ui/geo-wars-2d/geo-wars-2d.component';
     MatListModule,
     AppRoutingModule
   ],
-  providers: [
-    ShaderProgramService,
-    TextHelperService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

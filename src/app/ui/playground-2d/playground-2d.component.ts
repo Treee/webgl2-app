@@ -1,9 +1,5 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 
-import { RendererComponent } from '../../renderer/renderer.component';
-import { Geometry2D } from '../../models/geometry2d';
-import { Vector3 } from 'three';
-
 @Component({
   selector: 'app-playground-2d',
   templateUrl: './playground-2d.component.html',
@@ -11,9 +7,6 @@ import { Vector3 } from 'three';
 })
 export class Playground2dComponent {
 
-  @ViewChild('renderer') renderer: RendererComponent;
-
-  renderableObjects: Geometry2D[];
   userInput: any = {
     x: 0,
     y: 0,
