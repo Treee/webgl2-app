@@ -1,8 +1,7 @@
 import { Component, ElementRef, ViewChild, Input, AfterViewInit } from '@angular/core';
-import { ShaderProgram } from '../shaders/shader-program';
-import { ShaderProgramService } from '../services/shader-program/shader-program.service';
-import { Geometry2D } from '../models/geometry2d';
 import { Matrix3, Vector2 } from 'three';
+
+import { Geometry2D, ShaderProgram } from 'tree-xyz-webgl2-engine';
 
 @Component({
   selector: 'app-renderer',
@@ -17,12 +16,12 @@ export class RendererComponent implements AfterViewInit {
   @Input() public height = 400;
 
   gl: any;
-  basicShaderProgram: ShaderProgram;
-  shaderProgramInfo: any = {};
+  shaderProgram: ShaderProgram = new ShaderProgram();
+  basicShader: WebGLProgram;
   projectionMatrix: Matrix3 = new Matrix3();
   canvasScale: Vector2 = new Vector2();
 
-  constructor(private shaderService: ShaderProgramService) {
+  constructor() {
   }
 
   ngAfterViewInit(): void {
@@ -62,16 +61,14 @@ export class RendererComponent implements AfterViewInit {
 
   private initializeShaderPrograms(gl: any) {
     // create the default shader program for a 2d program
-    this.basicShaderProgram = new ShaderProgram(this.shaderService);
-    this.shaderProgramInfo.basicShader = this.basicShaderProgram.getBasic2dProgram(gl);
+    this.basicShader = this.shaderProgram.getBasic2dProgram(gl);
   }
 
   drawFrame(dt: Number, shaderProgram: WebGLProgram, renderableObjects: Geometry2D[]) {
-    let projectionMatrix = new Matrix3();
     // Tell it to use our program (pair of shaders)
     this.gl.useProgram(shaderProgram);
 
-    // set up attribute and uniforms (vertex shader)    
+    // set up attribute and uniforms (vertex shader)
     const transformUniformLocation = this.gl.getUniformLocation(shaderProgram, 'u_transform');
     // set up attribute and uniforms (fragment shader)
     const colorUniformLocation = this.gl.getUniformLocation(shaderProgram, 'u_color');
