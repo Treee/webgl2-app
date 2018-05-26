@@ -1,4 +1,5 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { BoxGeometry, Vec3, RendererEngine } from 'tree-xyz-webgl2-engine';
 
 @Component({
   selector: 'app-playground-2d',
@@ -6,6 +7,9 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
   styleUrls: ['./playground-2d.component.css']
 })
 export class Playground2dComponent {
+
+  renderableObjects: BoxGeometry[];
+  renderer: RendererEngine;
 
   userInput: any = {
     x: 0,
@@ -19,6 +23,8 @@ export class Playground2dComponent {
   height = 400;
 
   constructor() {
+    this.renderableObjects = [];
+    this.renderer = new RendererEngine();
   }
 
   ngAfterViewInit() {
@@ -29,7 +35,7 @@ export class Playground2dComponent {
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     for (let i = 0; i < numObjects; i++) {
-      const geometry = new Geometry2D(new Vector3(50, 50, 0), 10, 10);
+      const geometry = new BoxGeometry(new Vec3(50, 50, 0), 10, 10);
       geometry.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
       geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
       geometry.transformGeometry(this.renderer.projectionMatrix);
@@ -60,17 +66,17 @@ export class Playground2dComponent {
   saveInput(type: string) {
     this.renderableObjects.forEach(renderable => {
       if (type === 'translateX') {
-        renderable.translateByVector(new Vector3(this.userInput.x, 0, 0));
+        renderable.translateByVector(new Vec3(this.userInput.x, 0, 0));
       } else if (type === 'translateY') {
-        renderable.translateByVector(new Vector3(0, this.userInput.y, 0));
+        renderable.translateByVector(new Vec3(0, this.userInput.y, 0));
       } else if (type === 'rotatecw') {
         renderable.rotate(this.userInput.rotatecw);
       } else if (type === 'rotateccw') {
         renderable.rotate(-this.userInput.rotateccw);
       } else if (type === 'scaleX') {
-        renderable.scaleByVector(new Vector3(this.userInput.scaleX, 0, 0));
+        renderable.scaleByVector(new Vec3(this.userInput.scaleX, 0, 0));
       } else if (type === 'scaleY') {
-        renderable.scaleByVector(new Vector3(0, this.userInput.scaleY, 0));
+        renderable.scaleByVector(new Vec3(0, this.userInput.scaleY, 0));
       }
       renderable.transformGeometry(this.renderer.projectionMatrix);
     });
