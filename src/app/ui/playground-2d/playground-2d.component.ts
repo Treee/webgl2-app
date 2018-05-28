@@ -1,12 +1,15 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
-import { BoxGeometry, Vec3, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { Component, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { BoxGeometry, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { Vector4 } from 'three';
 
 @Component({
   selector: 'app-playground-2d',
   templateUrl: './playground-2d.component.html',
   styleUrls: ['./playground-2d.component.css']
 })
-export class Playground2dComponent {
+export class Playground2dComponent implements AfterViewInit {
+
+  @ViewChild('glCanvas') canvasElement: ElementRef;
 
   renderableObjects: BoxGeometry[];
   renderer: RendererEngine;
@@ -28,6 +31,7 @@ export class Playground2dComponent {
   }
 
   ngAfterViewInit() {
+    this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     this.initializeDefaultRenderableObjects(1);
     this.redrawScreen();
   }
@@ -36,15 +40,15 @@ export class Playground2dComponent {
     this.renderableObjects = [];
     for (let i = 0; i < numObjects; i++) {
       const geometry = new BoxGeometry(new Vec3(50, 50, 0), 10, 10);
-      geometry.createVertexArrayObject(this.renderer.gl, this.renderer.shaderProgramInfo.basicShader);
-      geometry.setColor(Math.random(), Math.random(), Math.random(), 1);
-      geometry.transformGeometry(this.renderer.projectionMatrix);
+      geometry.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+      geometry.setColor(new Vec4(Math.random(), Math.random(), Math.random(), 1));
+      geometry.translate(this.renderer.projectionMatrix);
       this.renderableObjects.push(geometry);
     }
   }
 
   redrawScreen() {
-    this.renderer.drawFrame(0, this.renderer.shaderProgramInfo.basicShader, this.renderableObjects);
+    this.renderer.drawFrame(0, this.renderableObjects);
   }
 
   randomInt(range) {
@@ -80,7 +84,7 @@ export class Playground2dComponent {
       }
       renderable.transformGeometry(this.renderer.projectionMatrix);
     });
-    this.renderer.drawFrame(0, this.renderer.shaderProgramInfo.basicShader, this.renderableObjects);
+    this.renderer.drawFrame(0, this.renderableObjects);
   }
 
 }
