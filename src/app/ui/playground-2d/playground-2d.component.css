@@ -13,3 +13,7 @@
     align-self: center;
     margin-top: 1rem;
 }
+
+.canvas-renderer {
+    border: 1px solid black;
+}

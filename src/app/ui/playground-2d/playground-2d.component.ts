@@ -25,6 +25,8 @@ export class Playground2dComponent implements AfterViewInit {
   width = 400;
   height = 400;
 
+  gameLoop: any;
+
   constructor() {
     this.renderableObjects = [];
     this.renderer = new RendererEngine();
@@ -32,23 +34,29 @@ export class Playground2dComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
-    this.initializeDefaultRenderableObjects(1);
-    this.redrawScreen();
+    this.initializeDefaultRenderableObjects(5);
+    this.gameLoop = setInterval(() => {
+      this.redrawScreen();
+    }, 60);
   }
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     for (let i = 0; i < numObjects; i++) {
-      const geometry = new BoxGeometry(new Vec3(50, 50, 0), 10, 10);
+      const geometry = new BoxGeometry();
       geometry.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
       geometry.setColor(new Vec4(Math.random(), Math.random(), Math.random(), 1));
-      geometry.translate(this.renderer.projectionMatrix);
+      geometry.translate(new Vec3(30 * i, 30 * i, 0));
       this.renderableObjects.push(geometry);
     }
   }
 
   redrawScreen() {
     this.renderer.drawFrame(0, this.renderableObjects);
+    this.renderableObjects.forEach(obj => {
+      console.log('objection postion', obj.getPosition());
+      console.log('objection postion', obj.getTransform(this.renderer.projectionMatrix));
+    });
   }
 
   randomInt(range) {
@@ -64,7 +72,8 @@ export class Playground2dComponent implements AfterViewInit {
       scaleX: 1,
       scaleY: 1
     };
-    this.ngAfterViewInit();
+    // this.ngAfterViewInit();
+    clearInterval(this.gameLoop);
   }
 
   saveInput(type: string) {
