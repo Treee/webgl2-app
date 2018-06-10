@@ -42,20 +42,31 @@ export class Playground2dComponent implements AfterViewInit {
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
-    for (let i = 0; i < numObjects; i++) {
-      const geometry = new BoxGeometry();
-      geometry.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
-      geometry.setColor(new Vec4(Math.random(), Math.random(), Math.random(), 1));
-      geometry.translate(new Vec3(30 * i, 30 * i, 0));
-      this.renderableObjects.push(geometry);
-    }
+    const geometry = new BoxGeometry();
+    geometry.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+    geometry.setColor(new Vec4(1, 0, 0, 1));
+    // geometry.setScale(new Vec3(2, 2, 2));
+    geometry.translate(new Vec3(1, 0, 0));
+    this.renderableObjects.push(geometry);
+    console.log('translation', geometry.getTranslationMatrix().prettyPrint());
+    console.log('scale', geometry.getScaleMatrix().prettyPrint());
+    console.log('rotate', geometry.getRotationMatrix().prettyPrint());
+    console.log('projection', this.renderer.projectionMatrix.prettyPrint());
+    console.log('transform', geometry.getTransform(this.renderer.projectionMatrix).prettyPrint());
+
+    const geometry1 = new BoxGeometry();
+    geometry1.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+    geometry1.setColor(new Vec4(0, 0, 1, 1));
+    geometry1.translate(new Vec3(10, 0, 0));
+    this.renderableObjects.push(geometry1);
+
   }
 
   redrawScreen() {
     this.renderer.drawFrame(0, this.renderableObjects);
     this.renderableObjects.forEach(obj => {
-      console.log('objection postion', obj.getPosition());
-      console.log('objection postion', obj.getTransform(this.renderer.projectionMatrix));
+      // console.log('objection postion', obj.getPosition());
+      // console.log('objection postion', obj.getTransform(this.renderer.projectionMatrix));
     });
   }
 
