@@ -1,6 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { BoxGeometry, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
-import { Vector4 } from 'three';
 
 @Component({
   selector: 'app-playground-2d',
@@ -10,6 +9,9 @@ import { Vector4 } from 'three';
 export class Playground2dComponent implements AfterViewInit {
 
   @ViewChild('glCanvas') canvasElement: ElementRef;
+
+
+  playerObject: BoxGeometry;
 
   renderableObjects: BoxGeometry[];
   activeKeysMap: any;
@@ -47,17 +49,23 @@ export class Playground2dComponent implements AfterViewInit {
     }, 60);
   }
 
+  initializePlayer() {
+    this.playerObject = new BoxGeometry();
+    this.playerObject.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+    this.playerObject.setColor(new Vec4(1, 0, 0, 1));
+    // this.playerObject.setScale(new Vec3(2, 2, 2));
+    this.playerObject.translate(new Vec3(200, 200, 0));
+    this.renderableObjects.push(this.playerObject);
+
+  }
+
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
-    const geometry = new BoxGeometry();
-    geometry.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
-    geometry.setColor(new Vec4(1, 0, 0, 1));
-    // geometry.setScale(new Vec3(2, 2, 2));
-    geometry.translate(new Vec3(200, 200, 0));
-    this.renderableObjects.push(geometry);
+    this.initializePlayer();
   }
 
   oneGameLoop() {
+    this.applyUserInput();
     this.redrawScreen();
   }
 
@@ -94,17 +102,17 @@ export class Playground2dComponent implements AfterViewInit {
 
   applyUserInput() {
     if (this.activeKeysMap['w']) {
-      // move forward
+      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(0, -1, 0)));
     } if (this.activeKeysMap['s']) {
-      // move backward
+      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(0, 1, 0)));
     } if (this.activeKeysMap['a']) {
-      // strafe left
+      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(-1, 0, 0)));
     } if (this.activeKeysMap['d']) {
-      // strafe right
+      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(1, 0, 0)));
     } if (this.activeKeysMap['q']) {
-      // rotate left (ccw)
+      this.playerObject.rotate(-10);
     } if (this.activeKeysMap['e']) {
-      // rotate right (cw)
+      this.playerObject.rotate(10);
     }
   }
 
