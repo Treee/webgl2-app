@@ -90,7 +90,22 @@ export class Playground2dComponent implements AfterViewInit {
   @HostListener('document:keyup', ['$event'])
   userKeyPress(event) {
     this.activeKeysMap[event.key] = (event.type === 'keydown');
-    // this.printKeyboardDebugInfo('test');
+  }
+
+  applyUserInput() {
+    if (this.activeKeysMap['w']) {
+      // move forward
+    } if (this.activeKeysMap['s']) {
+      // move backward
+    } if (this.activeKeysMap['a']) {
+      // strafe left
+    } if (this.activeKeysMap['d']) {
+      // strafe right
+    } if (this.activeKeysMap['q']) {
+      // rotate left (ccw)
+    } if (this.activeKeysMap['e']) {
+      // rotate right (cw)
+    }
   }
 
   // captureUserInput(keycode) {
