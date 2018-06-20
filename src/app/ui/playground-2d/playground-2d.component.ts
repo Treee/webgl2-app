@@ -12,6 +12,7 @@ export class Playground2dComponent implements AfterViewInit {
 
 
   playerObject: BoxGeometry;
+  playerRotation: number;
 
   renderableObjects: BoxGeometry[];
   activeKeysMap: any;
@@ -34,6 +35,7 @@ export class Playground2dComponent implements AfterViewInit {
     this.renderableObjects = [];
     this.activeKeysMap = {};
     this.renderer = new RendererEngine();
+    this.playerRotation = 0;
   }
 
   ngAfterViewInit() {
@@ -110,9 +112,9 @@ export class Playground2dComponent implements AfterViewInit {
     } if (this.activeKeysMap['d']) {
       this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(1, 0, 0)));
     } if (this.activeKeysMap['q']) {
-      this.playerObject.rotate(-10);
+      this.playerObject.rotate(this.playerRotation -= 10);
     } if (this.activeKeysMap['e']) {
-      this.playerObject.rotate(10);
+      this.playerObject.rotate(this.playerRotation += 10);
     }
   }
 
