@@ -18,16 +18,9 @@
       </mat-list-item>
       <mat-divider></mat-divider>
       <mat-list-item>
-        <h2 class="example-h2">Rotate Clockwise:</h2>
+        <h2 class="example-h2">Rotation:</h2>
         <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="360" [min]="0" [step]="1" [thumb-label]="true"
-          [tick-interval]="1" [(ngModel)]="userInput.rotatecw" [vertical]="false" (ngModelChange)="saveInput('rotatecw')">
-        </mat-slider>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-      <mat-list-item>
-        <h2 class="example-h2">Rotate Counter Clockwise:</h2>
-        <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="360" [min]="0" [step]="1" [thumb-label]="true"
-          [tick-interval]="1" [(ngModel)]="userInput.rotateccw" [vertical]="false" (ngModelChange)="saveInput('rotateccw')">
+          [tick-interval]="1" [(ngModel)]="userInput.rotate" [vertical]="false" (ngModelChange)="saveInput('rotate')">
         </mat-slider>
       </mat-list-item>
       <mat-divider></mat-divider>

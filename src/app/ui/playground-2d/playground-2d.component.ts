@@ -17,8 +17,7 @@ export class Playground2dComponent implements AfterViewInit {
   userInput: any = {
     x: 200,
     y: 200,
-    rotatecw: 0,
-    rotateccw: 0,
+    rotate: 0,
     scaleX: 1,
     scaleY: 1
   };
@@ -50,7 +49,7 @@ export class Playground2dComponent implements AfterViewInit {
     const geometry = new BoxGeometry();
     geometry.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
     geometry.setColor(new Vec4(1, 0, 0, 1));
-    geometry.setScale(new Vec3(2, 2, 2));
+    // geometry.setScale(new Vec3(2, 2, 2));
     geometry.translate(new Vec3(200, 200, 0));
     this.renderableObjects.push(geometry);
 
@@ -64,15 +63,9 @@ export class Playground2dComponent implements AfterViewInit {
   }
 
   redrawScreen() {
-    this.renderableObjects.forEach((renderable) => {
-      console.log('---Debug Info---');
-      console.log('trans', renderable.getTranslationMatrix().prettyPrint());
-      console.log('rotat', renderable.getRotationMatrix().prettyPrint());
-      console.log('scale', renderable.getScaleMatrix().prettyPrint());
-      console.log('transform', renderable.getTransform(this.renderer.projectionMatrix).prettyPrint());
-      console.log('transform', renderable.getTransform(this.renderer.projectionMatrix).toArray());
-      console.log();
-    });
+    // this.renderableObjects.forEach((renderable) => {
+    //   this.printDebugInfo(renderable);
+    // });
     this.renderer.drawFrame(0, this.renderableObjects);
   }
 
@@ -84,8 +77,7 @@ export class Playground2dComponent implements AfterViewInit {
     this.userInput = {
       x: 0,
       y: 0,
-      rotatecw: 0,
-      rotateccw: 0,
+      rotate: 0,
       scaleX: 1,
       scaleY: 1
     };
@@ -97,6 +89,7 @@ export class Playground2dComponent implements AfterViewInit {
   @HostListener('document:keyup', ['$event'])
   @HostListener('document:keydown', ['$event'])
   captureUserInput(keycode) {
+    // console.log('key', keycode);
     let type = '';
     if (keycode.code === 'KeyW') {
       type = 'translateY';
@@ -110,6 +103,12 @@ export class Playground2dComponent implements AfterViewInit {
     } else if (keycode.code === 'KeyD') {
       type = 'translateX';
       this.userInput.x += 1;
+    } else if (keycode.code === 'KeyQ') {
+      this.userInput.rotate -= 1;
+      type = 'rotateccw';
+    } else if (keycode.code === 'KeyE') {
+      this.userInput.rotate += 1;
+      type = 'rotatecw';
     }
     this.saveInput(type);
   }
@@ -121,9 +120,10 @@ export class Playground2dComponent implements AfterViewInit {
       } else if (type === 'translateY') {
         renderable.translate(new Vec3(renderable.getPosition().x, this.userInput.y, 1));
       } else if (type === 'rotatecw') {
-        renderable.rotate(this.userInput.rotatecw);
+        console.log('rotation', this.userInput.rotate);
+        renderable.rotate(this.userInput.rotate);
       } else if (type === 'rotateccw') {
-        renderable.rotate(-this.userInput.rotateccw);
+        renderable.rotate(this.userInput.rotate);
       } else if (type === 'scaleX') {
         renderable.setScale(new Vec3(this.userInput.scaleX, renderable.getScale().y, 0));
       } else if (type === 'scaleY') {
@@ -131,6 +131,16 @@ export class Playground2dComponent implements AfterViewInit {
       }
     });
     this.redrawScreen();
+  }
+
+  printDebugInfo(renderable) {
+    console.log('---Debug Info---');
+    console.log('trans', renderable.getTranslationMatrix().prettyPrint());
+    console.log('rotat', renderable.getRotationMatrix().prettyPrint());
+    console.log('scale', renderable.getScaleMatrix().prettyPrint());
+    console.log('transform', renderable.getTransform(this.renderer.projectionMatrix).prettyPrint());
+    console.log('transform', renderable.getTransform(this.renderer.projectionMatrix).toArray());
+    console.log();
   }
 
 }
