@@ -1,4 +1,4 @@
-<div class="playground-container" (keydown)="captureUserInput($event)">
+<div class="playground-container" (keypress)="userKeyPress($event)">
   <canvas id="myCanvas" #glCanvas class="canvas-renderer"></canvas>
   <div class="user-input">
     <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="resetUserInput()">Reset</button>
