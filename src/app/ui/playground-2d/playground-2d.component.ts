@@ -51,7 +51,7 @@ export class Playground2dComponent implements AfterViewInit {
   startGameLoop() {
     this.gameLoop = setInterval(() => {
       this.oneGameLoop();
-    }, 60);
+    }, 3000);
   }
 
   initializePlayer() {
@@ -61,18 +61,22 @@ export class Playground2dComponent implements AfterViewInit {
     // this.playerObject.setScale(new Vec3(2, 2, 2));
     this.playerObject.translate(new Vec3(200, 200, 0));
     this.renderableObjects.push(this.playerObject);
-
+    console.log('creating player', this.playerObject);
   }
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     this.initializePlayer();
-    this.initializeParticles(100);
+    this.initializeParticles(1);
   }
 
   initializeParticles(numParticles: number) {
     for (let i = 0; i < numParticles; i++) {
-      this.particles.push(new Point2D(this.randomInt(this.width), this.randomInt(this.height)));
+      const newPoint = new Point2D(100, 100);
+      newPoint.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+      this.particles.push(newPoint);
+      this.renderableObjects.push(newPoint);
+      console.log('creating particle', newPoint);
     }
   }
 
@@ -82,9 +86,9 @@ export class Playground2dComponent implements AfterViewInit {
   }
 
   redrawScreen() {
-    // this.renderableObjects.forEach((renderable) => {
-    //   this.printDebugInfo(renderable);
-    // });
+    this.renderableObjects.forEach((renderable) => {
+      this.printRenderableDebugInfo(renderable);
+    });
     this.renderer.drawFrame(0, this.renderableObjects);
   }
 
@@ -128,31 +132,6 @@ export class Playground2dComponent implements AfterViewInit {
     }
   }
 
-  // captureUserInput(keycode) {
-  //   // console.log('key', keycode);
-  //   let type = '';
-  //   if (keycode.code === 'KeyW') {
-  //     type = 'translateY';
-  //     this.userInput.y -= 1;
-  //   } else if (keycode.code === 'KeyS') {
-  //     type = 'translateY';
-  //     this.userInput.y += 1;
-  //   } else if (keycode.code === 'KeyA') {
-  //     type = 'translateX';
-  //     this.userInput.x -= 1;
-  //   } else if (keycode.code === 'KeyD') {
-  //     type = 'translateX';
-  //     this.userInput.x += 1;
-  //   } else if (keycode.code === 'KeyQ') {
-  //     this.userInput.rotate -= 1;
-  //     type = 'rotateccw';
-  //   } else if (keycode.code === 'KeyE') {
-  //     this.userInput.rotate += 1;
-  //     type = 'rotatecw';
-  //   }
-  //   this.saveInput(type);
-  // }
-
   saveInput(type: string) {
     this.renderableObjects.forEach(renderable => {
       if (type === 'translateX') {
@@ -175,9 +154,9 @@ export class Playground2dComponent implements AfterViewInit {
 
   printRenderableDebugInfo(renderable) {
     console.log('---Debug Info---');
-    console.log('trans', renderable.getTranslationMatrix().prettyPrint());
-    console.log('rotat', renderable.getRotationMatrix().prettyPrint());
-    console.log('scale', renderable.getScaleMatrix().prettyPrint());
+    if (renderable.getTranslationMatrix) { console.log('trans', renderable.getTranslationMatrix().prettyPrint()); }
+    if (renderable.getRotationMatrix) { console.log('rotat', renderable.getRotationMatrix().prettyPrint()); }
+    if (renderable.getScaleMatrix) { console.log('scale', renderable.getScaleMatrix().prettyPrint()); }
     console.log('transform', renderable.getTransform(this.renderer.projectionMatrix).prettyPrint());
     console.log('transform', renderable.getTransform(this.renderer.projectionMatrix).toArray());
     console.log();
