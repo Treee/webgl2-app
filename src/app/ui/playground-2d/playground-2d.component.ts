@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { BoxGeometry, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { BoxGeometry, Point2D, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
 
 @Component({
   selector: 'app-playground-2d',
@@ -19,6 +19,8 @@ export class Playground2dComponent implements AfterViewInit {
 
   renderer: RendererEngine;
 
+  particles: Point2D[];
+
   userInput: any = {
     x: 200,
     y: 200,
@@ -33,6 +35,7 @@ export class Playground2dComponent implements AfterViewInit {
 
   constructor() {
     this.renderableObjects = [];
+    this.particles = [];
     this.activeKeysMap = {};
     this.renderer = new RendererEngine();
     this.playerRotation = 0;
@@ -64,6 +67,13 @@ export class Playground2dComponent implements AfterViewInit {
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     this.initializePlayer();
+    this.initializeParticles(100);
+  }
+
+  initializeParticles(numParticles: number) {
+    for (let i = 0; i < numParticles; i++) {
+      this.particles.push(new Point2D(this.randomInt(this.width), this.randomInt(this.height)));
+    }
   }
 
   oneGameLoop() {
