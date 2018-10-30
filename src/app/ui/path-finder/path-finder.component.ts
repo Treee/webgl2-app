@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { } from 'tree-xyz-webgl2-engine';
+import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
 
 
 @Component({
@@ -8,6 +8,8 @@ import { } from 'tree-xyz-webgl2-engine';
   styleUrls: ['./path-finder.component.css']
 })
 export class PathFinderComponent implements OnInit {
+
+  grid: Grid2D;
 
   constructor() { }
 
