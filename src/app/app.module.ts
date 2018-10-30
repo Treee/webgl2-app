@@ -19,6 +19,7 @@ import { TestComponent } from './test/test.component';
 import { Playground2dComponent } from './ui/playground-2d/playground-2d.component';
 import { NavbarComponent } from './ui/navbar/navbar.component';
 import { PathFinderComponent } from './ui/path-finder/path-finder.component';
+import { PathFinderCellComponent } from './ui/path-finder/path-finder-cell/path-finder-cell.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { PathFinderComponent } from './ui/path-finder/path-finder.component';
     TestComponent,
     Playground2dComponent,
     NavbarComponent,
-    PathFinderComponent
+    PathFinderComponent,
+    PathFinderCellComponent
   ],
   imports: [
     BrowserModule,
