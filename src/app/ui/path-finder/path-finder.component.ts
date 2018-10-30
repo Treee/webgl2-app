@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { } from 'tree-xyz-webgl2-engine';
+
 
 @Component({
   selector: 'app-path-finder',
