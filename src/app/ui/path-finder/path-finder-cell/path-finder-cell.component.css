@@ -1,0 +1,6 @@
+.grid-cell{
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-color: red;
+}

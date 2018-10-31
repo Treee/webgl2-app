@@ -11,6 +11,11 @@ export class PathFinderComponent implements OnInit {
 
   grid: Grid2D;
 
+  gridProperties: any = {
+    rows: 10,
+    cols: 10
+  };
+
   constructor() { }
 
   ngOnInit() {

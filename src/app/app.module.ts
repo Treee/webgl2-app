@@ -10,7 +10,8 @@ import {
   MatButtonModule,
   MatSliderModule,
   MatDividerModule,
-  MatListModule
+  MatListModule,
+  MatInputModule
 } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -41,6 +42,7 @@ import { PathFinderCellComponent } from './ui/path-finder/path-finder-cell/path-
     MatButtonModule,
     MatDividerModule,
     MatListModule,
+    MatInputModule,
     AppRoutingModule
   ],
   providers: [],
