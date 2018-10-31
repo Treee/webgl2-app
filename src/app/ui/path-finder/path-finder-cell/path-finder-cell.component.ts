@@ -10,26 +10,34 @@ export class PathFinderCellComponent implements OnInit {
 
   @Input('gridCell') gridCell: Grid2DCell;
 
-  cellColor = 'gray';
-
   constructor() { }
 
   ngOnInit() {
-    if (this.gridCell) {
-      this.setCellColor(this.gridCell.cellType);
-    }
+
   }
 
-  setCellColor(cellType: string) {
-    if (cellType === 'blocked') {
-      this.cellColor = 'black';
-    } else if (cellType === 'start') {
-      this.cellColor = 'green';
-    } else if (cellType === 'finish') {
-      this.cellColor = 'red';
-    } else if (cellType === 'open') {
-      this.cellColor = 'white';
+  setStyles() {
+    return {
+      'background-color': this.getCellColor()
+    };
+  }
+
+  getCellColor() {
+    let cellColor = 'orange';
+    if (!this.gridCell) {
+      cellColor = 'gray';
+    } else if (this.gridCell.cellType === 'blocked') {
+      cellColor = 'black';
+    } else if (this.gridCell.cellType === 'start') {
+      cellColor = 'green';
+    } else if (this.gridCell.cellType === 'finish') {
+      cellColor = 'red';
+    } else if (this.gridCell.cellType === 'open') {
+      cellColor = 'white';
+    } else if (this.gridCell.cellType === 'solution') {
+      cellColor = 'gray';
     }
+    return cellColor;
   }
 
 }

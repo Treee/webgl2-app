@@ -9,6 +9,8 @@
       <mat-label>Columns</mat-label>
       <input matInput type="number" [min]="3" [value]="gridProperties.cols">
     </mat-form-field>
+    <br />
+    <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="solveMaze()">Solve Maze</button>
   </form>
 </div>
 <br />
