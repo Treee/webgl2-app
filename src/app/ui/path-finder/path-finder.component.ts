@@ -13,7 +13,8 @@ export class PathFinderComponent implements OnInit {
 
   gridProperties: any = {
     rows: 10,
-    cols: 10
+    cols: 10,
+    defaultMaze: 'soooxoooox\nxoxoxoxxox\nxooxxooxox\nxxoxxxoxox\nxooxoooxox\nxoxxoxxxox\nxoxxoxooox\noooooxoxoo\noxoxxxoxxx\noxooooooof'
   };
 
   constructor() {
@@ -27,6 +28,7 @@ export class PathFinderComponent implements OnInit {
   initializeGrid() {
     this.gridMaze.initializeGrid(this.gridProperties.rows, this.gridProperties.cols);
     this.gridMaze.connectGridCells();
+    this.gridMaze.loadGrid(this.gridProperties.defaultMaze);
   }
 
 }
