@@ -9,16 +9,24 @@ import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
 })
 export class PathFinderComponent implements OnInit {
 
-  grid: Grid2D;
+  gridMaze: Grid2D;
 
   gridProperties: any = {
     rows: 10,
     cols: 10
   };
 
-  constructor() { }
+  constructor() {
+    this.gridMaze = new Grid2D();
+    this.initializeGrid();
+  }
 
   ngOnInit() {
+  }
+
+  initializeGrid() {
+    this.gridMaze.initializeGrid(this.gridProperties.rows, this.gridProperties.cols);
+    this.gridMaze.connectGridCells();
   }
 
 }

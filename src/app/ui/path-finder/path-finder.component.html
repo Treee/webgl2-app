@@ -12,4 +12,6 @@
   </form>
 </div>
 <br />
-<app-path-finder-cell></app-path-finder-cell>
+<div class="grid-maze-container">
+  <app-path-finder-cell class="grid-maze-cell" *ngFor="let gridCell of gridMaze.grid" [gridCell]="gridCell"></app-path-finder-cell>
+</div>
