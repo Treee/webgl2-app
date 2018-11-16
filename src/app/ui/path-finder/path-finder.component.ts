@@ -14,11 +14,10 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   visualDisplaySteps = [];
 
   gridProperties: any = {
-    defaultMaze: 'soooxoooox\nxoxoxoxxox\nxooxxooxox\nxxoxxxoxox\nxooxoooxox\nxoxxoxxxox\nxoxxoxooox\noooooxoxoo\noxoxxxoxxx\noxooooooof',
     rows: 10,
     cols: 10,
-    drawSpeed: 500,
-    currentEditorMazeBrush: 'none'
+    drawSpeed: 250,
+    currentMazeEditorBrush: 'none'
   };
 
   constructor() {
@@ -32,12 +31,12 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   }
 
   setEditorMazeBrush(brushType: string) {
-    this.gridProperties.currentEditorMazeBrush = brushType;
+    this.gridProperties.currentMazeEditorBrush = brushType;
   }
 
   initializeGrid() {
     this.gridMaze.initializeGrid(this.gridProperties.rows, this.gridProperties.cols);
-    this.gridMaze.loadGrid(this.gridProperties.defaultMaze);
+    // this.gridMaze.loadGrid(this.gridProperties.defaultMaze);
     this.gridMaze.connectGridCells();
   }
 

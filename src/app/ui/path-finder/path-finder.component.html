@@ -23,13 +23,13 @@
     </form>
   </div>
   <div class="path-finder-inputs">
-    <div><b>Maze Editor</b><br /><b>Editing Mode: {{gridProperties.currentEditorMazeBrush !== 'none' ? 'ON' : 'OFF'}}</b></div>
+    <div><b>Maze Editor</b><br /><b>Editing Mode: {{gridProperties.currentMazeEditorBrush !== 'none' ? 'ON' : 'OFF'}}</b></div>
     <div>
       Currently Selected:
       <div>
-        <div *ngIf="gridProperties.currentEditorMazeBrush !== 'none'" class="sample-cell" [ngClass]="{'starting-cell': gridProperties.currentEditorMazeBrush === 'start', 'ending-cell': gridProperties.currentEditorMazeBrush === 'end', 'open-cell': gridProperties.currentEditorMazeBrush === 'open', 'blocked-cell': gridProperties.currentEditorMazeBrush === 'blocked'}"></div>
+        <div *ngIf="gridProperties.currentMazeEditorBrush !== 'none'" class="sample-cell" [ngClass]="{'starting-cell': gridProperties.currentMazeEditorBrush === 'start', 'finishing-cell': gridProperties.currentMazeEditorBrush === 'finish', 'open-cell': gridProperties.currentMazeEditorBrush === 'open', 'blocked-cell': gridProperties.currentMazeEditorBrush === 'blocked'}"></div>
       </div>
-      <div *ngIf="gridProperties.currentEditorMazeBrush === 'none'">None</div>
+      <div *ngIf="gridProperties.currentMazeEditorBrush === 'none'">None</div>
     </div>
     <mat-divider></mat-divider>
     <div>
@@ -43,7 +43,7 @@
       </div>
       <div>
         Finish
-        <div class="sample-cell ending-cell" (click)="setEditorMazeBrush('end')"></div>
+        <div class="sample-cell finishing-cell" (click)="setEditorMazeBrush('finish')"></div>
       </div>
       <div>
         Open
@@ -55,8 +55,8 @@
       </div>
     </div>
   </div>
-
-  <div class="grid-maze-container">
-    <app-path-cell class="grid-maze-cell" *ngFor="let pathCell of gridMaze.grid;" [pathCell]="pathCell"></app-path-cell>
+  <div class="grid-maze-container" [style.width.rem]="gridProperties.cols">
+    <app-path-cell class="grid-maze-cell" *ngFor="let pathCell of gridMaze.grid;" [pathCell]="pathCell"
+      [currentMazeEditorBrush]="gridProperties.currentMazeEditorBrush"></app-path-cell>
   </div>
 </div>

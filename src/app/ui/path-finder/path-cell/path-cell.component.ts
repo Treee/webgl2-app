@@ -9,6 +9,7 @@ import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d'
 export class PathCellComponent implements OnInit, DoCheck {
 
   @Input() pathCell: Grid2DCell;
+  @Input() currentMazeEditorBrush: string;
   cellBackgroundColor = 'orange'; // default to orange
   differences: any;
 
@@ -24,6 +25,13 @@ export class PathCellComponent implements OnInit, DoCheck {
     if (changes) {
       // console.log('test', changes);
       this.setCellColor();
+    }
+  }
+
+  cellClicked() {
+    if (this.currentMazeEditorBrush !== 'none') {
+      this.pathCell.cellType = this.currentMazeEditorBrush;
+      console.log('i was clicked!!', this.pathCell);
     }
   }
 

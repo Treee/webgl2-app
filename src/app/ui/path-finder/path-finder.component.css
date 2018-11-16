@@ -12,7 +12,6 @@
   align-items: center;
   justify-content: center;
   width: 10rem;
-  height: 10rem;
 }
 
 .grid-maze-cell{
@@ -31,7 +30,7 @@
   background-color: green;
 }
 
-.ending-cell {
+.finishing-cell {
   background-color: red;
 }
 
