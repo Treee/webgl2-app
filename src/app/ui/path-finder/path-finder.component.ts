@@ -17,7 +17,8 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     defaultMaze: 'soooxoooox\nxoxoxoxxox\nxooxxooxox\nxxoxxxoxox\nxooxoooxox\nxoxxoxxxox\nxoxxoxooox\noooooxoxoo\noxoxxxoxxx\noxooooooof',
     rows: 10,
     cols: 10,
-    drawSpeed: 500
+    drawSpeed: 500,
+    currentEditorMazeBrush: 'none'
   };
 
   constructor() {
@@ -28,6 +29,10 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+  }
+
+  setEditorMazeBrush(brushType: string) {
+    this.gridProperties.currentEditorMazeBrush = brushType;
   }
 
   initializeGrid() {
