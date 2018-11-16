@@ -19,8 +19,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   };
 
   constructor() {
-    this.gridMaze = new Grid2D();
-    this.initializeGrid();
+    this.resetMaze();
   }
 
   ngOnInit() {
@@ -38,10 +37,25 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   solveMaze() {
     const solution = this.gridMaze.aStar(this.gridMaze.startingPoint, this.gridMaze.finishingPoint);
     solution.reverse();
-    solution.forEach((cell) => {
-      cell['isSolution'] = true;
+    solution.forEach((cell, index) => {
+      // cell['isSolution'] = true;
+      this.displayStepVisually(cell, index);
     });
     console.log('solution', solution);
+  }
+
+  displayStepVisually(cell: Grid2DCell, index) {
+    ((_index) => {
+      setTimeout(() => {
+        console.log('displaying cell', cell);
+        cell['isSolution'] = true;
+      }, (500 * _index));
+    })(index);
+  }
+
+  resetMaze() {
+    this.gridMaze = new Grid2D();
+    this.initializeGrid();
   }
 
   onError(error) {
