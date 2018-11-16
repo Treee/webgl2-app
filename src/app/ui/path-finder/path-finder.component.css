@@ -11,14 +11,11 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: 12rem;
+  width: 10rem;
   height: 10rem;
 }
 
 .grid-maze-cell{
-  display: inline-block;
   width: 1rem;
   height: 1rem;
-  background-color: red;
-  border: 1px solid black;
 }

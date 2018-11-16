@@ -1,0 +1,13 @@
+app-path-cell{
+  display: block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.grid-maze-cell{
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-color: red;
+  border: 1px solid black;
+}
