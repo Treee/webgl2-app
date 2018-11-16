@@ -14,9 +14,10 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   visualDisplaySteps = [];
 
   gridProperties: any = {
+    defaultMaze: 'soooxoooox\nxoxoxoxxox\nxooxxooxox\nxxoxxxoxox\nxooxoooxox\nxoxxoxxxox\nxoxxoxooox\noooooxoxoo\noxoxxxoxxx\noxooooooof',
     rows: 10,
     cols: 10,
-    defaultMaze: 'soooxoooox\nxoxoxoxxox\nxooxxooxox\nxxoxxxoxox\nxooxoooxox\nxoxxoxxxox\nxoxxoxooox\noooooxoxoo\noxoxxxoxxx\noxooooooof'
+    drawSpeed: 500
   };
 
   constructor() {
@@ -48,9 +49,9 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   displayStepVisually(cell: Grid2DCell, index) {
     ((_index) => {
       const timeoutHandle = setTimeout(() => {
-        console.log('displaying cell', cell);
+        console.log('displaying cell with draw speed' + this.gridProperties.drawSpeed, cell);
         cell['isSolution'] = true;
-      }, (250 * _index));
+      }, (this.gridProperties.drawSpeed * _index));
       this.visualDisplaySteps.push(timeoutHandle);
     })(index);
   }

@@ -2,12 +2,17 @@
   <form class="path-finder-form">
     <mat-form-field class="full-width">
       <mat-label>Rows</mat-label>
-      <input matInput type="number" [min]="3" [value]="gridProperties.rows">
+      <input matInput type="number" [min]="3" [(ngModel)]="gridProperties.rows" name="rowsInput">
     </mat-form-field>
     <br />
     <mat-form-field class="full-width">
       <mat-label>Columns</mat-label>
-      <input matInput type="number" [min]="3" [value]="gridProperties.cols">
+      <input matInput type="number" [min]="3" [(ngModel)]="gridProperties.cols" name="colsInput">
+    </mat-form-field>
+    <br />
+    <mat-form-field class="full-width">
+      <mat-label>Solution Draw Speed (ms)</mat-label>
+      <input matInput type="number" [min]="50" [(ngModel)]="gridProperties.drawSpeed" name="drawSpeedInput">
     </mat-form-field>
     <br />
     <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="solveMaze()">Solve Maze</button>
