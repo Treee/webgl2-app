@@ -11,6 +11,7 @@ import { Grid2D, Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/
 export class PathFinderComponent implements OnInit, AfterViewInit {
 
   gridMaze: Grid2D;
+  visualDisplaySteps = [];
 
   gridProperties: any = {
     rows: 10,
@@ -46,16 +47,25 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   displayStepVisually(cell: Grid2DCell, index) {
     ((_index) => {
-      setTimeout(() => {
+      const timeoutHandle = setTimeout(() => {
         console.log('displaying cell', cell);
         cell['isSolution'] = true;
-      }, (500 * _index));
+      }, (250 * _index));
+      this.visualDisplaySteps.push(timeoutHandle);
     })(index);
   }
 
   resetMaze() {
+    this.resetTimeouts();
     this.gridMaze = new Grid2D();
     this.initializeGrid();
+  }
+
+  resetTimeouts() {
+    this.visualDisplaySteps.forEach((handle) => {
+      // console.log('stopping timeout', handle);
+      clearTimeout(handle);
+    });
   }
 
   onError(error) {
