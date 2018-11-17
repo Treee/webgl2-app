@@ -53,7 +53,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   displayStepVisually(cell: Grid2DCell, index) {
     ((_index) => {
       const timeoutHandle = setTimeout(() => {
-        console.log('displaying cell with draw speed' + this.gridProperties.drawSpeed, cell);
+        // console.log('displaying cell with draw speed: ' + this.gridProperties.drawSpeed, cell);
         cell['isSolution'] = true;
       }, (this.gridProperties.drawSpeed * _index));
       this.visualDisplaySteps.push(timeoutHandle);

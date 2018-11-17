@@ -31,7 +31,7 @@ export class PathCellComponent implements OnInit, DoCheck {
   cellClicked() {
     if (this.currentMazeEditorBrush !== 'none') {
       this.pathCell.cellType = this.currentMazeEditorBrush;
-      console.log('i was clicked!!', this.pathCell);
+      // console.log('i was clicked!!', this.pathCell);
     }
   }
 
