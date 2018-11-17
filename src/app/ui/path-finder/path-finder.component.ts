@@ -12,12 +12,14 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   gridMaze: Grid2D;
   visualDisplaySteps = [];
+  gridSolution = [];
 
   gridProperties: any = {
     rows: 10,
     cols: 10,
     drawSpeed: 250,
-    currentMazeEditorBrush: 'none'
+    currentMazeEditorBrush: 'none',
+    hasSolution: false,
   };
 
   constructor() {
@@ -42,12 +44,16 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   solveMaze() {
     const solution = this.gridMaze.aStar(this.gridMaze.startingPoint, this.gridMaze.finishingPoint);
-    solution.reverse();
-    solution.forEach((cell, index) => {
-      // cell['isSolution'] = true;
-      this.displayStepVisually(cell, index);
-    });
-    console.log('solution', solution);
+    if (solution) {
+      this.gridProperties.hasSolution = true;
+      this.gridSolution = solution;
+      // solution.reverse();
+      // solution.forEach((cell, index) => {
+      //   this.displayStepVisually(cell, index);
+      // });
+    } else {
+      this.gridProperties.hasSolution = false;
+    }
   }
 
   displayStepVisually(cell: Grid2DCell, index) {
@@ -60,8 +66,19 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     })(index);
   }
 
+  displaySteps() {
+    if (this.gridProperties.hasSolution && this.gridSolution) {
+      this.gridSolution.reverse();
+      this.gridSolution.forEach((cell, index) => {
+        this.displayStepVisually(cell, index);
+      });
+      console.log('solution', this.gridSolution);
+    }
+  }
+
   resetMaze() {
     this.resetTimeouts();
+    this.gridSolution = [];
     this.gridMaze = new Grid2D();
     this.initializeGrid();
   }

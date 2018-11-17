@@ -1,57 +1,66 @@
 <div>
-  <div class="path-finder-inputs">
-    <form class="path-finder-form">
-      <mat-form-field class="full-width">
-        <mat-label>Rows</mat-label>
-        <input matInput type="number" [min]="3" [(ngModel)]="gridProperties.rows" name="rowsInput">
-      </mat-form-field>
-      <br />
-      <mat-form-field class="full-width">
-        <mat-label>Columns</mat-label>
-        <input matInput type="number" [min]="3" [(ngModel)]="gridProperties.cols" name="colsInput">
-      </mat-form-field>
-      <br />
-      <mat-form-field class="full-width">
-        <mat-label>Solution Draw Speed (ms)</mat-label>
-        <input matInput type="number" [min]="50" [(ngModel)]="gridProperties.drawSpeed" name="drawSpeedInput">
-      </mat-form-field>
-      <br />
-      <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="solveMaze()">Solve Maze</button>
-      <br />
-      <br />
-      <button mat-raised-button class="user-input-reset-btn" color="warn" (click)="resetMaze()">Reset Maze</button>
-    </form>
-  </div>
-  <div class="path-finder-inputs">
-    <div><b>Maze Editor</b><br /><b>Editing Mode: {{gridProperties.currentMazeEditorBrush !== 'none' ? 'ON' : 'OFF'}}</b></div>
-    <div>
-      Currently Selected:
-      <div>
-        <div *ngIf="gridProperties.currentMazeEditorBrush !== 'none'" class="sample-cell" [ngClass]="{'starting-cell': gridProperties.currentMazeEditorBrush === 'start', 'finishing-cell': gridProperties.currentMazeEditorBrush === 'finish', 'open-cell': gridProperties.currentMazeEditorBrush === 'open', 'blocked-cell': gridProperties.currentMazeEditorBrush === 'blocked'}"></div>
-      </div>
-      <div *ngIf="gridProperties.currentMazeEditorBrush === 'none'">None</div>
+  <div>
+    <div class="path-finder-inputs">
+      <form class="path-finder-form">
+        <mat-form-field class="full-width">
+          <mat-label>Rows</mat-label>
+          <input matInput type="number" [min]="3" [(ngModel)]="gridProperties.rows" name="rowsInput">
+        </mat-form-field>
+        <br />
+        <mat-form-field class="full-width">
+          <mat-label>Columns</mat-label>
+          <input matInput type="number" [min]="3" [(ngModel)]="gridProperties.cols" name="colsInput">
+        </mat-form-field>
+        <br />
+        <mat-form-field class="full-width">
+          <mat-label>Solution Draw Speed (ms)</mat-label>
+          <input matInput type="number" [min]="50" [(ngModel)]="gridProperties.drawSpeed" name="drawSpeedInput">
+        </mat-form-field>
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="solveMaze()">Solve Maze</button>
+        <br />
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" color="accent" (click)="displaySteps()">Display Steps</button>
+        <br />
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" color="warn" (click)="resetMaze()">Reset Maze</button>
+      </form>
     </div>
-    <mat-divider></mat-divider>
-    <div>
+    <div class="path-finder-inputs">
       <div>
-        Clear Brush
-        <div class="sample-cell" (click)="setEditorMazeBrush('none')"></div>
+        <b>Maze Editor</b><br />
+        <b>Editing Mode: {{gridProperties.currentMazeEditorBrush !== 'none' ? 'ON' : 'OFF'}}</b><br />
+        <b>Has Solution?: {{gridProperties.hasSolution ? 'YES' : 'NO'}}</b><br />
       </div>
       <div>
-        Start
-        <div class="sample-cell starting-cell" (click)="setEditorMazeBrush('start')"></div>
+        Currently Selected:
+        <div>
+          <div *ngIf="gridProperties.currentMazeEditorBrush !== 'none'" class="sample-cell" [ngClass]="{'starting-cell': gridProperties.currentMazeEditorBrush === 'start', 'finishing-cell': gridProperties.currentMazeEditorBrush === 'finish', 'open-cell': gridProperties.currentMazeEditorBrush === 'open', 'blocked-cell': gridProperties.currentMazeEditorBrush === 'blocked'}"></div>
+        </div>
+        <div *ngIf="gridProperties.currentMazeEditorBrush === 'none'">None</div>
       </div>
+      <mat-divider></mat-divider>
       <div>
-        Finish
-        <div class="sample-cell finishing-cell" (click)="setEditorMazeBrush('finish')"></div>
-      </div>
-      <div>
-        Open
-        <div class="sample-cell open-cell" (click)="setEditorMazeBrush('open')"></div>
-      </div>
-      <div>
-        Blocked
-        <div class="sample-cell blocked-cell" (click)="setEditorMazeBrush('blocked')"></div>
+        <div>
+          Clear Brush
+          <div class="sample-cell" (click)="setEditorMazeBrush('none')"></div>
+        </div>
+        <div>
+          Start
+          <div class="sample-cell starting-cell" (click)="setEditorMazeBrush('start')"></div>
+        </div>
+        <div>
+          Finish
+          <div class="sample-cell finishing-cell" (click)="setEditorMazeBrush('finish')"></div>
+        </div>
+        <div>
+          Open
+          <div class="sample-cell open-cell" (click)="setEditorMazeBrush('open')"></div>
+        </div>
+        <div>
+          Blocked
+          <div class="sample-cell blocked-cell" (click)="setEditorMazeBrush('blocked')"></div>
+        </div>
       </div>
     </div>
   </div>
