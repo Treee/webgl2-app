@@ -86,10 +86,17 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   }
 
   resetMaze() {
-    this.resetTimeouts();
-    this.gridSolution = [];
+    this.resetDisplaySteps();
     this.gridMaze = new Grid2D();
     this.initializeGrid();
+  }
+
+  resetDisplaySteps() {
+    this.resetTimeouts();
+    this.gridSolution.forEach((cell) => {
+      delete cell['isSolution'];
+    });
+    this.gridSolution = [];
   }
 
   resetTimeouts() {
