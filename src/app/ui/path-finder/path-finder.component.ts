@@ -20,6 +20,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     drawSpeed: 250,
     currentMazeEditorBrush: 'none',
     hasSolution: false,
+    isDrawing: false
   };
 
   constructor() {
@@ -34,6 +35,14 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   setEditorMazeBrush(brushType: string) {
     this.gridProperties.currentMazeEditorBrush = brushType;
+  }
+
+  startDraw() {
+    this.gridProperties.isDrawing = true;
+  }
+
+  stopDraw() {
+    this.gridProperties.isDrawing = false;
   }
 
   initializeGrid() {

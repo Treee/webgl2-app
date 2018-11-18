@@ -10,6 +10,8 @@ export class PathCellComponent implements OnInit, DoCheck {
 
   @Input() pathCell: Grid2DCell;
   @Input() currentMazeEditorBrush: string;
+  @Input() isDrawing: boolean;
+
   cellBackgroundColor = 'orange'; // default to orange
   differences: any;
 
@@ -30,6 +32,13 @@ export class PathCellComponent implements OnInit, DoCheck {
 
   cellClicked() {
     if (this.currentMazeEditorBrush !== 'none') {
+      this.pathCell.cellType = this.currentMazeEditorBrush;
+      // console.log('i was clicked!!', this.pathCell);
+    }
+  }
+
+  cellEntered() {
+    if (this.isDrawing && this.currentMazeEditorBrush !== 'none') {
       this.pathCell.cellType = this.currentMazeEditorBrush;
       // console.log('i was clicked!!', this.pathCell);
     }

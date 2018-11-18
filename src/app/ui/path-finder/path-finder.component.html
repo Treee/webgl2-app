@@ -64,8 +64,8 @@
       </div>
     </div>
   </div>
-  <div class="grid-maze-container" [style.width.rem]="gridProperties.cols">
-    <app-path-cell class="grid-maze-cell" *ngFor="let pathCell of gridMaze.grid;" [pathCell]="pathCell"
+  <div class="grid-maze-container" [style.width.rem]="gridProperties.cols" (mousedown)="startDraw()" (mouseup)="stopDraw()">
+    <app-path-cell class="grid-maze-cell" *ngFor="let pathCell of gridMaze.grid;" [pathCell]="pathCell" [isDrawing]="gridProperties.isDrawing"
       [currentMazeEditorBrush]="gridProperties.currentMazeEditorBrush"></app-path-cell>
   </div>
 </div>
