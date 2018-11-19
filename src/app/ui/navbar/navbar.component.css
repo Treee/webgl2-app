@@ -8,8 +8,10 @@
 }
 
 .navbar-item{
-    padding: 1.25rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
     cursor: pointer;
+    font-size: large;
 }
 
 .navbar-menu-button {

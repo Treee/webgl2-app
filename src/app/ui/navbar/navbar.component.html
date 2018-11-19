@@ -2,9 +2,9 @@
   <mat-toolbar color="primary">
     <mat-toolbar-row class="navbar-toolbar">
       <div class="navbar-items">
-        <div class="navbar-item" id="{{navbarItem.name}}" *ngFor="let navbarItem of navbarItems">
-          <span routerLink="{{navbarItem.endpoint}}">{{navbarItem.name}}</span>
-        </div>
+        <a class="navbar-item" mat-button id="{{navbarItem.name}}" *ngFor="let navbarItem of navbarItems" routerLink="{{navbarItem.endpoint}}">
+          <span class="" >{{navbarItem.name}}</span>
+        </a>
       </div>
       <div class="navbar-menu">
         <button class="navbar-menu-button" mat-icon-button [matMenuTriggerFor]="appMenu">
