@@ -26,3 +26,11 @@ The `buildspec.yml` file contains the orchestration definition that builds the e
 ## AWS S3 Bucket
 
 After the code successfully builds, the site is deployed to an S3 bucket which hosts the site.
+
+## 2D
+
+The 2D tab is the 2D canvas game engine sandbox. It is used to provide helpful insight 
+
+## Pathfinder
+
+The Pathfinder tab has the maze editor and A* pathfinder algorithm
