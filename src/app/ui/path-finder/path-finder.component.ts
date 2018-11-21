@@ -25,9 +25,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     drawSpeed: 250,
     currentMazeEditorBrush: 'none',
     hasSolution: false,
-    isDrawing: false,
-    hasStart: false,
-    hasDestination: false
+    isDrawing: false
   };
 
   constructor(private errorHandlerService: ErrorHandlerService) {
@@ -64,24 +62,28 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
       return cell.cellType === 'start';
     });
 
+    if (!start) {
+      this.errorHandlerService.error('There is no starting point.');
+    }
+
     const destination = this.gridMaze.grid.find((cell) => {
       return cell.cellType === 'finish';
     });
 
+    if (!destination) {
+      this.errorHandlerService.error('There is no destination.');
+    }
+
     if (start && destination) {
-      this.gridProperties.hasStart = true;
-      this.gridProperties.hasDestination = true;
       const solution = this.pathFinder.findPath(start, destination, this.gridProperties.rows, this.gridProperties.cols);
       if (solution) {
         this.gridProperties.hasSolution = true;
         this.gridSolution = solution;
+        this.errorHandlerService.success('Solution found for this maze.');
       } else {
         this.gridProperties.hasSolution = false;
         this.errorHandlerService.error('This maze has no solution.');
       }
-    } else {
-      this.gridProperties.hasStart = false;
-      this.gridProperties.hasDestination = false;
     }
   }
 
