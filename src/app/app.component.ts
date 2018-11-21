@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MessageToasterComponent } from './ui/message-toaster/message-toaster.component';
 
 @Component({
   selector: 'app-root',

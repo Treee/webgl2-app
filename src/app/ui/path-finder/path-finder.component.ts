@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+
 import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
 import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
 import { AStar } from 'tree-xyz-webgl2-engine/dist/algorithms/a-star';
 
-// import { PathCellComponent } from './path-cell/path-cell.component';
+import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { Alert } from '../../services/error-handler/alert';
 
 @Component({
   selector: 'app-path-finder',
@@ -28,7 +30,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     hasDestination: false
   };
 
-  constructor() {
+  constructor(private errorHandlerService: ErrorHandlerService) {
     this.resetMaze();
   }
 
@@ -75,6 +77,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
         this.gridSolution = solution;
       } else {
         this.gridProperties.hasSolution = false;
+        this.errorHandlerService.error('This maze has no solution.');
       }
     } else {
       this.gridProperties.hasStart = false;

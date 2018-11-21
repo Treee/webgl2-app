@@ -16,6 +16,9 @@ import {
   MatInputModule
 } from '@angular/material';
 
+// NG Bootstrap Import
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 // Components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +45,7 @@ import { MessageToasterComponent } from './ui/message-toaster/message-toaster.co
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    NgbModule,
     FormsModule,
     MatToolbarModule,
     MatMenuModule,
