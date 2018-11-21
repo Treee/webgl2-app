@@ -9,6 +9,10 @@ export class ErrorHandlerService implements ErrorHandler {
   constructor(private router: Router) { }
 
   public handleError(error: any) {
+    this.showError(ErrorHandlerService.DEFAULT_ERROR_TITLE);
+  }
+
+  private showError(message: string) {
 
   }
 

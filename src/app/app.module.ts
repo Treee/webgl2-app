@@ -27,6 +27,7 @@ import { PathCellComponent } from './ui/path-finder/path-cell/path-cell.componen
 
 // Services
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
+import { MessageToasterComponent } from './ui/message-toaster/message-toaster.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ErrorHandlerService } from './services/error-handler/error-handler.serv
     Playground2dComponent,
     NavbarComponent,
     PathFinderComponent,
-    PathCellComponent
+    PathCellComponent,
+    MessageToasterComponent
   ],
   imports: [
     BrowserModule,
