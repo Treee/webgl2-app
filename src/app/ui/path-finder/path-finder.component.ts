@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { Grid2D, Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
+import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
+import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
+import { AStar } from 'tree-xyz-webgl2-engine/dist/algorithms/a-star';
 
 // import { PathCellComponent } from './path-cell/path-cell.component';
 
@@ -11,8 +13,9 @@ import { Grid2D, Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/
 export class PathFinderComponent implements OnInit, AfterViewInit {
 
   gridMaze: Grid2D;
+  pathFinder: AStar;
   visualDisplaySteps = [];
-  gridSolution = [];
+  gridSolution: Grid2DCell[] | any = [];
 
   gridProperties: any = {
     rows: 10,
@@ -20,7 +23,9 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     drawSpeed: 250,
     currentMazeEditorBrush: 'none',
     hasSolution: false,
-    isDrawing: false
+    isDrawing: false,
+    hasStart: false,
+    hasDestination: false
   };
 
   constructor() {
@@ -52,16 +57,32 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   }
 
   solveMaze() {
-    const solution = this.gridMaze.aStar(this.gridMaze.startingPoint, this.gridMaze.finishingPoint);
-    if (solution) {
-      this.gridProperties.hasSolution = true;
-      this.gridSolution = solution;
-      // solution.reverse();
-      // solution.forEach((cell, index) => {
-      //   this.displayStepVisually(cell, index);
-      // });
+
+    const start = this.gridMaze.grid.find((cell) => {
+      return cell.cellType === 'start';
+    });
+
+    const destination = this.gridMaze.grid.find((cell) => {
+      return cell.cellType === 'finish';
+    });
+
+    if (start && destination) {
+      this.gridProperties.hasStart = true;
+      this.gridProperties.hasDestination = true;
+      const solution = this.pathFinder.findPath(start, destination, this.gridProperties.rows, this.gridProperties.cols);
+      if (solution) {
+        this.gridProperties.hasSolution = true;
+        this.gridSolution = solution;
+        // solution.reverse();
+        // solution.forEach((cell, index) => {
+        //   this.displayStepVisually(cell, index);
+        // });
+      } else {
+        this.gridProperties.hasSolution = false;
+      }
     } else {
-      this.gridProperties.hasSolution = false;
+      this.gridProperties.hasStart = false;
+      this.gridProperties.hasDestination = false;
     }
   }
 
@@ -88,6 +109,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   resetMaze() {
     this.resetDisplaySteps();
     this.gridMaze = new Grid2D();
+    this.pathFinder = new AStar();
     this.initializeGrid();
   }
 

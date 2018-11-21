@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, DoCheck, SimpleChanges, KeyValueDiffers } from '@angular/core';
-import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
+import { Component, OnInit, Input, DoCheck, KeyValueDiffers } from '@angular/core';
+import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
 
 @Component({
   selector: 'app-path-cell',
