@@ -73,10 +73,6 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
       if (solution) {
         this.gridProperties.hasSolution = true;
         this.gridSolution = solution;
-        // solution.reverse();
-        // solution.forEach((cell, index) => {
-        //   this.displayStepVisually(cell, index);
-        // });
       } else {
         this.gridProperties.hasSolution = false;
       }
