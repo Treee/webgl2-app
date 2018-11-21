@@ -1,3 +1,6 @@
+![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiMFA2azY2aW5EcGdBK1JWalE5UE40YjVIZndKWGRSczFscTQrUU9ZNlE0YnZubitSZDhIcnNtQ1VMRmNhNjNmVHZsTm5RRmtNeG5MbGlQdGY5eWtwMWJJPSIsIml2UGFyYW1ldGVyU3BlYyI6InJBK2dpSGVPL1A0ZXlYaUoiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # Webgl2App
 
 ## Development server
