@@ -44,7 +44,7 @@ export class Playground2dComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     this.initializeDefaultRenderableObjects(1);
-    this.startGameLoop();
+    // this.startGameLoop();
     this.redrawScreen();
   }
 
@@ -61,7 +61,7 @@ export class Playground2dComponent implements AfterViewInit {
     // this.playerObject.setScale(new Vec3(2, 2, 2));
     this.playerObject.translate(new Vec3(200, 200, 0));
     this.renderableObjects.push(this.playerObject);
-    console.log('creating player', this.playerObject);
+    // console.log('creating player', this.playerObject);
   }
 
   initializeDefaultRenderableObjects(numObjects: Number) {
@@ -76,7 +76,7 @@ export class Playground2dComponent implements AfterViewInit {
       newPoint.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
       this.particles.push(newPoint);
       this.renderableObjects.push(newPoint);
-      console.log('creating particle', newPoint);
+      // console.log('creating particle', newPoint);
     }
   }
 
@@ -87,7 +87,7 @@ export class Playground2dComponent implements AfterViewInit {
 
   redrawScreen() {
     this.renderableObjects.forEach((renderable) => {
-      this.printRenderableDebugInfo(renderable);
+      // this.printRenderableDebugInfo(renderable);
     });
     this.renderer.drawFrame(0, this.renderableObjects);
   }

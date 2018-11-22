@@ -5,7 +5,6 @@ import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-
 import { AStar } from 'tree-xyz-webgl2-engine/dist/algorithms/a-star';
 
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
-import { Alert } from '../../services/error-handler/alert';
 
 @Component({
   selector: 'app-path-finder',

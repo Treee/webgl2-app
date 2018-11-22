@@ -5,7 +5,7 @@
     Toggle Playground
   </button>
 </p>
-<div id="collapseExample" [ngbCollapse]="isPlaygroundCollapsed">
+<div id="collapseExample" [ngbCollapse]="true || isPlaygroundCollapsed">
   <div class="card">
     <div class="playground-container" (keypress)="userKeyPress($event)">
       <canvas id="myCanvas" #glCanvas class="canvas-renderer"></canvas>
