@@ -1,3 +1,19 @@
+.playground-container {
+  display: flex;
+  justify-content: center;
+}
+.user-input {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-input-reset-btn {
+  width: 100%;
+  align-self: center;
+  margin-top: 1rem;
+}
+
 .canvas-renderer {
   border: 1px solid black;
 }
