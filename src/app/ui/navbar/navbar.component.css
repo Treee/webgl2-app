@@ -17,3 +17,7 @@
 .navbar-menu-button {
     margin: 0.5rem;
 }
+
+a:hover {
+    color: #ff8400;
+}
