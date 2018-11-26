@@ -4,7 +4,9 @@ import { BoxGeometry, Point2D, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl
 import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
 import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
 import { AStar } from 'tree-xyz-webgl2-engine/dist/algorithms/a-star';
-import { LiteralExpr } from '@angular/compiler';
+
+import { ErrorHandlerService } from '../../../services/error-handler/error-handler.service';
+import { Vector3 } from 'three';
 
 @Component({
   selector: 'app-rts-map',
@@ -18,6 +20,11 @@ export class RtsMapComponent implements AfterViewInit {
   mapGrid: Grid2D;
   pathFinder: AStar;
 
+  unit: BoxGeometry;
+
+  pathSolution: Grid2DCell[] | any;
+  currentSolutionCell = 0;
+
   renderableObjects: BoxGeometry[];
 
   renderer: RendererEngine;
@@ -27,9 +34,10 @@ export class RtsMapComponent implements AfterViewInit {
 
   gameLoop: any;
 
-  constructor() {
+  constructor(private errorHandlerService: ErrorHandlerService) {
     this.renderableObjects = [];
     this.renderer = new RendererEngine();
+    this.pathFinder = new AStar();
     this.initializeGrid();
   }
 
@@ -45,20 +53,25 @@ export class RtsMapComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     this.initializeDefaultRenderableObjects(1);
-    // this.startGameLoop();
+    this.startGameLoop();
     this.redrawScreen();
   }
 
   startGameLoop() {
     this.gameLoop = setInterval(() => {
       this.oneGameLoop();
-    }, 3000);
+    }, 60);
   }
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     // this.initializeParticles(1);
     this.initializeGridCells(this.mapGrid.grid, this.mapGrid.gridRows, this.mapGrid.gridCols);
+    this.unit = new BoxGeometry();
+    this.unit.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+    this.unit.setColor(new Vec4(0, 0, 1, 1));
+    // this.unit.setScale(new Vec3(.25, .25, .25));
+    this.renderableObjects.push(this.unit);
   }
 
   initializeGridCells(grid: Grid2DCell[], totalRows: number, totalCols: number) {
@@ -95,6 +108,7 @@ export class RtsMapComponent implements AfterViewInit {
 
   oneGameLoop() {
     // this.applyUserInput();
+    this.updateUnit(60);
     this.redrawScreen();
   }
 
@@ -122,6 +136,63 @@ export class RtsMapComponent implements AfterViewInit {
   }
 
   solveMaze() {
+    const start = this.mapGrid.grid.find((cell) => {
+      return cell.cellType === 'start';
+    });
 
+    if (!start) {
+      this.errorHandlerService.error('There is no starting point.');
+    }
+
+    const destination = this.mapGrid.grid.find((cell) => {
+      return cell.cellType === 'finish';
+    });
+
+    if (!destination) {
+      this.errorHandlerService.error('There is no destination.');
+    }
+    const solution = this.pathFinder.findPath(start, destination, this.mapGrid.gridRows, this.mapGrid.gridCols);
+    if (solution) {
+      this.pathSolution = solution;
+      this.pathSolution.reverse();
+    } else {
+      this.pathSolution = null;
+    }
+  }
+
+  updateUnit(dt: number) {
+    if (this.pathSolution) {
+      let destinationCell = this.pathSolution[this.currentSolutionCell];
+      let gridCell = this.renderableObjects[destinationCell.gridIndex];
+      let destination = new Vec3(gridCell.x, gridCell.y, gridCell.z);
+      if (this.areVectorsEqual(this.unit.getPosition(), destination)) {
+        // move to the next cell
+        console.log('moving to the next cell');
+        console.log('gridCell', gridCell);
+        console.log('currentPosition', this.unit.getPosition());
+        console.log('destination', destination);
+        console.log('destinationCell', destinationCell);
+        this.currentSolutionCell++;
+        destinationCell = this.pathSolution[this.currentSolutionCell];
+        gridCell = this.renderableObjects[destinationCell.gridIndex];
+        destination = gridCell.getPosition();
+      }
+      const newPosition = this.unit.lerp(this.unit.getPosition(), destination, 1);
+
+      console.log('new position', newPosition);
+      this.unit.translate(newPosition);
+
+      if (destinationCell.cellType === 'finish') {
+        this.pathSolution = null;
+      }
+
+    }
+  }
+
+  areVectorsEqual(a: Vec3, b: Vec3) {
+    const vectorsAreEqual = (a.x === b.x && a.y === b.y && a.z === b.z);
+    const distance = Math.sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)) + ((a.z - b.z) * (a.z - b.z)));
+    const vectorsAreBasicallyEqual = distance < 0;
+    return vectorsAreEqual || vectorsAreBasicallyEqual;
   }
 }
