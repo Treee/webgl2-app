@@ -63,6 +63,19 @@
       </div>
     </div>
   </div>
+  <div>
+    <section>
+      <p>
+        Left click the grid to set a starting point.
+      </p>
+      <p>
+        Right click the grid to set a destination.
+      </p>
+      <p>
+        Click Solve Maze to display the solution.
+      </p>
+    </section>
+  </div>
   <div class="grid-maze-container" [style.width.rem]="gridProperties.cols" (mousedown)="startDraw($event)" (mouseup)="stopDraw($event)"
     (click)="setStart($event)" (contextmenu)="setDestination($event)">
     <app-path-cell class="grid-maze-cell" *ngFor="let pathCell of gridMaze.grid;" [pathCell]="pathCell" [isDrawing]="gridProperties.isDrawing"
