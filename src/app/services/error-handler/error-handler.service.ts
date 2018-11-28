@@ -1,5 +1,5 @@
 import { Injectable, ErrorHandler } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs/Rx';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { Alert, AlertType } from './alert';
 
@@ -18,7 +18,7 @@ export class ErrorHandlerService implements ErrorHandler {
 
   // subscribe to alerts
   getAlert(alertId?: string): Observable<any> {
-    return this._errorMessages.asObservable().filter((x: Alert) => x && x.alertId === alertId);
+    return this._errorMessages.asObservable();//.filter((x: Alert) => x && x.alertId === alertId);
   }
 
   // convenience methods
