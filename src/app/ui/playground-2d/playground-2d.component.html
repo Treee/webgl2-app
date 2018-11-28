@@ -1,11 +1,11 @@
 <h3>2D Playground</h3>
 <p>
   <button type="button" class="btn btn-outline-primary" (click)="isPlaygroundCollapsed = !isPlaygroundCollapsed"
-    [attr.aria-expanded]="!isPlaygroundCollapsed" aria-controls="collapseExample">
+    [attr.aria-expanded]="isPlaygroundCollapsed" aria-controls="collapseExample">
     Toggle Playground
   </button>
 </p>
-<div id="collapseExample" [ngbCollapse]="true || isPlaygroundCollapsed">
+<div id="collapseExample" [ngbCollapse]="isPlaygroundCollapsed">
   <div class="card">
     <div class="playground-container" (keypress)="userKeyPress($event)">
       <canvas id="myCanvas" #glCanvas class="canvas-renderer"></canvas>
@@ -54,7 +54,7 @@
 </div>
 
 <p>
-  <button type="button" class="btn btn-outline-primary" (click)="isRtsCollapsed = !isRtsCollapsed" [attr.aria-expanded]="!isRtsCollapsed"
+  <button type="button" class="btn btn-outline-primary" (click)="isRtsCollapsed = !isRtsCollapsed" [attr.aria-expanded]="isRtsCollapsed"
     aria-controls="collapseExample">
     Toggle RTS
   </button>
