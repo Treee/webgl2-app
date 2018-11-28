@@ -18,6 +18,10 @@
           <input matInput type="number" [min]="50" [(ngModel)]="gridProperties.drawSpeed" name="drawSpeedInput">
         </mat-form-field>
         <br />
+        <section class="full-width">
+          <mat-slide-toggle [checked]="gridProperties.autoDrawSolution">Auto Draw Solution</mat-slide-toggle>
+        </section>
+        <br />
         <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="solveMaze()">Solve Maze</button>
         <br />
         <br />
@@ -49,14 +53,6 @@
           <div class="sample-cell" (click)="setEditorMazeBrush('none')"></div>
         </div>
         <div>
-          Start
-          <div class="sample-cell starting-cell" (click)="setEditorMazeBrush('start')"></div>
-        </div>
-        <div>
-          Finish
-          <div class="sample-cell finishing-cell" (click)="setEditorMazeBrush('finish')"></div>
-        </div>
-        <div>
           Open
           <div class="sample-cell open-cell" (click)="setEditorMazeBrush('open')"></div>
         </div>
@@ -67,8 +63,9 @@
       </div>
     </div>
   </div>
-  <div class="grid-maze-container" [style.width.rem]="gridProperties.cols" (mousedown)="startDraw()" (mouseup)="stopDraw()">
+  <div class="grid-maze-container" [style.width.rem]="gridProperties.cols" (mousedown)="startDraw($event)" (mouseup)="stopDraw($event)"
+    (click)="setStart($event)" (contextmenu)="setDestination($event)">
     <app-path-cell class="grid-maze-cell" *ngFor="let pathCell of gridMaze.grid;" [pathCell]="pathCell" [isDrawing]="gridProperties.isDrawing"
-      [currentMazeEditorBrush]="gridProperties.currentMazeEditorBrush"></app-path-cell>
+      [currentMazeEditorBrush]="gridProperties.currentMazeEditorBrush" (notifyParent)="getNotification($event)"></app-path-cell>
   </div>
 </div>

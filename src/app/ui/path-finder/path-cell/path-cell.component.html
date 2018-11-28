@@ -1,1 +1,2 @@
-<div class="grid-maze-cell" [style.background]="cellBackgroundColor" (mousedown)="cellClicked()" (mouseenter)="cellEntered()"></div>
+<div class="grid-maze-cell" [style.background]="cellBackgroundColor" (click)="cellClicked()" (mousedown)="cellDown()"
+  (mouseenter)="cellEntered()" (contextmenu)="rightClicked()"></div>

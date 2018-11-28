@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DoCheck, KeyValueDiffers } from '@angular/core';
+import { Component, OnInit, Input, DoCheck, KeyValueDiffers, Output, EventEmitter } from '@angular/core';
 import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
 
 @Component({
@@ -11,6 +11,8 @@ export class PathCellComponent implements OnInit, DoCheck {
   @Input() pathCell: Grid2DCell;
   @Input() currentMazeEditorBrush: string;
   @Input() isDrawing: boolean;
+
+  @Output() notifyParent: EventEmitter<any> = new EventEmitter();
 
   cellBackgroundColor = 'orange'; // default to orange
   differences: any;
@@ -31,10 +33,33 @@ export class PathCellComponent implements OnInit, DoCheck {
   }
 
   cellClicked() {
+    // emit an event that this cell was clicked
+    this.notifyParent.emit({ message: 'clear-start' });
+    this.pathCell.cellType = 'start';
+    const message = {
+      message: 'set-start',
+      cell: this.pathCell
+    };
+    this.notifyParent.emit(message);
+  }
+
+  rightClicked() {
+    // emit an event that this cell was clicked
+    this.notifyParent.emit({ message: 'clear-finish' });
+    this.pathCell.cellType = 'finish';
+    const message = {
+      message: 'set-finish',
+      cell: this.pathCell
+    };
+    this.notifyParent.emit(message);
+  }
+
+  cellDown() {
     if (this.currentMazeEditorBrush !== 'none') {
       this.pathCell.cellType = this.currentMazeEditorBrush;
       // console.log('i was clicked!!', this.pathCell);
     }
+    return false;
   }
 
   cellEntered() {
@@ -42,6 +67,7 @@ export class PathCellComponent implements OnInit, DoCheck {
       this.pathCell.cellType = this.currentMazeEditorBrush;
       // console.log('i was clicked!!', this.pathCell);
     }
+    return false;
   }
 
   setCellColor() {

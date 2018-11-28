@@ -13,7 +13,8 @@ import {
   MatSliderModule,
   MatDividerModule,
   MatListModule,
-  MatInputModule
+  MatInputModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 // NG Bootstrap Import
@@ -57,6 +58,7 @@ import { RtsMapComponent } from './ui/playground-2d/rts-map/rts-map.component';
     MatDividerModule,
     MatListModule,
     MatInputModule,
+    MatSlideToggleModule,
     AppRoutingModule
   ],
   providers: [

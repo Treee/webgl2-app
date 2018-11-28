@@ -23,8 +23,11 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     cols: 10,
     drawSpeed: 250,
     currentMazeEditorBrush: 'none',
+    autoDrawSolution: true,
     hasSolution: false,
-    isDrawing: false
+    isDrawing: false,
+    startingCell: null,
+    destinationCell: null
   };
 
   constructor(private errorHandlerService: ErrorHandlerService) {
@@ -41,12 +44,45 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     this.gridProperties.currentMazeEditorBrush = brushType;
   }
 
+  setStart() {
+    // set the new starting cell
+    return false;
+  }
+
+  setDestination() {
+    // set the new destination cell
+    return false;
+  }
+
   startDraw() {
     this.gridProperties.isDrawing = true;
+    return false;
   }
 
   stopDraw() {
     this.gridProperties.isDrawing = false;
+    return false;
+  }
+
+  getNotification(event) {
+    console.log('event', event);
+    if (event.message === 'clear-start') {
+      // console.log('need to clear', this.gridProperties.startingCell);
+      if (this.gridProperties.startingCell) {
+        this.gridProperties.startingCell.cellType = 'open';
+      }
+      this.gridProperties.startingCell = null;
+    } else if (event.message === 'clear-finish') {
+      // console.log('need to clear', this.gridProperties.destinationCell);
+      if (this.gridProperties.destinationCell) {
+        this.gridProperties.destinationCell.cellType = 'open';
+      }
+      this.gridProperties.destinationCell = null;
+    } else if (event.message === 'set-start') {
+      this.gridProperties.startingCell = event.cell;
+    } else if (event.message === 'set-finish') {
+      this.gridProperties.destinationCell = event.cell;
+    }
   }
 
   initializeGrid() {
@@ -56,34 +92,31 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   }
 
   solveMaze() {
-
-    const start = this.gridMaze.grid.find((cell) => {
-      return cell.cellType === 'start';
-    });
-
-    if (!start) {
+    this.resetDisplaySteps();
+    if (!this.gridProperties.startingCell) {
       this.errorHandlerService.error('There is no starting point.');
     }
 
-    const destination = this.gridMaze.grid.find((cell) => {
-      return cell.cellType === 'finish';
-    });
-
-    if (!destination) {
+    if (!this.gridProperties.destinationCell) {
       this.errorHandlerService.error('There is no destination.');
     }
 
-    if (start && destination) {
-      const solution = this.pathFinder.findPath(start, destination, this.gridProperties.rows, this.gridProperties.cols);
+    if (this.gridProperties.startingCell && this.gridProperties.destinationCell) {
+      const solution = this.pathFinder.findPath(this.gridProperties.startingCell, this.gridProperties.destinationCell, this.gridProperties.rows, this.gridProperties.cols);
       if (solution) {
         this.gridProperties.hasSolution = true;
         this.gridSolution = solution;
-        this.errorHandlerService.success('Solution found for this maze.');
+        if (this.gridProperties.autoDrawSolution) {
+          this.displaySteps();
+        } else {
+          this.errorHandlerService.success('Solution found for this maze.');
+        }
       } else {
         this.gridProperties.hasSolution = false;
         this.errorHandlerService.error('This maze has no solution.');
       }
     }
+
   }
 
   displayStepVisually(cell: Grid2DCell, index) {
@@ -111,6 +144,15 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     this.gridMaze = new Grid2D();
     this.pathFinder = new AStar();
     this.initializeGrid();
+
+    this.gridProperties.rows = 10;
+    this.gridProperties.cols = 10;
+    this.gridProperties.drawSpeed = 250;
+    this.gridProperties.currentMazeEditorBrush = 'none';
+    this.gridProperties.hasSolution = false;
+    this.gridProperties.isDrawing = false;
+    this.gridProperties.startingCell = null;
+    this.gridProperties.destinationCell = null;
   }
 
   resetDisplaySteps() {
