@@ -8,11 +8,10 @@ phases:
         commands:
             - echo Installing source NPM dependencies...
             - npm install
-            - npm install -g @angular/cli
     build:
         commands:
             - echo Build started on `date`
-            - ng build ${BUILD_ENV}
+            - npm run build-prod
     post_build:
          commands:
             - aws s3 cp dist s3://${S3_BUCKET} --recursive
