@@ -1,11 +1,11 @@
 <h3>2D Playground</h3>
 <p>
   <button type="button" class="btn btn-outline-primary" (click)="isPlaygroundCollapsed = !isPlaygroundCollapsed"
-    [attr.aria-expanded]="!isPlaygroundCollapsed" aria-controls="collapseExample">
+    [attr.aria-expanded]="isPlaygroundCollapsed" aria-controls="collapseExample">
     Toggle Playground
   </button>
 </p>
-<div id="collapseExample" [ngbCollapse]="true || isPlaygroundCollapsed">
+<div id="collapseExample" [ngbCollapse]="isPlaygroundCollapsed">
   <div class="card">
     <div class="playground-container" (keypress)="userKeyPress($event)">
       <canvas id="myCanvas" #glCanvas class="canvas-renderer"></canvas>
@@ -15,40 +15,35 @@
           <mat-list-item>
             <div class="example-div">X:</div>
             <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="this.width" [min]="0"
-              [step]="1" [thumb-label]="true" [tick-interval]="1" [(ngModel)]="userInput.x" [vertical]="false"
-              (ngModelChange)="saveInput('translateX')">
+              [step]="1" thumbLabel tickInterval="1" [(ngModel)]="userInput.x" [vertical]="false" (ngModelChange)="saveInput('translateX')">
             </mat-slider>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
             <div class="example-div">Y:</div>
             <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="this.height" [min]="0"
-              [step]="1" [thumb-label]="true" [tick-interval]="1" [(ngModel)]="userInput.y" [vertical]="false"
-              (ngModelChange)="saveInput('translateY')">
+              [step]="1" thumbLabel tickInterval="1" [(ngModel)]="userInput.y" [vertical]="false" (ngModelChange)="saveInput('translateY')">
             </mat-slider>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
             <div class="example-div">Rotation:</div>
             <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="360" [min]="0" [step]="1"
-              [thumb-label]="true" [tick-interval]="1" [(ngModel)]="userInput.rotate" [vertical]="false"
-              (ngModelChange)="saveInput('rotate')">
+              thumbLabel tickInterval="1" [(ngModel)]="userInput.rotate" [vertical]="false" (ngModelChange)="saveInput('rotate')">
             </mat-slider>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
             <div class="example-div">Scale X:</div>
             <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="5" [min]="-5" [step]="0.01"
-              [thumb-label]="true" [tick-interval]="0.05" [(ngModel)]="userInput.scaleX" [vertical]="false"
-              (ngModelChange)="saveInput('scaleX')">
+              thumbLabel tickInterval="0.05" [(ngModel)]="userInput.scaleX" [vertical]="false" (ngModelChange)="saveInput('scaleX')">
             </mat-slider>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
             <div class="example-div">Scale Y:</div>
             <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="5" [min]="-5" [step]="0.01"
-              [thumb-label]="true" [tick-interval]="0.05" [(ngModel)]="userInput.scaleY" [vertical]="false"
-              (ngModelChange)="saveInput('scaleY')">
+              thumbLabel tickInterval="0.05" [(ngModel)]="userInput.scaleY" [vertical]="false" (ngModelChange)="saveInput('scaleY')">
             </mat-slider>
           </mat-list-item>
           <mat-divider></mat-divider>
@@ -59,7 +54,7 @@
 </div>
 
 <p>
-  <button type="button" class="btn btn-outline-primary" (click)="isRtsCollapsed = !isRtsCollapsed" [attr.aria-expanded]="!isRtsCollapsed"
+  <button type="button" class="btn btn-outline-primary" (click)="isRtsCollapsed = !isRtsCollapsed" [attr.aria-expanded]="isRtsCollapsed"
     aria-controls="collapseExample">
     Toggle RTS
   </button>

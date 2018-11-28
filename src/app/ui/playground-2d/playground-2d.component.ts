@@ -10,6 +10,9 @@ export class Playground2dComponent implements AfterViewInit {
 
   @ViewChild('glCanvas') canvasElement: ElementRef;
 
+  isPlaygroundCollapsed = true;
+  isRtsCollapsed = false;
+
 
   playerObject: BoxGeometry;
   playerRotation: number;
