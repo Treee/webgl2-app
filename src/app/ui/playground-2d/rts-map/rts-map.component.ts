@@ -156,6 +156,7 @@ export class RtsMapComponent implements AfterViewInit {
       this.pathSolution = solution;
       this.pathSolution.reverse();
     } else {
+      this.errorHandlerService.error('Cannot find path to destination.');
       this.pathSolution = null;
     }
   }
