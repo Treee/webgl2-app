@@ -20,10 +20,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   currentlySelectedTemplate = -1;
   templates = [
-    { name: 'default', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
-    { name: 'test1', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
-    { name: 'another test', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
-    { name: 'default 1', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
+    { name: 'default', rows: 5, cols: 5, gridString: 'ooobo\nobobo\nooooo\nbobbb\nooooo' },
   ];
 
   gridProperties: any = {
@@ -40,6 +37,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   constructor(private errorHandlerService: ErrorHandlerService) {
     this.resetMaze();
+    this.loadLocalData();
   }
 
   ngOnInit() {
@@ -72,6 +70,27 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     this.gridProperties.isDrawing = false;
     this.gridProperties.startingCell = null;
     this.gridProperties.destinationCell = null;
+  }
+
+  saveMaze() {
+    const mazeName = `Maze #:${Math.random()}`;
+    const mazeGridString = this.gridMaze.serializeGrid();
+    this.templates.push({ name: mazeName, rows: mazeGridString.gridRows, cols: mazeGridString.gridCols, gridString: mazeGridString.gridString });
+    this.saveDataLocally();
+  }
+
+  deleteMaze() {
+    this.templates.splice(this.currentlySelectedTemplate, 1);
+    this.clearSelection();
+    this.saveDataLocally();
+  }
+
+  saveDataLocally() {
+    localStorage.setItem('saved-templates', JSON.stringify(this.templates));
+  }
+
+  loadLocalData() {
+    this.templates = JSON.parse(localStorage.getItem('saved-templates')) || [];
   }
 
   setStart(event) {
@@ -169,6 +188,10 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  clearSelection() {
+    this.currentlySelectedTemplate = -1;
+  }
+
   resetMaze() {
     this.resetDisplaySteps();
     this.gridMaze = new Grid2D();
@@ -183,6 +206,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     this.gridProperties.isDrawing = false;
     this.gridProperties.startingCell = null;
     this.gridProperties.destinationCell = null;
+    this.clearSelection();
   }
 
   resetDisplaySteps() {

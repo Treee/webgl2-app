@@ -79,13 +79,15 @@
           (click)="loadMaze()">Load Maze</button>
         <br />
         <br />
-        <button mat-raised-button class="user-input-reset-btn" [disabled]="currentlySelectedTemplate < 0" color="primary"
-          (click)="saveMaze()">Save Maze</button>
+        <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="saveMaze()">Save Maze</button>
         <br />
         <br />
         <button mat-raised-button class="user-input-reset-btn" [disabled]="currentlySelectedTemplate < 0" color="warn"
           (click)="deleteMaze()">Delete Maze</button>
         <br />
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" color="accent" (click)="clearSelection()">Clear
+          Selected Template</button>
       </div>
     </div>
 
