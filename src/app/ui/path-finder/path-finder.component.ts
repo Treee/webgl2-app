@@ -44,22 +44,22 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     this.gridProperties.currentMazeEditorBrush = brushType;
   }
 
-  setStart() {
+  setStart(event) {
     // set the new starting cell
     return false;
   }
 
-  setDestination() {
+  setDestination(event) {
     // set the new destination cell
     return false;
   }
 
-  startDraw() {
+  startDraw(event) {
     this.gridProperties.isDrawing = true;
     return false;
   }
 
-  stopDraw() {
+  stopDraw(event) {
     this.gridProperties.isDrawing = false;
     return false;
   }
