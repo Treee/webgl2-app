@@ -47,14 +47,14 @@ export class RtsMapComponent implements AfterViewInit {
   initializeGrid() {
     this.mapGrid = new Grid2D();
     // this.grid.initializeGrid(this.gridProperties.rows, this.gridProperties.cols);
-    this.mapGrid.initializeGrid(5, 5);
+    this.mapGrid.initializeGrid(10, 10);
     // this.grid.loadGrid(this.gridProperties.defaultMaze);
-    this.mapGrid.loadGrid('soobo\nobobo\nooooo\nbobbb\noooof');
+    this.mapGrid.loadGrid('oooboboooo\noooobbbboo\nobbobooooo\nooboobbobo\nboobbooobb\nbooooobooo\nbboooobbob\noobbbbooob\nbbooobboob\noboobooboo');
     this.mapGrid.connectGridCells();
     this.currentDestination = this.mapGrid.grid.find((cell) => {
       return cell.cellType === 'finish';
     });
-    this.currentDestinationIndex = this.currentDestination.gridIndex;
+    this.currentDestinationIndex = this.mapGrid.totalCells - 1;
   }
 
   ngAfterViewInit() {

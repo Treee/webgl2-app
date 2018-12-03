@@ -52,6 +52,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   selectTemplate(index) {
     this.currentlySelectedTemplate = index;
+    console.log('selected template', this.templates[index]);
   }
 
   loadMaze() {

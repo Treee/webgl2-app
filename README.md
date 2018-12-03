@@ -32,6 +32,9 @@ After the code successfully builds, the site is deployed to an S3 bucket which h
 
 ## 2D
 
+**Experimental**  
+Since WebGL is still in development, some browsers automatically disable webgl2. If you find the site not working because the GL context is not available then this might be your problem. Open your browser and put `about:flags` in the url to navigate to these settings. Search for WebGL and enable the tools.
+
 The 2D tab is the 2D canvas game engine sandbox. It is used to provide helpful insight 
 
 ## Pathfinder
