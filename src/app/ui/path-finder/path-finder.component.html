@@ -62,7 +62,35 @@
         </div>
       </div>
     </div>
+
+    <div class="path-finder-inputs">
+      <div>
+        <b>Saved Templates</b><br />
+      </div>
+      <div>
+        <ul class="list-group">
+          <li class="list-group-item" [ngClass]="{'active': currentlySelectedTemplate === i}" *ngFor="let template of templates; let i = index;"
+            (click)="selectTemplate(i)">{{template.name}}</li>
+        </ul>
+      </div>
+      <div>
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" [disabled]="currentlySelectedTemplate < 0" color="primary"
+          (click)="loadMaze()">Load Maze</button>
+        <br />
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" [disabled]="currentlySelectedTemplate < 0" color="primary"
+          (click)="saveMaze()">Save Maze</button>
+        <br />
+        <br />
+        <button mat-raised-button class="user-input-reset-btn" [disabled]="currentlySelectedTemplate < 0" color="warn"
+          (click)="deleteMaze()">Delete Maze</button>
+        <br />
+      </div>
+    </div>
+
   </div>
+
   <div>
     <section>
       <p>

@@ -18,6 +18,14 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   visualDisplaySteps = [];
   gridSolution: Grid2DCell[] | any = [];
 
+  currentlySelectedTemplate = -1;
+  templates = [
+    { name: 'default', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
+    { name: 'test1', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
+    { name: 'another test', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
+    { name: 'default 1', rows: 5, cols: 5, gridString: 'oooxo\noxoxo\nooooo\nxoxxx\nooooo' },
+  ];
+
   gridProperties: any = {
     rows: 10,
     cols: 10,
@@ -42,6 +50,28 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
 
   setEditorMazeBrush(brushType: string) {
     this.gridProperties.currentMazeEditorBrush = brushType;
+  }
+
+  selectTemplate(index) {
+    this.currentlySelectedTemplate = index;
+  }
+
+  loadMaze() {
+    this.resetDisplaySteps();
+    this.gridMaze = new Grid2D();
+    this.pathFinder = new AStar();
+    this.gridMaze.initializeGrid(this.templates[this.currentlySelectedTemplate].rows, this.templates[this.currentlySelectedTemplate].cols);
+    this.gridMaze.loadGrid(this.templates[this.currentlySelectedTemplate].gridString);
+    this.gridMaze.connectGridCells();
+
+    this.gridProperties.rows = this.templates[this.currentlySelectedTemplate].rows;
+    this.gridProperties.cols = this.templates[this.currentlySelectedTemplate].cols;
+    this.gridProperties.drawSpeed = 250;
+    this.gridProperties.currentMazeEditorBrush = 'none';
+    this.gridProperties.hasSolution = false;
+    this.gridProperties.isDrawing = false;
+    this.gridProperties.startingCell = null;
+    this.gridProperties.destinationCell = null;
   }
 
   setStart(event) {
