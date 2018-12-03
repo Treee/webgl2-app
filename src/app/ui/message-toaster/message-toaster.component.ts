@@ -31,21 +31,21 @@ export class MessageToasterComponent implements OnInit {
     this.alerts = this.alerts.filter(x => x !== alert);
   }
 
-  getCssStlye(alert: Alert) {
+  getAlertType(alert: Alert) {
     if (!alert) {
       return;
     }
-    let cssClass = '';
+    let alertType = '';
     if (alert.type === AlertType.Success) {
-      cssClass = 'alert alert-success alert-dismissable';
+      alertType = 'success';
     } else if (alert.type === AlertType.Error) {
-      cssClass = 'alert alert-danger alert-dismissable';
+      alertType = 'danger';
     } else if (alert.type === AlertType.Info) {
-      cssClass = 'alert alert-info alert-dismissable';
+      alertType = 'info';
     } else if (alert.type === AlertType.Warning) {
-      cssClass = 'alert alert-warning alert-dismissable';
+      alertType = 'warning';
     }
-    return cssClass;
+    return alertType;
   }
 
 }
