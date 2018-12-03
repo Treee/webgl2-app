@@ -36,4 +36,4 @@ The 2D tab is the 2D canvas game engine sandbox. It is used to provide helpful i
 
 ## Pathfinder
 
-The Pathfinder tab has the maze editor and A* pathfinder algorithm
+The Pathfinder tab has the maze editor and A* pathfinder algorithm  
