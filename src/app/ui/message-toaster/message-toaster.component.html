@@ -1,7 +1,3 @@
-<!-- <div [ngClass]="getCssStlye(alert)" class="popup" *ngFor="let alert of alerts">
-  {{alert.message}}
-  <a class="close" (click)="removeAlert(alert)">&times;</a>
-</div> -->
 <div class="alert-box">
   <p *ngFor="let alert of alerts" class="popup">
     <ngb-alert [type]="getAlertType(alert)" (close)="removeAlert(alert)">{{alert.message}}</ngb-alert>
