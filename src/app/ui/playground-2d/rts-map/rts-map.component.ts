@@ -51,10 +51,8 @@ export class RtsMapComponent implements AfterViewInit {
     // this.grid.loadGrid(this.gridProperties.defaultMaze);
     this.mapGrid.loadGrid('oooboboooo\noooobbbboo\nobbobooooo\nooboobbobo\nboobbooobb\nbooooobooo\nbboooobbob\noobbbbooob\nbbooobboob\noboobooboo');
     this.mapGrid.connectGridCells();
-    this.currentDestination = this.mapGrid.grid.find((cell) => {
-      return cell.cellType === 'finish';
-    });
     this.currentDestinationIndex = this.mapGrid.totalCells - 1;
+    this.currentDestination = this.mapGrid.grid[this.currentDestinationIndex];
   }
 
   ngAfterViewInit() {
@@ -143,9 +141,8 @@ export class RtsMapComponent implements AfterViewInit {
   }
 
   solveMaze() {
-    const start = this.mapGrid.grid.find((cell) => {
-      return cell.cellType === 'start';
-    });
+    const startIndex = this.translateXYtoGridIndex(this.unit.getPosition().x, this.unit.getPosition().y);
+    const start = this.mapGrid.grid[startIndex];
 
     if (!start) {
       this.errorHandlerService.error('There is no starting point.');
@@ -199,12 +196,9 @@ export class RtsMapComponent implements AfterViewInit {
   }
 
   onRightClick(event) {
-    console.log(`x:${event.layerX} y:${event.layerY}`, event);
-    const row = Math.floor(event.layerY / 25);
-    const col = Math.floor(event.layerX / 25);
-    console.log(`row:${row} col:${col}`);
-    const gridIndex = this.mapGrid.gridCols * row + col;
-    console.log(`grid index ${gridIndex}`);
+    // console.log(`x:${event.layerX} y:${event.layerY}`, event);
+    const gridIndex = this.translateXYtoGridIndex(event.layerX, event.layerY);
+    console.log(`grid index ${gridIndex} with total cells ${this.mapGrid.totalCells}`);
     if (gridIndex < this.mapGrid.totalCells) {
       // set the current start cell to open
 
@@ -224,6 +218,16 @@ export class RtsMapComponent implements AfterViewInit {
       this.currentSolutionCell = 0;
     }
     return false;
+  }
+
+  translateXYtoGridIndex(x: number, y: number): number {
+    const cellWidthHeight = 25;
+    const row = Math.floor(y / cellWidthHeight);
+    const col = Math.floor(x / cellWidthHeight);
+    console.log(`row:${row} col:${col}`);
+    const gridIndex = this.mapGrid.gridCols * row + col;
+    console.log(`grid index ${gridIndex} with total cells ${this.mapGrid.totalCells}`);
+    return gridIndex;
   }
 
   resetMaze() {
