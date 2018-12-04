@@ -217,6 +217,7 @@ export class RtsMapComponent implements AfterViewInit {
 
       this.pathSolution = null;
       this.currentSolutionCell = 0;
+      this.solveMaze();
     }
     return false;
   }
