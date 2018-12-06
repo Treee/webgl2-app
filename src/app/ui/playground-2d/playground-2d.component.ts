@@ -1,5 +1,6 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { BoxGeometry, Point2D, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { ParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/particle-system';
 
 @Component({
   selector: 'app-playground-2d',
@@ -10,9 +11,12 @@ export class Playground2dComponent implements AfterViewInit {
 
   @ViewChild('glCanvas') canvasElement: ElementRef;
 
-  isPlaygroundCollapsed = true;
-  isRtsCollapsed = false;
+  isPlaygroundCollapsed = false;
+  isRtsCollapsed = true;
 
+
+  particleGenerator: ParticleSystem;
+  numParticles = 1000;
 
   playerObject: BoxGeometry;
   playerRotation: number;
@@ -21,8 +25,6 @@ export class Playground2dComponent implements AfterViewInit {
   activeKeysMap: any;
 
   renderer: RendererEngine;
-
-  particles: Point2D[];
 
   userInput: any = {
     x: 200,
@@ -35,10 +37,10 @@ export class Playground2dComponent implements AfterViewInit {
   height = 400;
 
   gameLoop: any;
+  gameIsRunning = false;
 
   constructor() {
     this.renderableObjects = [];
-    this.particles = [];
     this.activeKeysMap = {};
     this.renderer = new RendererEngine();
     this.playerRotation = 0;
@@ -47,14 +49,24 @@ export class Playground2dComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     this.initializeDefaultRenderableObjects(1);
-    // this.startGameLoop();
-    this.redrawScreen();
+    this.startGameLoop();
+    this.redrawScreen(0);
   }
 
   startGameLoop() {
+    this.gameIsRunning = true;
+    let timer, dt = 0;
     this.gameLoop = setInterval(() => {
-      this.oneGameLoop();
-    }, 3000);
+      this.oneGameLoop(0);
+      dt = 1 / (performance.now() - timer);
+      timer = performance.now();
+      // console.log('dt', 1 / dt);
+    }, 0.000016); // 1/ 60000
+  }
+
+  stopGameLoop() {
+    this.gameIsRunning = false;
+    clearInterval(this.gameLoop);
   }
 
   initializePlayer() {
@@ -70,29 +82,26 @@ export class Playground2dComponent implements AfterViewInit {
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     this.initializePlayer();
-    this.initializeParticles(1);
+    this.initializeParticles(this.numParticles);
   }
 
   initializeParticles(numParticles: number) {
-    for (let i = 0; i < numParticles; i++) {
-      const newPoint = new Point2D(100, 100);
-      newPoint.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
-      this.particles.push(newPoint);
-      this.renderableObjects.push(newPoint);
-      // console.log('creating particle', newPoint);
-    }
+    this.particleGenerator = new ParticleSystem(numParticles, this.renderer.gl, this.renderer.basicShader);
+    this.renderableObjects = this.renderableObjects.concat(this.particleGenerator.particles);
+    // console.log('particles', this.particleGenerator.particles);
   }
 
-  oneGameLoop() {
+  oneGameLoop(dt: number) {
     this.applyUserInput();
-    this.redrawScreen();
+    this.particleGenerator.updateParticles(dt);
+    this.redrawScreen(dt);
   }
 
-  redrawScreen() {
+  redrawScreen(dt) {
     this.renderableObjects.forEach((renderable) => {
       // this.printRenderableDebugInfo(renderable);
     });
-    this.renderer.drawFrame(0, this.renderableObjects);
+    this.renderer.drawFrame(dt, this.renderableObjects);
   }
 
   randomInt(range) {
@@ -109,8 +118,9 @@ export class Playground2dComponent implements AfterViewInit {
     };
     this.activeKeysMap = {};
     // this.ngAfterViewInit();
-    clearInterval(this.gameLoop);
-    this.redrawScreen();
+    // clearInterval(this.gameLoop);
+    this.stopGameLoop();
+    this.redrawScreen(0);
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -152,7 +162,7 @@ export class Playground2dComponent implements AfterViewInit {
         renderable.setScale(new Vec3(renderable.getScale().x, this.userInput.scaleY, 0));
       }
     });
-    this.redrawScreen();
+    this.redrawScreen(0);
   }
 
   printRenderableDebugInfo(renderable) {
