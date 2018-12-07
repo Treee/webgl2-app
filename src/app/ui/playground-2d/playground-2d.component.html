@@ -8,7 +8,7 @@
 
 <div id="collapseExample" [ngbCollapse]="isPlaygroundCollapsed">
   <div class="card">
-    <div class="playground-container" (keypress)="userKeyPress($event)">
+    <div class="playground-container" (keypress)="userKeyPress($event)" (click)="mouseLeftClick($event)">
       <canvas id="myCanvas" #glCanvas class="canvas-renderer"></canvas>
       <div class="user-input">
         <button mat-raised-button class="user-input-reset-btn" color="primary" (click)="resetUserInput()">Reset</button>

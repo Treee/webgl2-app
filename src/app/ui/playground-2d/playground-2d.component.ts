@@ -43,13 +43,6 @@ export class Playground2dComponent implements AfterViewInit {
     this.renderableObjects = [];
     this.activeKeysMap = {};
     this.renderer = new RendererEngine();
-
-
-
-
-
-
-
     this.playerRotation = 0;
   }
 
@@ -134,6 +127,10 @@ export class Playground2dComponent implements AfterViewInit {
   @HostListener('document:keyup', ['$event'])
   userKeyPress(event) {
     this.activeKeysMap[event.key] = (event.type === 'keydown');
+  }
+
+  mouseLeftClick(event) {
+    this.initializeParticles(this.numParticles, new Vec3(event.layerX, event.layerY, 0));
   }
 
   applyUserInput() {
