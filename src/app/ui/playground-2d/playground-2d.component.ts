@@ -43,6 +43,13 @@ export class Playground2dComponent implements AfterViewInit {
     this.renderableObjects = [];
     this.activeKeysMap = {};
     this.renderer = new RendererEngine();
+
+
+
+
+
+
+
     this.playerRotation = 0;
   }
 
@@ -57,11 +64,11 @@ export class Playground2dComponent implements AfterViewInit {
     this.gameIsRunning = true;
     let timer, dt = 0;
     this.gameLoop = setInterval(() => {
-      this.oneGameLoop(0);
+      this.oneGameLoop(0.016);
       dt = 1 / (performance.now() - timer);
       timer = performance.now();
       // console.log('dt', 1 / dt);
-    }, 0.000016); // 1/ 60000
+    }, 0.016); // 1/ 60000
   }
 
   stopGameLoop() {
@@ -82,11 +89,11 @@ export class Playground2dComponent implements AfterViewInit {
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
     this.initializePlayer();
-    this.initializeParticles(this.numParticles);
+    this.initializeParticles(this.numParticles, new Vec3(100, 100, 0));
   }
 
-  initializeParticles(numParticles: number) {
-    this.particleGenerator = new ParticleSystem(numParticles, this.renderer.gl, this.renderer.basicShader);
+  initializeParticles(numParticles: number, position: Vec3) {
+    this.particleGenerator = new ParticleSystem(position, numParticles, this.renderer.gl, this.renderer.basicShader);
     this.renderableObjects = this.renderableObjects.concat(this.particleGenerator.particles);
     // console.log('particles', this.particleGenerator.particles);
   }
