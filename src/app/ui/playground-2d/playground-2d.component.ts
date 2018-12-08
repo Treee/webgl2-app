@@ -17,6 +17,7 @@ export class Playground2dComponent implements AfterViewInit {
 
   particleGenerator: ParticleSystem;
   numParticles = 1000;
+  particleGeneratorRunning = false;
 
   playerObject: BoxGeometry;
   playerRotation: number;
@@ -81,19 +82,19 @@ export class Playground2dComponent implements AfterViewInit {
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
-    this.initializePlayer();
     this.initializeParticles(this.numParticles, new Vec3(100, 100, 0));
+    //this.initializePlayer();
   }
 
   initializeParticles(numParticles: number, position: Vec3) {
     this.particleGenerator = new ParticleSystem(position, numParticles, this.renderer.gl, this.renderer.basicShader);
-    this.renderableObjects = this.renderableObjects.concat(this.particleGenerator.particles);
+    this.renderableObjects = this.particleGenerator.particles;
     // console.log('particles', this.particleGenerator.particles);
   }
 
   oneGameLoop(dt: number) {
     this.applyUserInput();
-    this.particleGenerator.updateParticles(dt);
+    this.particleGenerator.update(dt);
     this.redrawScreen(dt);
   }
 
@@ -131,6 +132,7 @@ export class Playground2dComponent implements AfterViewInit {
 
   mouseLeftClick(event) {
     this.initializeParticles(this.numParticles, new Vec3(event.layerX, event.layerY, 0));
+    console.log(`x: ${event.layerX}, y: ${event.layerY}`);
   }
 
   applyUserInput() {
