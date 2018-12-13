@@ -94,14 +94,18 @@ export class Playground2dComponent implements AfterViewInit {
 
   oneGameLoop(dt: number) {
     this.applyUserInput();
+    let timer = Date.now();
     this.particleGenerator.update(dt);
+    // console.log('update', (Date.now() - timer));
+    timer = Date.now();
     this.redrawScreen(dt);
+    // console.log('draw', (Date.now() - timer));
   }
 
   redrawScreen(dt) {
-    this.renderableObjects.forEach((renderable) => {
-      // this.printRenderableDebugInfo(renderable);
-    });
+    // this.renderableObjects.forEach((renderable) => {
+    //   // this.printRenderableDebugInfo(renderable);
+    // });
     this.renderer.drawFrame(dt, this.renderableObjects);
   }
 

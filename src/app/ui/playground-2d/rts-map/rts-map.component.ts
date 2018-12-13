@@ -72,8 +72,7 @@ export class RtsMapComponent implements AfterViewInit {
     this.renderableObjects = [];
     // this.initializeParticles(1);
     this.initializeGridCells(this.mapGrid.grid, this.mapGrid.gridRows, this.mapGrid.gridCols);
-    this.unit = new BoxGeometry();
-    this.unit.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+    this.unit = new BoxGeometry(this.renderer.gl, this.renderer.basicShader);
     this.unit.setColor(new Vec4(0, 0, 1, 1));
     // this.unit.setScale(new Vec3(.25, .25, .25));
     this.renderableObjects.push(this.unit);
@@ -82,8 +81,7 @@ export class RtsMapComponent implements AfterViewInit {
   initializeGridCells(grid: Grid2DCell[], totalRows: number, totalCols: number) {
     let x, y;
     for (let i = 0; i < grid.length; i++) {
-      const cell = new BoxGeometry();
-      cell.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+      const cell = new BoxGeometry(this.renderer.gl, this.renderer.basicShader);
       cell.setColor(this.setCellColor(grid[i].cellType));
       x = 25 * (i % totalCols);
       y = 25 * Math.floor(i / totalRows);
