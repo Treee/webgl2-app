@@ -48,6 +48,13 @@
             </mat-slider>
           </mat-list-item>
           <mat-divider></mat-divider>
+          <mat-list-item>
+            <div class="example-div">Num Particles:</div>
+            <mat-slider class="user-input-slider" [disabled]="false" [invert]="false" [max]="5000" [min]="100" [step]="1"
+              thumbLabel tickInterval="1" [(ngModel)]="userInput.numParticles" [vertical]="false" (ngModelChange)="saveInput('numParticles')">
+            </mat-slider>
+          </mat-list-item>
+          <mat-divider></mat-divider>
         </mat-list>
       </div>
     </div>

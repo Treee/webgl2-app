@@ -16,7 +16,6 @@ export class Playground2dComponent implements AfterViewInit {
 
 
   particleGenerator: ParticleSystem;
-  numParticles = 1000;
   particleGeneratorRunning = false;
 
   playerObject: BoxGeometry;
@@ -32,7 +31,8 @@ export class Playground2dComponent implements AfterViewInit {
     y: 200,
     rotate: 0,
     scaleX: 1,
-    scaleY: 1
+    scaleY: 1,
+    numParticles: 500
   };
   width = 400;
   height = 400;
@@ -82,7 +82,7 @@ export class Playground2dComponent implements AfterViewInit {
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
-    this.initializeParticles(this.numParticles, new Vec3(100, 100, 0));
+    this.initializeParticles(this.userInput.numParticles, new Vec3(100, 100, 0));
     //this.initializePlayer();
   }
 
@@ -115,7 +115,8 @@ export class Playground2dComponent implements AfterViewInit {
       y: 0,
       rotate: 0,
       scaleX: 1,
-      scaleY: 1
+      scaleY: 1,
+      numParticles: 500
     };
     this.activeKeysMap = {};
     // this.ngAfterViewInit();
@@ -131,7 +132,7 @@ export class Playground2dComponent implements AfterViewInit {
   }
 
   mouseLeftClick(event) {
-    this.initializeParticles(this.numParticles, new Vec3(event.layerX, event.layerY, 0));
+    this.initializeParticles(this.userInput.numParticles, new Vec3(event.layerX, event.layerY, 0));
     console.log(`x: ${event.layerX}, y: ${event.layerY}`);
   }
 
