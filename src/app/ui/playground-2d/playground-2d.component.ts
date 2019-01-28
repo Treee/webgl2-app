@@ -1,6 +1,7 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { BoxGeometry, Point2D, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
 import { ParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/particle-system';
+import { NewParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/new-particle-system';
 
 @Component({
   selector: 'app-playground-2d',
@@ -17,6 +18,8 @@ export class Playground2dComponent implements AfterViewInit {
 
   particleGenerator: ParticleSystem;
   particleGeneratorRunning = false;
+
+  newParticleGenerator: NewParticleSystem;
 
   playerObject: BoxGeometry;
   playerRotation: number;
@@ -82,7 +85,8 @@ export class Playground2dComponent implements AfterViewInit {
 
   initializeDefaultRenderableObjects(numObjects: Number) {
     this.renderableObjects = [];
-    this.initializeParticles(this.userInput.numParticles, new Vec3(100, 100, 0));
+    // this.initializeParticles(this.userInput.numParticles, new Vec3(100, 100, 0));
+    this.initializeNewParticles(this.userInput.numParticles, new Vec3(100, 100, 0));
     //this.initializePlayer();
   }
 
@@ -92,10 +96,17 @@ export class Playground2dComponent implements AfterViewInit {
     // console.log('particles', this.particleGenerator.particles);
   }
 
+  initializeNewParticles(numParticles: number, position: Vec3) {
+    this.newParticleGenerator = new NewParticleSystem(this.renderer.gl, this.renderer.basicShader, numParticles, position);
+    this.renderableObjects = this.newParticleGenerator.particles;
+    // console.log('particles', this.particleGenerator.particles);
+  }
+
   oneGameLoop(dt: number) {
     this.applyUserInput();
     let timer = Date.now();
-    this.particleGenerator.update(dt);
+    // this.particleGenerator.update(dt);
+    this.newParticleGenerator.update(dt);
     // console.log('update', (Date.now() - timer));
     timer = Date.now();
     this.redrawScreen(dt);
