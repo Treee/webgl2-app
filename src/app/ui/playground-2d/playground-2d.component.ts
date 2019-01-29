@@ -12,8 +12,8 @@ export class Playground2dComponent implements AfterViewInit {
 
   @ViewChild('glCanvas') canvasElement: ElementRef;
 
-  isPlaygroundCollapsed = false;
-  isRtsCollapsed = true;
+  isPlaygroundCollapsed = true;
+  isRtsCollapsed = false;
 
 
   particleGenerator: ParticleSystem;

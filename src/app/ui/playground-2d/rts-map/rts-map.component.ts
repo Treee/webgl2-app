@@ -59,7 +59,7 @@ export class RtsMapComponent implements AfterViewInit {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     this.initializeDefaultRenderableObjects(1);
     this.startGameLoop();
-    this.redrawScreen(this.dt);
+    this.redrawScreen(0);
   }
 
   startGameLoop() {
