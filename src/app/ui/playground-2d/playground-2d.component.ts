@@ -75,7 +75,7 @@ export class Playground2dComponent implements AfterViewInit {
 
   initializePlayer() {
     this.playerObject = new BoxGeometry();
-    this.playerObject.createVertexArrayObject(this.renderer.gl, this.renderer.basicShader);
+    this.playerObject.createVertexArrayObject(this.renderer.gl, this.renderer.shaderManager.basicShader);
     this.playerObject.setColor(new Vec4(1, 0, 0, 1));
     // this.playerObject.setScale(new Vec3(2, 2, 2));
     this.playerObject.translate(new Vec3(200, 200, 0));
@@ -91,13 +91,13 @@ export class Playground2dComponent implements AfterViewInit {
   }
 
   initializeParticles(numParticles: number, position: Vec3) {
-    this.particleGenerator = new ParticleSystem(position, numParticles, this.renderer.gl, this.renderer.basicShader);
+    this.particleGenerator = new ParticleSystem(position, numParticles, this.renderer.gl, this.renderer.shaderManager.basicShader);
     this.renderableObjects = this.particleGenerator.particles;
     // console.log('particles', this.particleGenerator.particles);
   }
 
   initializeNewParticles(numParticles: number, position: Vec3) {
-    this.newParticleGenerator = new NewParticleSystem(this.renderer.gl, this.renderer.basicShader, numParticles, position);
+    this.newParticleGenerator = new NewParticleSystem(this.renderer.gl, this.renderer.shaderManager.basicShader, numParticles, position);
     this.renderableObjects = this.newParticleGenerator.particles;
     // console.log('particles', this.particleGenerator.particles);
   }
