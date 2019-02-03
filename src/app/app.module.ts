@@ -33,6 +33,7 @@ import { PathCellComponent } from './ui/path-finder/path-cell/path-cell.componen
 import { ErrorHandlerService } from './services/error-handler/error-handler.service';
 import { MessageToasterComponent } from './ui/message-toaster/message-toaster.component';
 import { RtsMapComponent } from './ui/playground-2d/rts-map/rts-map.component';
+import { Playground3dComponent } from './ui/playground-3d/playground-3d.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { RtsMapComponent } from './ui/playground-2d/rts-map/rts-map.component';
     PathFinderComponent,
     PathCellComponent,
     MessageToasterComponent,
-    RtsMapComponent
+    RtsMapComponent,
+    Playground3dComponent
   ],
   imports: [
     BrowserModule,

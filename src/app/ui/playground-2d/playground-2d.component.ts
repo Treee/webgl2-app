@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { BoxGeometry, Point2D, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { BoxGeometry, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
 import { ParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/particle-system';
 import { NewParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/new-particle-system';
 
