@@ -18,6 +18,8 @@ export class Playground3dComponent implements AfterViewInit {
   deltaTime: number = 0;
 
   sixtyFrames: number = 1000 / 60;
+  fourtyFiveFrames: number = 1000 / 45;
+  thirtyFrames: number = 1000 / 30;
 
   constructor() {
     this.renderer = new RendererEngine();
@@ -26,9 +28,9 @@ export class Playground3dComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     setInterval(() => {
-      this.deltaTime = this.deltaTime + this.sixtyFrames;
+      this.deltaTime = this.deltaTime + this.fourtyFiveFrames;
       this.renderer.drawScene(this.renderer.gl, this.deltaTime);
-    }, this.sixtyFrames);
+    }, this.fourtyFiveFrames);
   }
 
 }
