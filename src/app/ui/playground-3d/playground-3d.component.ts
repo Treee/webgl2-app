@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 
 import { RendererEngine } from 'tree-xyz-webgl2-engine';
 
@@ -21,6 +21,8 @@ export class Playground3dComponent implements AfterViewInit {
   fourtyFiveFrames: number = 1000 / 45;
   thirtyFrames: number = 1000 / 30;
 
+  activeKeysMap = {};
+
   constructor() {
     this.renderer = new RendererEngine();
   }
@@ -28,9 +30,38 @@ export class Playground3dComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
     setInterval(() => {
-      this.deltaTime = this.deltaTime + this.fourtyFiveFrames;
+      this.deltaTime = this.deltaTime + this.sixtyFrames;
+      this.applyUserInput();
       this.renderer.drawScene(this.renderer.gl, this.deltaTime);
-    }, this.fourtyFiveFrames);
+    }, this.sixtyFrames);
   }
 
+
+  @HostListener('document:keydown', ['$event'])
+  @HostListener('document:keyup', ['$event'])
+  userKeyPress(event) {
+    this.activeKeysMap[event.key] = (event.type === 'keydown');
+  }
+
+  applyUserInput() {
+    if (this.activeKeysMap['w']) {
+      // move forward
+      this.renderer.debugCamera.moveForward();
+    } if (this.activeKeysMap['s']) {
+      // movve backward
+      this.renderer.debugCamera.moveBackward();
+    } if (this.activeKeysMap['a']) {
+      // strafe left
+      this.renderer.debugCamera.moveLeft();
+    } if (this.activeKeysMap['d']) {
+      // strafe right
+      this.renderer.debugCamera.moveRight();
+    } if (this.activeKeysMap['r']) {
+      // rise
+      this.renderer.debugCamera.moveUp();
+    } if (this.activeKeysMap['f']) {
+      // fall
+      this.renderer.debugCamera.moveDown();
+    }
+  }
 }
