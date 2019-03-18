@@ -42,4 +42,34 @@ export class Playground3dComponent implements AfterViewInit {
   userKeyPress(event) {
     this.activeKeysMap[event.key] = (event.type === 'keydown');
   }
+
+  @HostListener('document:mousedown', ['$event'])
+  userMouseDown(event) {
+    if (event.button === 0) {
+      // left mouse click start
+      console.log('left click start', event);
+    }
+    if (event.button === 1) {
+      return false;
+    }
+  }
+
+  @HostListener('document:mouseup', ['$event'])
+  userMousePress(event) {
+    if (typeof event === 'object') {
+      switch (event.button) {
+        case 0:
+          console.log('mouse event', 'Left button clicked.');
+          break;
+        case 1:
+          console.log('mouse event', 'Middle button clicked.');
+          break;
+        case 2:
+          console.log('mouse event', 'Right button clicked.');
+          break;
+        default:
+          console.log('mouse event', `Unknown button code: ${event}`);
+      }
+    }
+  }
 }
