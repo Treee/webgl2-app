@@ -22,6 +22,12 @@ export class Playground3dComponent implements AfterViewInit {
   thirtyFrames: number = 1000 / 30;
 
   activeKeysMap = {};
+  mouseInputs = {
+    x: 0,
+    y: 0,
+    leftMouseClicked: false,
+    mouseIsMoving: false
+  };
 
   constructor() {
     this.renderer = new RendererEngine();
@@ -29,9 +35,11 @@ export class Playground3dComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
+    this.canvasElement.nativeElement.requestPointerLock = this.canvasElement.nativeElement.requestPointerLock || this.canvasElement.nativeElement.mozRequestPointerLock;
+    document['exitPointerLock'] = document['exitPointerLock'] || document['mozExitPointerLock'];
     setInterval(() => {
       this.deltaTime = this.deltaTime + this.sixtyFrames;
-      this.renderer.applyUserInput(this.activeKeysMap);
+      this.renderer.applyUserInput(this.activeKeysMap, this.mouseInputs);
       this.renderer.drawScene(this.renderer.gl, this.deltaTime);
     }, this.sixtyFrames);
   }
@@ -46,11 +54,26 @@ export class Playground3dComponent implements AfterViewInit {
   @HostListener('document:mousedown', ['$event'])
   userMouseDown(event) {
     if (event.button === 0) {
+      this.canvasElement.nativeElement.requestPointerLock();
       // left mouse click start
-      console.log('left click start', event);
+      // console.log('left click start', event);
+      this.mouseInputs.leftMouseClicked = true;
+      this.mouseInputs.mouseIsMoving = false;
     }
     if (event.button === 1) {
       return false;
+    }
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  useMouseMove(event) {
+    if (typeof event === 'object' && this.mouseInputs.leftMouseClicked) {
+      this.mouseInputs.mouseIsMoving = true;
+      this.mouseInputs.x = -event.movementX;
+      this.mouseInputs.y = event.movementY;
+      // console.log(event);
+      // console.log(`DeltaX: ${this.mouseInputs.x} DeltaY ${this.mouseInputs.y}`);
+      // console.log(`x mov: ${event.movementX} y move: ${event.movementY}`);
     }
   }
 
@@ -59,7 +82,10 @@ export class Playground3dComponent implements AfterViewInit {
     if (typeof event === 'object') {
       switch (event.button) {
         case 0:
-          console.log('mouse event', 'Left button clicked.');
+          // console.log('mouse event', 'Left button clicked.');
+          document['exitPointerLock']();
+          this.mouseInputs.leftMouseClicked = false;
+          this.mouseInputs.mouseIsMoving = false;
           break;
         case 1:
           console.log('mouse event', 'Middle button clicked.');
@@ -72,4 +98,11 @@ export class Playground3dComponent implements AfterViewInit {
       }
     }
   }
+
+  @HostListener('document:pointerlockchange', ['$event'])
+  @HostListener('document:mozpointerlockchange', ['$event'])
+  pointerLockChangeAlert(event) {
+    // console.log(`x mov: ${event.movementX} y move: ${event.movementY}`);
+  }
+
 }
