@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 
-import { RendererEngine } from 'tree-xyz-webgl2-engine';
+import { RendererEngine, TextureEntity } from 'tree-xyz-webgl2-engine';
 
 @Component({
   selector: 'app-playground-3d',
@@ -10,6 +10,8 @@ import { RendererEngine } from 'tree-xyz-webgl2-engine';
 export class Playground3dComponent implements AfterViewInit {
 
   @ViewChild('glCanvas') canvasElement: ElementRef;
+  @ViewChild('textureImage') textureImage: ElementRef;
+
   width = 1366;
   height = 768;
 
@@ -42,6 +44,18 @@ export class Playground3dComponent implements AfterViewInit {
       this.renderer.applyUserInput(this.activeKeysMap, this.mouseInputs);
       this.renderer.drawScene(this.renderer.gl, this.deltaTime);
     }, this.sixtyFrames);
+  }
+
+  pullImage() {
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    canvas.width = this.textureImage.nativeElement.width;
+    canvas.height = this.textureImage.nativeElement.height;
+    context.drawImage(this.textureImage.nativeElement, 0, 0);
+    var myData = context.getImageData(0, 0, this.textureImage.nativeElement.width, this.textureImage.nativeElement.height);
+    let newTexture = new TextureEntity(this.renderer.gl, this.renderer.textureImageProgramInfo, myData);
+    newTexture.translate(0, [0, 5, 0]);
+    this.renderer.drawableObjects.push(newTexture);
   }
 
 
@@ -91,6 +105,7 @@ export class Playground3dComponent implements AfterViewInit {
           console.log('mouse event', 'Middle button clicked.');
           break;
         case 2:
+          this.pullImage();
           console.log('mouse event', 'Right button clicked.');
           break;
         default:
