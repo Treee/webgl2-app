@@ -46,19 +46,6 @@ export class Playground3dComponent implements AfterViewInit {
     }, this.sixtyFrames);
   }
 
-  pullImage() {
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-    canvas.width = this.textureImage.nativeElement.width;
-    canvas.height = this.textureImage.nativeElement.height;
-    context.drawImage(this.textureImage.nativeElement, 0, 0);
-    var myData = context.getImageData(0, 0, this.textureImage.nativeElement.width, this.textureImage.nativeElement.height);
-    let newTexture = new TextureEntity(this.renderer.gl, this.renderer.textureImageProgramInfo, myData);
-    newTexture.translate(0, [0, 5, 0]);
-    this.renderer.drawableObjects.push(newTexture);
-  }
-
-
   @HostListener('document:keydown', ['$event'])
   @HostListener('document:keyup', ['$event'])
   userKeyPress(event) {
@@ -105,7 +92,6 @@ export class Playground3dComponent implements AfterViewInit {
           console.log('mouse event', 'Middle button clicked.');
           break;
         case 2:
-          this.pullImage();
           console.log('mouse event', 'Right button clicked.');
           break;
         default:
