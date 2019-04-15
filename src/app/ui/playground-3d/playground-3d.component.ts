@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 
-import { RendererEngine, TextureEntity } from 'tree-xyz-webgl2-engine';
+import { RendererEngine } from 'tree-xyz-webgl2-engine';
 
 @Component({
   selector: 'app-playground-3d',

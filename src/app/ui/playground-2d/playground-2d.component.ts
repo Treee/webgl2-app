@@ -1,7 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { BoxGeometry, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
-import { ParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/particle-system';
-import { NewParticleSystem } from 'tree-xyz-webgl2-engine/dist/particle-system/new-particle-system';
+import { Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
 
 @Component({
   selector: 'app-playground-2d',
@@ -15,16 +13,8 @@ export class Playground2dComponent implements AfterViewInit {
   isPlaygroundCollapsed = true;
   isRtsCollapsed = false;
 
-
-  particleGenerator: ParticleSystem;
-  particleGeneratorRunning = false;
-
-  newParticleGenerator: NewParticleSystem;
-
-  playerObject: BoxGeometry;
   playerRotation: number;
 
-  renderableObjects: BoxGeometry[];
   activeKeysMap: any;
 
   renderer: RendererEngine;
@@ -44,7 +34,6 @@ export class Playground2dComponent implements AfterViewInit {
   gameIsRunning = false;
 
   constructor() {
-    this.renderableObjects = [];
     this.activeKeysMap = {};
     this.renderer = new RendererEngine();
     this.playerRotation = 0;
@@ -52,7 +41,6 @@ export class Playground2dComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
-    this.initializeDefaultRenderableObjects(1);
     this.startGameLoop();
     this.redrawScreen(0);
   }
@@ -73,40 +61,9 @@ export class Playground2dComponent implements AfterViewInit {
     clearInterval(this.gameLoop);
   }
 
-  initializePlayer() {
-    this.playerObject = new BoxGeometry();
-    this.playerObject.createVertexArrayObject(this.renderer.gl, this.renderer.shaderManager.basicShader);
-    this.playerObject.setColor(new Vec4(1, 0, 0, 1));
-    // this.playerObject.setScale(new Vec3(2, 2, 2));
-    this.playerObject.translate(new Vec3(200, 200, 0));
-    this.renderableObjects.push(this.playerObject);
-    // console.log('creating player', this.playerObject);
-  }
-
-  initializeDefaultRenderableObjects(numObjects: Number) {
-    this.renderableObjects = [];
-    // this.initializeParticles(this.userInput.numParticles, new Vec3(100, 100, 0));
-    this.initializeNewParticles(this.userInput.numParticles, new Vec3(100, 100, 0));
-    //this.initializePlayer();
-  }
-
-  initializeParticles(numParticles: number, position: Vec3) {
-    this.particleGenerator = new ParticleSystem(position, numParticles, this.renderer.gl, this.renderer.shaderManager.basicShader);
-    this.renderableObjects = this.particleGenerator.particles;
-    // console.log('particles', this.particleGenerator.particles);
-  }
-
-  initializeNewParticles(numParticles: number, position: Vec3) {
-    this.newParticleGenerator = new NewParticleSystem(this.renderer.gl, this.renderer.shaderManager.basicShader, numParticles, position);
-    this.renderableObjects = this.newParticleGenerator.particles;
-    // console.log('particles', this.particleGenerator.particles);
-  }
-
   oneGameLoop(dt: number) {
     this.applyUserInput();
     let timer = Date.now();
-    // this.particleGenerator.update(dt);
-    this.newParticleGenerator.update(dt);
     // console.log('update', (Date.now() - timer));
     timer = Date.now();
     this.redrawScreen(dt);
@@ -117,7 +74,6 @@ export class Playground2dComponent implements AfterViewInit {
     // this.renderableObjects.forEach((renderable) => {
     //   // this.printRenderableDebugInfo(renderable);
     // });
-    this.renderer.drawFrame(dt, this.renderableObjects);
   }
 
   randomInt(range) {
@@ -147,43 +103,20 @@ export class Playground2dComponent implements AfterViewInit {
   }
 
   mouseLeftClick(event) {
-    this.initializeParticles(this.userInput.numParticles, new Vec3(event.layerX, event.layerY, 0));
     console.log(`x: ${event.layerX}, y: ${event.layerY}`);
   }
 
   applyUserInput() {
     if (this.activeKeysMap['w']) {
-      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(0, -1, 0)));
     } if (this.activeKeysMap['s']) {
-      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(0, 1, 0)));
     } if (this.activeKeysMap['a']) {
-      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(-1, 0, 0)));
     } if (this.activeKeysMap['d']) {
-      this.playerObject.translate(this.playerObject.getPosition().add(new Vec3(1, 0, 0)));
     } if (this.activeKeysMap['q']) {
-      this.playerObject.rotate(this.playerRotation -= 10);
     } if (this.activeKeysMap['e']) {
-      this.playerObject.rotate(this.playerRotation += 10);
     }
   }
 
   saveInput(type: string) {
-    this.renderableObjects.forEach(renderable => {
-      if (type === 'translateX') {
-        renderable.translate(new Vec3(this.userInput.x, renderable.getPosition().y, 1));
-      } else if (type === 'translateY') {
-        renderable.translate(new Vec3(renderable.getPosition().x, this.userInput.y, 1));
-      } else if (type === 'rotatecw') {
-        console.log('rotation', this.userInput.rotate);
-        renderable.rotate(this.userInput.rotate);
-      } else if (type === 'rotateccw') {
-        renderable.rotate(this.userInput.rotate);
-      } else if (type === 'scaleX') {
-        renderable.setScale(new Vec3(this.userInput.scaleX, renderable.getScale().y, 0));
-      } else if (type === 'scaleY') {
-        renderable.setScale(new Vec3(renderable.getScale().x, this.userInput.scaleY, 0));
-      }
-    });
     this.redrawScreen(0);
   }
 

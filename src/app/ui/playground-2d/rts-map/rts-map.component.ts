@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { BoxGeometry, Point2D, Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
 
 import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
 import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
@@ -19,14 +19,10 @@ export class RtsMapComponent implements AfterViewInit {
   mapGrid: Grid2D;
   pathFinder: AStar;
 
-  unit: BoxGeometry;
-
   pathSolution: Grid2DCell[] | any;
   currentSolutionCell = 0;
   currentDestinationIndex = 0;
   currentDestination: Grid2DCell;
-
-  renderableObjects: BoxGeometry[];
 
   renderer: RendererEngine;
 
@@ -38,7 +34,6 @@ export class RtsMapComponent implements AfterViewInit {
   gameLoop: any;
 
   constructor(private errorHandlerService: ErrorHandlerService) {
-    this.renderableObjects = [];
     this.renderer = new RendererEngine();
     this.pathFinder = new AStar();
     this.initializeGrid();
@@ -57,37 +52,13 @@ export class RtsMapComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
-    this.initializeDefaultRenderableObjects(1);
     this.startGameLoop();
-    this.redrawScreen(0);
   }
 
   startGameLoop() {
     this.gameLoop = setInterval(() => {
       this.oneGameLoop();
     }, this.dt);
-  }
-
-  initializeDefaultRenderableObjects(numObjects: Number) {
-    this.renderableObjects = [];
-    // this.initializeParticles(1);
-    this.initializeGridCells(this.mapGrid.grid, this.mapGrid.gridRows, this.mapGrid.gridCols);
-    this.unit = new BoxGeometry(this.renderer.gl, this.renderer.shaderManager.basicShader);
-    this.unit.setColor(new Vec4(0, 0, 1, 1));
-    // this.unit.setScale(new Vec3(.25, .25, .25));
-    this.renderableObjects.push(this.unit);
-  }
-
-  initializeGridCells(grid: Grid2DCell[], totalRows: number, totalCols: number) {
-    let x, y;
-    for (let i = 0; i < grid.length; i++) {
-      const cell = new BoxGeometry(this.renderer.gl, this.renderer.shaderManager.basicShader);
-      cell.setColor(this.setCellColor(grid[i].cellType));
-      x = 25 * (i % totalCols);
-      y = 25 * Math.floor(i / totalRows);
-      cell.translate(new Vec3(x, y, 0));
-      this.renderableObjects.push(cell);
-    }
   }
 
   setCellColor(cellType: string): Vec4 {
@@ -112,14 +83,6 @@ export class RtsMapComponent implements AfterViewInit {
   oneGameLoop() {
     // this.applyUserInput();
     this.updateUnit(this.dt);
-    this.redrawScreen(this.dt);
-  }
-
-  redrawScreen(dt: number) {
-    this.renderableObjects.forEach((renderable) => {
-      // this.printRenderableDebugInfo(renderable);
-    });
-    this.renderer.drawFrame(dt, this.renderableObjects);
   }
 
   printRenderableDebugInfo(renderable) {
@@ -139,48 +102,18 @@ export class RtsMapComponent implements AfterViewInit {
   }
 
   solveMaze() {
-    const startIndex = this.translateXYtoGridIndex(this.unit.getPosition().x, this.unit.getPosition().y);
-    const start = this.mapGrid.grid[startIndex];
 
-    if (!start) {
-      this.errorHandlerService.error('There is no starting point.');
-    }
-
-    if (!this.currentDestination) {
-      this.errorHandlerService.error('There is no destination.');
-    }
-    const solution = this.pathFinder.findPath(start, this.currentDestination, this.mapGrid.gridRows, this.mapGrid.gridCols);
-    if (solution) {
-      this.pathSolution = solution;
-      this.pathSolution.reverse();
-    } else {
-      this.errorHandlerService.error('Cannot find path to destination.');
-      this.pathSolution = null;
-    }
   }
 
   updateUnit(dt: number) {
     if (this.pathSolution) {
       const destinationCell = this.pathSolution[this.currentSolutionCell];
-      const gridCell = this.renderableObjects[destinationCell.gridIndex];
-      const destination = gridCell.getPosition();
       // console.log('gridCell', gridCell);
       // console.log('currentPosition', this.unit.getPosition());
       // console.log('destination', destination);
       // console.log('destinationCell', destinationCell);
-      const newPosition = this.unit.lerp(this.unit.getPosition(), destination, 1);
 
       // console.log('new position', newPosition);
-      this.unit.translate(newPosition);
-
-      if (this.areVectorsEqual(this.unit.getPosition(), destination)) {
-        // move to the next cell
-        console.log('moving to the next cell');
-        this.currentSolutionCell++;
-      }
-      if (destinationCell.cellType === 'finish') {
-        this.pathSolution = null;
-      }
 
     }
   }
@@ -206,11 +139,9 @@ export class RtsMapComponent implements AfterViewInit {
 
       // set the current finish cell to open
       this.currentDestination.cellType = 'open';
-      this.renderableObjects[this.currentDestinationIndex].setColor(this.setCellColor('open'));
       this.currentDestination = this.mapGrid.grid[gridIndex];
       // set the new finish cell to finish
       this.currentDestination.cellType = 'finish';
-      this.renderableObjects[gridIndex].setColor(this.setCellColor('finish'));
       this.currentDestinationIndex = gridIndex;
 
       this.pathSolution = null;
