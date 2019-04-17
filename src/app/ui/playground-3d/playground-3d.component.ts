@@ -42,7 +42,7 @@ export class Playground3dComponent implements AfterViewInit {
     setInterval(() => {
       this.deltaTime = this.deltaTime + this.sixtyFrames;
       this.renderer.applyUserInput(this.activeKeysMap, this.mouseInputs);
-      this.renderer.drawScene(this.renderer.gl, this.deltaTime);
+      this.renderer.drawScene(this.deltaTime);
     }, this.sixtyFrames);
   }
 

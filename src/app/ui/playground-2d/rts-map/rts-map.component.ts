@@ -1,5 +1,5 @@
 import { Component, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
-import { Vec3, Vec4, RendererEngine } from 'tree-xyz-webgl2-engine';
+import { RendererEngine } from 'tree-xyz-webgl2-engine';
 
 import { Grid2D } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d';
 import { Grid2DCell } from 'tree-xyz-webgl2-engine/dist/data-structures/grid-2d-cell';
@@ -61,23 +61,7 @@ export class RtsMapComponent implements AfterViewInit {
     }, this.dt);
   }
 
-  setCellColor(cellType: string): Vec4 {
-    let color = new Vec4();
-    switch (cellType) {
-      case 'start':
-        color = new Vec4(0, 1, 0, 1);
-        break;
-      case 'finish':
-        color = new Vec4(1, 0, 0, 1);
-        break;
-      case 'blocked':
-        color = new Vec4(0, 0, 0, 1);
-        break;
-      case 'open':
-        color = new Vec4(.5, .5, .5, 1);
-        break;
-    }
-    return color;
+  setCellColor(cellType: string) {
   }
 
   oneGameLoop() {
@@ -118,13 +102,8 @@ export class RtsMapComponent implements AfterViewInit {
     }
   }
 
-  areVectorsEqual(a: Vec3, b: Vec3) {
-    const vectorsAreEqual = (a.x === b.x && a.y === b.y && a.z === b.z);
-    const distance = Math.sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)) + ((a.z - b.z) * (a.z - b.z)));
-    const vectorsAreBasicallyEqual = distance < 0.000001; // || distance > 0.000001;
-    console.log(`vectorA:${a.prettyPrint()}, vectorB:${b.prettyPrint()}`);
-    console.log(`vectorsAreEqual:${vectorsAreEqual} basicallyEqual:${vectorsAreBasicallyEqual} distance:${distance}`);
-    return vectorsAreEqual || vectorsAreBasicallyEqual;
+  areVectorsEqual() {
+    return true;
   }
 
   onRightClick(event) {
