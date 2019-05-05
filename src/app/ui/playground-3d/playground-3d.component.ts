@@ -50,6 +50,7 @@ export class Playground3dComponent implements AfterViewInit {
   @HostListener('document:keyup', ['$event'])
   userKeyPress(event) {
     this.activeKeysMap[event.key] = (event.type === 'keydown');
+    // console.log('active keys', this.activeKeysMap);
   }
 
   @HostListener('document:mousedown', ['$event'])
@@ -70,8 +71,8 @@ export class Playground3dComponent implements AfterViewInit {
   useMouseMove(event) {
     if (typeof event === 'object' && this.mouseInputs.leftMouseClicked) {
       this.mouseInputs.mouseIsMoving = true;
-      this.mouseInputs.x = -event.movementX;
-      this.mouseInputs.y = event.movementY;
+      this.mouseInputs.x = -event.movementX / 100;
+      this.mouseInputs.y = event.movementY / 100;
       // console.log(event);
       // console.log(`DeltaX: ${this.mouseInputs.x} DeltaY ${this.mouseInputs.y}`);
       // console.log(`x mov: ${event.movementX} y move: ${event.movementY}`);
