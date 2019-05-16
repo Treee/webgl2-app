@@ -44,6 +44,7 @@ export class RtsMapComponent implements AfterViewInit {
     // this.grid.initializeGrid(this.gridProperties.rows, this.gridProperties.cols);
     this.mapGrid.initializeGrid(10, 10);
     // this.grid.loadGrid(this.gridProperties.defaultMaze);
+    // tslint:disable-next-line:max-line-length
     this.mapGrid.loadGrid('oooboboooo\noooobbbboo\nobbobooooo\nooboobbobo\nboobbooobb\nbooooobooo\nbboooobbob\noobbbbooob\nbbooobboob\noboobooboo');
     this.mapGrid.connectGridCells();
     this.currentDestinationIndex = this.mapGrid.totalCells - 1;

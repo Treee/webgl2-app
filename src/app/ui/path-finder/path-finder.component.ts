@@ -76,6 +76,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
   saveMaze() {
     const mazeName = `Maze #:${Math.random()}`;
     const mazeGridString = this.gridMaze.serializeGrid();
+    // tslint:disable-next-line:max-line-length
     this.templates.push({ name: mazeName, rows: mazeGridString.gridRows, cols: mazeGridString.gridCols, gridString: mazeGridString.gridString });
     this.saveDataLocally();
   }
@@ -152,6 +153,7 @@ export class PathFinderComponent implements OnInit, AfterViewInit {
     }
 
     if (this.gridProperties.startingCell && this.gridProperties.destinationCell) {
+      // tslint:disable-next-line:max-line-length
       const solution = this.pathFinder.findPath(this.gridProperties.startingCell, this.gridProperties.destinationCell, this.gridProperties.rows, this.gridProperties.cols);
       if (solution) {
         this.gridProperties.hasSolution = true;
