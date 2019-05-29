@@ -24,21 +24,6 @@ export class Playground3dComponent implements AfterViewInit {
   fourtyFiveFrames: number = 1000 / 45;
   thirtyFrames: number = 1000 / 30;
 
-  // sactiveKeysMap = {};
-  // leftMouseButtonInfo = {
-  //   x: 0,
-  //   y: 0,
-  //   leftMouseClicked: false,
-  //   mouseIsMoving: false
-  // };
-
-  // rightMouseButtonInfo = {
-  //   x: 0,
-  //   y: 0,
-  //   isButtonClicked: false,
-  //   isMouseMoving: false
-  // };
-
   constructor() {
     this.userInput = new InputManager();
     this.renderer = new RendererEngine(this.userInput);
@@ -46,12 +31,10 @@ export class Playground3dComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.renderer.initializeRenderer(this.canvasElement.nativeElement, this.width, this.height);
-    // tslint:disable-next-line:max-line-length
     this.canvasElement.nativeElement.requestPointerLock = this.canvasElement.nativeElement.requestPointerLock || this.canvasElement.nativeElement.mozRequestPointerLock;
     document['exitPointerLock'] = document['exitPointerLock'] || document['mozExitPointerLock'];
     setInterval(() => {
       this.deltaTime = this.deltaTime + this.sixtyFrames;
-      // this.renderer.applyUserInput(this.activeKeysMap, this.leftMouseButtonInfo, this.rightMouseButtonInfo);
       this.renderer.applyUserInput(this.userInput);
       this.renderer.drawScene(this.deltaTime);
     }, this.sixtyFrames);
