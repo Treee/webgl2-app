@@ -5,6 +5,8 @@ environment_variables:
         BUILD_ENV: "--prod"
 phases:
     install:
+        runtime-versions:
+            nodejs: 10
         commands:
             - echo Installing source NPM dependencies...
             - npm install npm@latest -g
